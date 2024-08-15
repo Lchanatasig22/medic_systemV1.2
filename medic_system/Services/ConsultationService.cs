@@ -60,114 +60,207 @@ public class ConsultationService
             .Include(c => c.ConsultaExamenFisico)
             .FirstOrDefaultAsync(c => c.IdConsulta == id);
     }
-    //public async Task<int> CreateConsultationAsync(
-    // Consultum consultaModel,
-    // ConsultaMedicamento[] medicamentos,
-    // ConsultaLaboratorio[] laboratorios,
-    // ConsultaImagen[] imagenes,
-    // ConsultaDiagnostico[] diagnosticos,
-    // AntecedentesFamiliare antecedentesFamiliares,
-    // OrganosSistema organosSistemas,
-    // ExamenFisico examenFisico)
-    //{
-    //    using (var connection = new SqlConnection(_context.Database.GetConnectionString()))
-    //    {
-    //        using (var command = new SqlCommand("sp_Create_Consultation", connection))
-    //        {
-    //            command.CommandType = CommandType.StoredProcedure;
 
-    //            // Add ConsultaModel parameters
-    //            command.Parameters.AddWithValue("@fechacreacion_consulta", consultaModel.FechacreacionConsulta);
-    //            command.Parameters.AddWithValue("@usuariocreacion_consulta", consultaModel.UsuariocreacionConsulta);
-    //            command.Parameters.AddWithValue("@historial_consulta", consultaModel.HistorialConsulta);
-    //            command.Parameters.AddWithValue("@secuencial_consulta", consultaModel.SecuencialConsulta);
-    //            command.Parameters.AddWithValue("@paciente_consulta_p", consultaModel.PacienteConsultaP);
-    //            command.Parameters.AddWithValue("@motivo_consulta", consultaModel.MotivoConsulta);
-    //            command.Parameters.AddWithValue("@enfermedad_consulta", consultaModel.EnfermedadConsulta);
-    //            command.Parameters.AddWithValue("@nombrepariente_consulta", consultaModel.NombreparienteConsulta);
-    //            command.Parameters.AddWithValue("@signosalarma_consulta", consultaModel.SignosalarmaConsulta);
-    //            command.Parameters.AddWithValue("@reconofarmacologicas", consultaModel.Reconofarmacologicas);
-    //            command.Parameters.AddWithValue("@tipopariente_consulta", consultaModel.TipoparienteConsulta);
-    //            command.Parameters.AddWithValue("@telefono_consulta", consultaModel.TelefonoConsulta);
-    //            command.Parameters.AddWithValue("@temperatura_consulta", consultaModel.TemperaturaConsulta);
-    //            command.Parameters.AddWithValue("@frecuenciarespiratoria_consulta", consultaModel.FrecuenciarespiratoriaConsulta);
-    //            command.Parameters.AddWithValue("@presionarterialsistolica_consulta", consultaModel.PresionarterialsistolicaConsulta);
-    //            command.Parameters.AddWithValue("@presionarterialdiastolica_consulta", consultaModel.PresionarterialdiastolicaConsulta);
-    //            command.Parameters.AddWithValue("@pulso_consulta", consultaModel.PulsoConsulta);
-    //            command.Parameters.AddWithValue("@peso_consulta", consultaModel.PesoConsulta);
-    //            command.Parameters.AddWithValue("@talla_consulta", consultaModel.TallaConsulta);
-    //            command.Parameters.AddWithValue("@plantratamiento_consulta", consultaModel.PlantratamientoConsulta);
-    //            command.Parameters.AddWithValue("@observacion_consulta", consultaModel.ObservacionConsulta);
-    //            command.Parameters.AddWithValue("@antecedentespersonales_consulta", consultaModel.AntecedentespersonalesConsulta);
-    //            command.Parameters.AddWithValue("@diasincapacidad_consulta", consultaModel.DiasincapacidadConsulta);
-    //            command.Parameters.AddWithValue("@medico_consulta_d", consultaModel.MedicoConsultaD);
-    //            command.Parameters.AddWithValue("@especialidad_id", consultaModel.EspecialidadId);
-    //            command.Parameters.AddWithValue("@estado_consulta_c", consultaModel.EstadoConsultaC);
-    //            command.Parameters.AddWithValue("@tipo_consulta_c", consultaModel.TipoConsultaC);
-    //            command.Parameters.AddWithValue("@notasevolucion_consulta", consultaModel.NotasevolucionConsulta);
-    //            command.Parameters.AddWithValue("@consultaprincipal_consulta", consultaModel.ConsultaprincipalConsulta);
-    //            command.Parameters.AddWithValue("@activo_consulta", consultaModel.ActivoConsulta);
-    //            command.Parameters.AddWithValue("@fechaactual_consulta", consultaModel.FechaactualConsulta);
 
-    //            // Add Table-Valued Parameters (TVP)
-    //            command.Parameters.AddWithValue("@medicamentos", CreateMedicamentosDataTable(medicamentos));
-    //            command.Parameters.AddWithValue("@laboratorios", CreateLaboratoriosDataTable(laboratorios));
-    //            command.Parameters.AddWithValue("@imagenes", CreateImagenesDataTable(imagenes));
-    //            command.Parameters.AddWithValue("@diagnosticos", CreateDiagnosticosDataTable(diagnosticos));
-    //            command.Parameters.AddWithValue("@antecedentesfamiliares", CreateAntecedentesFamiliaresDataTable(antecedentesFamiliares));
-    //            command.Parameters.AddWithValue("@organossistemas", CreateOrganosSistemasDataTable(organosSistemas));
-    //            command.Parameters.AddWithValue("@examenesfisicos", CreateExamenFisicoDataTable(examenFisico));
+    public int CreateConsultation(DateTime fechacreacion_consulta, string usuariocreacion_consulta, string historial_consulta,
+                                  string secuencial_consulta, int paciente_consulta_p, string motivo_consulta, string enfermedad_consulta,
+                                  string nombrepariente_consulta, string signosalarma_consulta, string reconofarmacologicas,
+                                  int tipopariente_consulta, string telefono_consulta, string temperatura_consulta, string frecuenciarespiratoria_consulta,
+                                  string presionarterialsistolica_consulta, string presionarterialdiastolica_consulta, string pulso_consulta,
+                                  string peso_consulta, string talla_consulta, string plantratamiento_consulta, string observacion_consulta,
+                                  string antecedentespersonales_consulta, int diasincapacidad_consulta, int medico_consulta_d, int especialidad_id,
+                                  int estado_consulta_c, int tipo_consulta_c, string notasevolucion_consulta, string consultaprincipal_consulta,
+                                  int activo_consulta, DateTime fechaactual_consulta,
+                                  List<ConsultaMedicamento> medicamentos, List<ConsultaLaboratorio> laboratorios,
+                                  List<ConsultaImagen> imagenes, List<ConsultaDiagnostico> diagnosticos,
+                                  List<AntecedentesFamiliare> antecedentesfamiliares, List<OrganosSistema> organossistemas,
+                                  List<ExamenFisico> examenesfisicos)
+    {
+        using (SqlConnection conn = new SqlConnection(_context.Database.GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand("sp_Create_Consultation", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
 
-    //            // Add output parameter for new consultation ID
-    //            var idConsultaParam = new SqlParameter("@NewConsultaID", SqlDbType.Int)
-    //            {
-    //                Direction = ParameterDirection.Output
-    //            };
-    //            command.Parameters.Add(idConsultaParam);
+                // Add parameters
+                cmd.Parameters.AddWithValue("@fechacreacion_consulta", fechacreacion_consulta);
+                cmd.Parameters.AddWithValue("@usuariocreacion_consulta", usuariocreacion_consulta);
+                cmd.Parameters.AddWithValue("@historial_consulta", historial_consulta);
+                cmd.Parameters.AddWithValue("@secuencial_consulta", secuencial_consulta);
+                cmd.Parameters.AddWithValue("@paciente_consulta_p", paciente_consulta_p);
+                cmd.Parameters.AddWithValue("@motivo_consulta", motivo_consulta);
+                cmd.Parameters.AddWithValue("@enfermedad_consulta", enfermedad_consulta);
+                cmd.Parameters.AddWithValue("@nombrepariente_consulta", nombrepariente_consulta);
+                cmd.Parameters.AddWithValue("@signosalarma_consulta", signosalarma_consulta);
+                cmd.Parameters.AddWithValue("@reconofarmacologicas", reconofarmacologicas);
+                cmd.Parameters.AddWithValue("@tipopariente_consulta", tipopariente_consulta);
+                cmd.Parameters.AddWithValue("@telefono_consulta", telefono_consulta);
+                cmd.Parameters.AddWithValue("@temperatura_consulta", temperatura_consulta);
+                cmd.Parameters.AddWithValue("@frecuenciarespiratoria_consulta", frecuenciarespiratoria_consulta);
+                cmd.Parameters.AddWithValue("@presionarterialsistolica_consulta", presionarterialsistolica_consulta);
+                cmd.Parameters.AddWithValue("@presionarterialdiastolica_consulta", presionarterialdiastolica_consulta);
+                cmd.Parameters.AddWithValue("@pulso_consulta", pulso_consulta);
+                cmd.Parameters.AddWithValue("@peso_consulta", peso_consulta);
+                cmd.Parameters.AddWithValue("@talla_consulta", talla_consulta);
+                cmd.Parameters.AddWithValue("@plantratamiento_consulta", plantratamiento_consulta);
+                cmd.Parameters.AddWithValue("@observacion_consulta", observacion_consulta);
+                cmd.Parameters.AddWithValue("@antecedentespersonales_consulta", antecedentespersonales_consulta);
+                cmd.Parameters.AddWithValue("@diasincapacidad_consulta", diasincapacidad_consulta);
+                cmd.Parameters.AddWithValue("@medico_consulta_d", medico_consulta_d);
+                cmd.Parameters.AddWithValue("@especialidad_id", especialidad_id);
+                cmd.Parameters.AddWithValue("@estado_consulta_c", estado_consulta_c);
+                cmd.Parameters.AddWithValue("@tipo_consulta_c", tipo_consulta_c);
+                cmd.Parameters.AddWithValue("@notasevolucion_consulta", notasevolucion_consulta);
+                cmd.Parameters.AddWithValue("@consultaprincipal_consulta", consultaprincipal_consulta);
+                cmd.Parameters.AddWithValue("@activo_consulta", activo_consulta);
+                cmd.Parameters.AddWithValue("@fechaactual_consulta", fechaactual_consulta);
 
-    //            await connection.OpenAsync();
-    //            await command.ExecuteNonQueryAsync();
+                // Add structured parameters
+                cmd.Parameters.Add(CreateStructuredParameter("@medicamentos", medicamentos));
+                cmd.Parameters.Add(CreateStructuredParameter("@laboratorios", laboratorios));
+                cmd.Parameters.Add(CreateStructuredParameter("@imagenes", imagenes));
+                cmd.Parameters.Add(CreateStructuredParameter("@diagnosticos", diagnosticos));
+                cmd.Parameters.Add(CreateStructuredParameter("@antecedentesfamiliares", antecedentesfamiliares));
+                cmd.Parameters.Add(CreateStructuredParameter("@organossistemas", organossistemas));
+                cmd.Parameters.Add(CreateStructuredParameter("@examenesfisicos", examenesfisicos));
 
-    //            // Retrieve the generated ID
-    //            return (int)idConsultaParam.Value;
-    //        }
-    //    }
-    //}
+                SqlParameter outputIdParam = new SqlParameter("@NewConsultaID", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                cmd.Parameters.Add(outputIdParam);
 
-    //private DataTable CreateMedicamentosDataTable(ConsultaMedicamento[] medicamentos)
-    //{
-    //    // Create a DataTable and populate it with the medicamentos data
-    //}
+                conn.Open();
+                cmd.ExecuteNonQuery();
 
-    //private DataTable CreateLaboratoriosDataTable(ConsultaLaboratorio[] laboratorios)
-    //{
-    //    // Create a DataTable and populate it with the laboratorios data
-    //}
+                return (int)outputIdParam.Value;
+            }
+        }
+    }
 
-    //private DataTable CreateImagenesDataTable(ConsultaImagen[] imagenes)
-    //{
-    //    // Create a DataTable and populate it with the imagenes data
-    //}
+    private SqlParameter CreateStructuredParameter<T>(string paramName, List<T> values)
+    {
+        DataTable table = new DataTable();
 
-    //private DataTable CreateDiagnosticosDataTable(ConsultaDiagnostico[] diagnosticos)
-    //{
-    //    // Create a DataTable and populate it with the diagnosticos data
-    //}
+        // Populate the DataTable with columns depending on the type T
+        if (typeof(T) == typeof(ConsultaMedicamento))
+        {
+            table.Columns.Add("fechacreacion_medicamento", typeof(DateTime));
+            table.Columns.Add("medicamento_id", typeof(int));
+            table.Columns.Add("dosis_medicamento", typeof(string));
+            table.Columns.Add("observacion_medicamento", typeof(string));
+            table.Columns.Add("estado_medicamento", typeof(int));
+        }
+        else if (typeof(T) == typeof(ConsultaLaboratorio))
+        {
+            table.Columns.Add("cantidad_laboratorio", typeof(int));
+            table.Columns.Add("observacion", typeof(string));
+            table.Columns.Add("catalogo_laboratorio_id", typeof(int));
+            table.Columns.Add("estado_laboratorio", typeof(int));
+        }
+        else if (typeof(T) == typeof(ConsultaImagen))
+        {
+            table.Columns.Add("imagen_id", typeof(int));
+            table.Columns.Add("observacion_imagen", typeof(string));
+            table.Columns.Add("cantidad_imagen", typeof(int));
+            table.Columns.Add("estado_imagen", typeof(int));
+        }
+        else if (typeof(T) == typeof(ConsultaDiagnostico))
+        {
+            table.Columns.Add("diagnostico_id", typeof(int));
+            table.Columns.Add("observacion_diagnostico", typeof(string));
+            table.Columns.Add("presuntivo_diagnosticos", typeof(int));
+            table.Columns.Add("definitivo_diagnosticos", typeof(int));
+            table.Columns.Add("estado_diagnostico", typeof(int));
+        }
+        else if (typeof(T) == typeof(AntecedentesFamiliare))
+        {
+            table.Columns.Add("cardiopatia", typeof(int));
+            table.Columns.Add("obser_cardiopatia", typeof(string));
+            table.Columns.Add("diabetes", typeof(int));
+            table.Columns.Add("obser_diabetes", typeof(string));
+            table.Columns.Add("enf_cardiovascular", typeof(int));
+            table.Columns.Add("obser_enf_cardiovascular", typeof(string));
+            table.Columns.Add("hipertension", typeof(int));
+            table.Columns.Add("obser_hipertension", typeof(string));
+            table.Columns.Add("cancer", typeof(int));
+            table.Columns.Add("obser_cancer", typeof(string));
+            table.Columns.Add("tuberculosis", typeof(int));
+            table.Columns.Add("obser_tuberculosis", typeof(string));
+            table.Columns.Add("enf_mental", typeof(int));
+            table.Columns.Add("obser_enf_mental", typeof(string));
+            table.Columns.Add("enf_infecciosa", typeof(int));
+            table.Columns.Add("obser_enf_infecciosa", typeof(string));
+            table.Columns.Add("mal_formacion", typeof(int));
+            table.Columns.Add("obser_mal_formacion", typeof(string));
+            table.Columns.Add("otro", typeof(string));
+            table.Columns.Add("obser_otro", typeof(string));
+            table.Columns.Add("parentesco_catalogo_cardiopatia", typeof(int));
+            table.Columns.Add("parentesco_catalogo_diabetes", typeof(int));
+            table.Columns.Add("parentesco_catalogo_enf_cardiovascular", typeof(int));
+            table.Columns.Add("parentesco_catalogo_hipertension", typeof(int));
+            table.Columns.Add("parentesco_catalogo_cancer", typeof(int));
+            table.Columns.Add("parentesco_catalogo_tuberculosis", typeof(int));
+            table.Columns.Add("parentesco_catalogo_enf_mental", typeof(int));
+            table.Columns.Add("parentesco_catalogo_enf_infecciosa", typeof(int));
+            table.Columns.Add("parentesco_catalogo_mal_formacion", typeof(int));
+            table.Columns.Add("parentesco_catalogo_otro", typeof(int));
+        }
+        else if (typeof(T) == typeof(OrganosSistema))
+        {
+            table.Columns.Add("org_sentidos", typeof(int));
+            table.Columns.Add("obser_org_sentidos", typeof(string));
+            table.Columns.Add("respiratorio", typeof(int));
+            table.Columns.Add("obser_respiratorio", typeof(string));
+            table.Columns.Add("cardio_vascular", typeof(int));
+            table.Columns.Add("obser_cardio_vascular", typeof(string));
+            table.Columns.Add("digestivo", typeof(int));
+            table.Columns.Add("obser_digestivo", typeof(string));
+            table.Columns.Add("genital", typeof(int));
+            table.Columns.Add("obser_genital", typeof(string));
+            table.Columns.Add("urinario", typeof(int));
+            table.Columns.Add("obser_urinario", typeof(string));
+            table.Columns.Add("m_esqueletico", typeof(int));
+            table.Columns.Add("obser_m_esqueletico", typeof(string));
+            table.Columns.Add("endocrino", typeof(int));
+            table.Columns.Add("obser_endocrino", typeof(string));
+            table.Columns.Add("linfatico", typeof(int));
+            table.Columns.Add("obser_linfatico", typeof(string));
+            table.Columns.Add("nervioso", typeof(int));
+            table.Columns.Add("obser_nervioso", typeof(string));
+        }
+        else if (typeof(T) == typeof(ExamenFisico))
+        {
+            table.Columns.Add("cabeza", typeof(int));
+            table.Columns.Add("obser_cabeza", typeof(string));
+            table.Columns.Add("cuello", typeof(int));
+            table.Columns.Add("obser_cuello", typeof(string));
+            table.Columns.Add("torax", typeof(int));
+            table.Columns.Add("obser_torax", typeof(string));
+            table.Columns.Add("abdomen", typeof(int));
+            table.Columns.Add("obser_abdomen", typeof(string));
+            table.Columns.Add("pelvis", typeof(int));
+            table.Columns.Add("obser_pelvis", typeof(string));
+            table.Columns.Add("extremidades", typeof(int));
+            table.Columns.Add("obser_extremidades", typeof(string));
+        }
 
-    //private DataTable CreateAntecedentesFamiliaresDataTable(AntecedentesFamiliare antecedentesFamiliares)
-    //{
-    //    // Create a DataTable and populate it with the antecedentes familiares data
-    //}
+        foreach (var value in values)
+        {
+            var row = table.NewRow();
+            foreach (var prop in typeof(T).GetProperties())
+            {
+                row[prop.Name] = prop.GetValue(value) ?? DBNull.Value;
+            }
+            table.Rows.Add(row);
+        }
 
-    //private DataTable CreateOrganosSistemasDataTable(OrganosSistema organosSistemas)
-    //{
-    //    // Create a DataTable and populate it with the organos sistemas data
-    //}
-
-    //private DataTable CreateExamenFisicoDataTable(ExamenFisico examenFisico)
-    //{
-    //    // Create a DataTable and populate it with the examen fisico data
-    //}
+        return new SqlParameter(paramName, table)
+        {
+            SqlDbType = SqlDbType.Structured,
+            TypeName = "dbo." + typeof(T).Name + "Type"
+        };
+    }
 
 
     public async Task UpdateConsultationAsync(Consultum consultation)

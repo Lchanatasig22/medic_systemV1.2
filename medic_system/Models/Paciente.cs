@@ -16,7 +16,7 @@ namespace medic_system.Models
         public string? UsuariocreacionPacientes { get; set; }
         public DateTime? FechamodificacionPacientes { get; set; }
         public string? UsuariomodificacionPacientes { get; set; }
-        public int TipodocumentoPacientesCa { get; set; }
+        public int? TipodocumentoPacientesCa { get; set; }
         public int CiPacientes { get; set; }
         public string PrimernombrePacientes { get; set; } = null!;
         public string? SegundonombrePacientes { get; set; }
@@ -46,7 +46,7 @@ namespace medic_system.Models
         public virtual Localidad? ProvinciaPacientesLNavigation { get; set; }
         public virtual Catalogo? SegurosaludPacientesCaNavigation { get; set; }
         public virtual Catalogo? SexoPacientesCaNavigation { get; set; }
-        public virtual Catalogo TipodocumentoPacientesCaNavigation { get; set; } = null!;
+        public virtual Catalogo? TipodocumentoPacientesCaNavigation { get; set; }
         public virtual Catalogo? TiposangrePacientesCaNavigation { get; set; }
         public virtual ICollection<Citum> Cita { get; set; }
         public virtual ICollection<Consultum> Consulta { get; set; }

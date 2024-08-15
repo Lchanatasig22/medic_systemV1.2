@@ -400,6 +400,62 @@ namespace medic_system.Controllers
         //    return View(consulta);
         //}
 
+
+
+        [HttpPost]
+        public IActionResult CreateConsultation([FromBody] CrearConsultaMedicaRequest request)
+        {
+            try
+            {
+                int newConsultaId = _consultationService.CreateConsultation(
+                    request.fechacreacion_consulta,
+                    request.usuariocreacion_consulta,
+                    request.historial_consulta,
+                    request.secuencial_consulta,
+                    request.paciente_consulta_p,
+                    request.motivo_consulta,
+                    request.enfermedad_consulta,
+                    request.nombrepariente_consulta,
+                    request.signosalarma_consulta,
+                    request.reconofarmacologicas,
+                    request.tipopariente_consulta,
+                    request.telefono_consulta,
+                    request.temperatura_consulta,
+                    request.frecuenciarespiratoria_consulta,
+                    request.presionarterialsistolica_consulta,
+                    request.presionarterialdiastolica_consulta,
+                    request.pulso_consulta,
+                    request.peso_consulta,
+                    request.talla_consulta,
+                    request.plantratamiento_consulta,
+                    request.observacion_consulta,
+                    request.antecedentespersonales_consulta,
+                    request.diasincapacidad_consulta,
+                    request.medico_consulta_d,
+                    request.especialidad_id,
+                    request.estado_consulta_c,
+                    request.tipo_consulta_c,
+                    request.notasevolucion_consulta,
+                    request.consultaprincipal_consulta,
+                    request.activo_consulta,
+                    request.fechaactual_consulta,
+                    request.medicamentos,
+                    request.laboratorios,
+                    request.imagenes,
+                    request.diagnosticos,
+                    request.antecedentesfamiliares,
+                    request.organossistemas,
+                    request.examenesfisicos
+                );
+
+                return Ok(new { ConsultaId = newConsultaId });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> BuscarPacientePorNombre(int ci)
         {

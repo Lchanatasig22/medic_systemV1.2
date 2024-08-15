@@ -129,37 +129,38 @@ namespace medic_system.Services
                     command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.AddWithValue("@id_pacientes", paciente.IdPacientes);
-                    command.Parameters.AddWithValue("@fechamodificacion_pacientes", paciente.FechamodificacionPacientes);
-                    command.Parameters.AddWithValue("@usuariomodificacion_pacientes", paciente.UsuariomodificacionPacientes);
-                    command.Parameters.AddWithValue("@tipodocumento_pacientes_ca", paciente.TipodocumentoPacientesCa);
+                    command.Parameters.AddWithValue("@fechamodificacion_pacientes", (object?)paciente.FechamodificacionPacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@usuariomodificacion_pacientes", (object?)paciente.UsuariomodificacionPacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@tipodocumento_pacientes_ca", (object?)paciente.TipodocumentoPacientesCa ?? DBNull.Value);
                     command.Parameters.AddWithValue("@ci_pacientes", paciente.CiPacientes);
                     command.Parameters.AddWithValue("@primernombre_pacientes", paciente.PrimernombrePacientes);
-                    command.Parameters.AddWithValue("@segundonombre_pacientes", paciente.SegundonombrePacientes);
+                    command.Parameters.AddWithValue("@segundonombre_pacientes", (object?)paciente.SegundonombrePacientes ?? DBNull.Value);
                     command.Parameters.AddWithValue("@primerapellido_pacientes", paciente.PrimerapellidoPacientes);
-                    command.Parameters.AddWithValue("@segundoapellido_pacientes", paciente.SegundoapellidoPacientes);
-                    command.Parameters.AddWithValue("@sexo_pacientes_ca", paciente.SexoPacientesCa);
-                    command.Parameters.AddWithValue("@fechanacimiento_pacientes", paciente.FechanacimientoPacientes);
-                    command.Parameters.AddWithValue("@edad_pacientes", paciente.EdadPacientes);
-                    command.Parameters.AddWithValue("@tiposangre_pacientes_ca", paciente.TiposangrePacientesCa);
-                    command.Parameters.AddWithValue("@donante_pacientes", paciente.DonantePacientes);
-                    command.Parameters.AddWithValue("@estadocivil_pacientes_ca", paciente.EstadocivilPacientesCa);
-                    command.Parameters.AddWithValue("@formacionprofesional_pacientes_ca", paciente.FormacionprofesionalPacientesCa);
-                    command.Parameters.AddWithValue("@telefonofijo_pacientes", paciente.TelefonofijoPacientes);
-                    command.Parameters.AddWithValue("@telefonocelular_pacientes", paciente.TelefonocelularPacientes);
+                    command.Parameters.AddWithValue("@segundoapellido_pacientes", (object?)paciente.SegundoapellidoPacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@sexo_pacientes_ca", (object?)paciente.SexoPacientesCa ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@fechanacimiento_pacientes", (object?)paciente.FechanacimientoPacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@edad_pacientes", (object?)paciente.EdadPacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@tiposangre_pacientes_ca", (object?)paciente.TiposangrePacientesCa ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@donante_pacientes", (object?)paciente.DonantePacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@estadocivil_pacientes_ca", (object?)paciente.EstadocivilPacientesCa ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@formacionprofesional_pacientes_ca", (object?)paciente.FormacionprofesionalPacientesCa ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@telefonofijo_pacientes", (object?)paciente.TelefonofijoPacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@telefonocelular_pacientes", (object?)paciente.TelefonocelularPacientes ?? DBNull.Value);
                     command.Parameters.AddWithValue("@email_pacientes", paciente.EmailPacientes);
-                    command.Parameters.AddWithValue("@nacionalidad_pacientes_pa", paciente.NacionalidadPacientesPa);
-                    command.Parameters.AddWithValue("@provincia_pacientes_l", paciente.ProvinciaPacientesL);
-                    command.Parameters.AddWithValue("@direccion_pacientes", paciente.DireccionPacientes);
-                    command.Parameters.AddWithValue("@ocupacion_pacientes", paciente.OcupacionPacientes);
-                    command.Parameters.AddWithValue("@empresa_pacientes", paciente.EmpresaPacientes);
-                    command.Parameters.AddWithValue("@segurosalud_pacientes_ca", paciente.SegurosaludPacientesCa);
-                    command.Parameters.AddWithValue("@estado_pacientes", paciente.EstadoPacientes);
+                    command.Parameters.AddWithValue("@nacionalidad_pacientes_pa", (object?)paciente.NacionalidadPacientesPa ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@provincia_pacientes_l", (object?)paciente.ProvinciaPacientesL ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@direccion_pacientes", (object?)paciente.DireccionPacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@ocupacion_pacientes", (object?)paciente.OcupacionPacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@empresa_pacientes", (object?)paciente.EmpresaPacientes ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@segurosalud_pacientes_ca", (object?)paciente.SegurosaludPacientesCa ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@estado_pacientes", (object?)paciente.EstadoPacientes ?? DBNull.Value);
 
                     await connection.OpenAsync();
                     await command.ExecuteNonQueryAsync();
                 }
             }
         }
+
 
         public async Task<Paciente> GetPacienteByIdAsync(int id)
         {

@@ -3,6 +3,7 @@ using medic_system.Models;
 using medic_system.Services;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace medic_system.Controllers
 {
@@ -148,14 +149,30 @@ namespace medic_system.Controllers
                     paciente.UsuariomodificacionPacientes = HttpContext.Session.GetString("UsuarioNombre");
                     paciente.FechamodificacionPacientes = DateTime.Now;
                     paciente.EstadoPacientes = 1;
+ 
                     await _pacienteService.EditPatientAsync(paciente);
 
                     TempData["SuccessMessage"] = "Paciente actualizado exitosamente.";
                     return RedirectToAction("ListarPacientes");
                 }
+                catch (DbUpdateException dbEx)
+                {
+                    ModelState.AddModelError(string.Empty, $"Error de base de datos al actualizar el paciente: {dbEx.Message}");
+                }
+                catch (ArgumentException argEx)
+                {
+                    ModelState.AddModelError(string.Empty, $"Error en los argumentos al actualizar el paciente: {argEx.Message}");
+                }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError(string.Empty, $"Error al actualizar el paciente: {ex.Message}");
+                    ModelState.AddModelError(string.Empty, $"Error inesperado al actualizar el paciente: {ex.Message}");
+                }
+            }
+            else
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    ModelState.AddModelError(string.Empty, $"Error de validación: {error.ErrorMessage}");
                 }
             }
 
