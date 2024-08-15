@@ -40,9 +40,7 @@
         $(this).closest('tr').remove();
     });
 
-
-
-    //Añadir fila a la tabla Medicamentos 
+    // Añadir fila a la tabla Medicamentos 
     $('#anadirFilaMedicamento').on('click', function () {
         const $medicamentoSelect = $('#MedicamentoId');
         const selectedMedicamento = $medicamentoSelect.val();
@@ -75,12 +73,7 @@
         $(this).closest('tr').remove();
     });
 
-
-
-
-    //Añadir fila a la tabla Imagen 
-
-
+    // Añadir fila a la tabla Imagen 
     $('#anadirFilaImagen').on('click', function () {
         const $imagenSelect = $('#ImagenId');
         const selectedImagen = $imagenSelect.val();
@@ -107,7 +100,7 @@
         $(this).closest('tr').remove();
     });
 
-    //Añadir fila a la tabla laboratorio
+    // Añadir fila a la tabla laboratorio
     $('#anadirFilaLaboratorio').on('click', function () {
         const $laboratorioSelect = $('#LaboratorioId');
         const selectedLaboratorio = $laboratorioSelect.val();
@@ -140,10 +133,6 @@
         $(this).closest('tr').remove();
     });
 
-
-
-
-
     // Configuración inicial del wizard
     const $navListItems = $('div.stepwizard-step button');
     const $allWells = $('.setup-content');
@@ -171,8 +160,8 @@
     });
 
     // Función para manejar el botón "Siguiente"
-    function goToNextStep() {
-        const $curStep = $(this).closest(".setup-content");
+    function goToNextStep(event) {
+        const $curStep = $(event.target).closest(".setup-content");
         const curStepId = $curStep.attr("id").split('-')[1];
         const $nextStepWizard = $('div.stepwizard-step button[data-step="' + (parseInt(curStepId) + 1) + '"]');
         const $curInputs = $curStep.find("input[type='text'],input[type='url']");
@@ -189,20 +178,21 @@
 
         if (isValid) {
             $nextStepWizard.removeAttr('disabled').trigger('click');
+            $curStep.hide();
+            $('#step-' + (parseInt(curStepId) + 1)).show();
         }
     }
 
     // Manejo del botón "Regresar"
-    $('div.setup-content button.previousBtn').on('click', function () {
-        const $curStep = $(this).closest(".setup-content");
+    function goToPreviousStep(event) {
+        const $curStep = $(event.target).closest(".setup-content");
         const curStepId = $curStep.attr("id").split('-')[1];
         const $prevStepWizard = $('div.stepwizard-step button[data-step="' + (parseInt(curStepId) - 1) + '"]');
 
-        $navListItems.removeClass('btn-primary').addClass('btn-secondary');
         $prevStepWizard.addClass('btn-primary');
-        $allWells.hide();
+        $curStep.hide();
         $('#step-' + (parseInt(curStepId) - 1)).show();
-    });
+    }
 
     // Mostrar u ocultar campos de observación al cambiar los switches
     $('.consulta-antecedente-checked').on('change', function () {
@@ -212,7 +202,4 @@
         $observacionField.toggle(isChecked);
         $observacionField.find('input').prop('disabled', !isChecked);
     });
-
-    // Attach the goToNextStep function to the "Next" buttons
-    $('div.setup-content button.nextBtn').on('click', goToNextStep);
 });

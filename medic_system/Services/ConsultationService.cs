@@ -115,7 +115,7 @@ public class ConsultationService
                 cmd.Parameters.AddWithValue("@activo_consulta", activo_consulta);
                 cmd.Parameters.AddWithValue("@fechaactual_consulta", fechaactual_consulta);
 
-                // Add structured parameters
+                // Add structured parameters, handling null or empty lists
                 cmd.Parameters.Add(CreateStructuredParameter("@medicamentos", medicamentos));
                 cmd.Parameters.Add(CreateStructuredParameter("@laboratorios", laboratorios));
                 cmd.Parameters.Add(CreateStructuredParameter("@imagenes", imagenes));
@@ -140,6 +140,16 @@ public class ConsultationService
 
     private SqlParameter CreateStructuredParameter<T>(string paramName, List<T> values)
     {
+        // Si la lista es null o está vacía, devolver un parámetro con valor DBNull
+        if (values == null || values.Count == 0)
+        {
+            return new SqlParameter(paramName, SqlDbType.Structured)
+            {
+                TypeName = "dbo." + typeof(T).Name + "Type",
+                Value = DBNull.Value
+            };
+        }
+
         DataTable table = new DataTable();
 
         // Populate the DataTable with columns depending on the type T
@@ -261,7 +271,6 @@ public class ConsultationService
             TypeName = "dbo." + typeof(T).Name + "Type"
         };
     }
-
 
     public async Task UpdateConsultationAsync(Consultum consultation)
     {

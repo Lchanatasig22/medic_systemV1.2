@@ -24,7 +24,6 @@
     <style>
         .stepwizard-step p {
             margin-top: 10px;
-           
         }
 
         .stepwizard-row {
@@ -34,7 +33,6 @@
 
         .btn-circle {
             position: relative;
-      
             width: 30px;
             height: 30px;
             background-color: red;
@@ -126,7 +124,7 @@
         }
     </style>
 </head>
-
+<h1>Crear Consulta</h1>
 <div class="container mt-5">
     <div class="stepwizard">
         <div class="stepwizard-row">
@@ -166,7 +164,7 @@
         </div>
     }
 
-    <form role="form" id="consultaForm" asp-action="CrearConsulta" method="post">
+    <form role="form" id="consultaForm" asp-action="CreateConsultation" method="post">
         <div class="form-group col-sm-3" hidden>
             <label for="UsuarioCreacion" class="form-label">Usuario de Creación</label>
             <input type="text" class="form-control" asp-for="UsuariocreacionConsulta" id="usuarioNombre" value="@ViewBag.UsuarioNombre" readonly />
@@ -368,8 +366,8 @@
                     </select>
                 </div>
                 <div class="col-sm-3">
-                    <label for="historiaClinica">Historia Clínica</label>
-                    <input type="text" class="form-control" asp-for="HistorialConsulta" id="historiaClinica" placeholder="Máximo 150 caracteres" disabled required>
+                    <label for="historiaClinica">Historia Clínica*</label>
+                    <input type="text" class="form-control" asp-for="HistorialConsulta" id="historiaClinica" placeholder="Máximo 150 caracteres" readonly required>
                     <span asp-validation-for="HistorialConsulta" class="text-danger"></span>
                 </div>
             </div>
@@ -1253,7 +1251,7 @@
                         <tr>
                             <td class="text-end">Temperatura ºC *</td>
                             <td><input id="temperatura_consulta" max="100" min="0" style="max-width: 50%" name="TemperaturaConsulta" asp-for="TemperaturaConsulta" placeholder="0" type="number" class="form-control" required></td>
-                          
+
                             <td class="text-end">Frecuencia respiratoria *</td>
                             <td><input id="frecuenciarespiratoria_consulta" max="10000" asp-for="FrecuenciarespiratoriaConsulta" min="0" name="FrecuenciarespiratoriaConsulta" placeholder="0" type="number" required class="form-control"></td>
                             <td></td>
@@ -1273,12 +1271,11 @@
                         </tr>
                         <tr>
                             <td class="text-end">Peso *</td>
-                            <td><input id="peso_consulta" max="1000" min="0" style="max-width: 50%" name="PesoConsulta" placeholder="0" type="number" asp-for="PesoConsulta" class="form-control" required></td>
-                            <td>(Kg)</td>
-                            <td></td>
+                            <td><input id="peso_consulta" max="1000" min="0" style="max-width: 50%" name="PesoConsulta" placeholder="0" type="number" asp-for="PesoConsulta" class="form-control" required>(Kg)</td>
+                           
                             <td class="text-end">Talla *</td>
-                            <td><input id="talla_consulta" max="1000" min="0" name="TallaConsulta" placeholder="0" type="number" asp-for="TallaConsulta" class="form-control" required></td>
-                            <td>(cm)</td>
+                            <td><input id="talla_consulta" max="1000" min="0" name="TallaConsulta" placeholder="0" type="number" asp-for="TallaConsulta" class="form-control" required>(cm)</td>
+                          
                         </tr>
                     </tbody>
                 </table>
@@ -1536,7 +1533,7 @@
                                             }
                                         }
                                     </select>
-                              
+
                                 </div>
                             </td>
                             <td>
@@ -1587,14 +1584,13 @@
                                             }
                                         }
                                     </select>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
-                                    </div>
+
+                                    <button type="button" class="btn btn-outline-success" id="anadirFilaMedicamento"><i class="fas fa-plus-circle"></i> Añadir</button>
+
+
                                 </div>
                             </td>
-                            <td>
-                                <button type="button" class="btn btn-outline-success" id="anadirFilaMedicamento"><i class="fas fa-plus-circle"></i> Añadir</button>
-                            </td>
+
                             <table class="table" id="medicamentosTable">
                                 <thead>
                                     <tr>
@@ -1608,6 +1604,32 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <div class="card"></div>
+
+                        @*   <div class="card-header">Recomendaciones no farmacologicas</div> *@
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group ">
+                                    <label for="consulta-diagnostico-dias-incapacidad">Recomendaciones no farmacologicas</label>
+                                    <textarea id="reconofarmacologicas" maxlength="8000" asp-for="Reconofarmacologicas" min="0" name="Reconofarmacologicas" type="text" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card"></div>
+
+                        @*                         <div class="card-header">Signos de alarma</div>
+                        *@                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="consulta-diagnostico-dias-incapacidad">Signos de alarma</label>
+                                    <textarea id="alergias_consulta" maxlength="8000" asp-for="AlergiasConsulta" min="0" name="AlergiasConsulta" type="text" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </div>
 
 
@@ -1701,33 +1723,7 @@
                         </div>
                     </div>
                     <!-- Signos de Alarma -->
-                    <div class="card">
-                        <div class="card-header">Recomendaciones no farmacologicas</div>
-                        <div class="card-body">
-                            <div class="form-row">
-                                <div class="form-group ">
-                                    <label for="consulta-diagnostico-dias-incapacidad">Recomendaciones no farmacologicas</label>
-                                    <textarea id="reconofarmacologicas" maxlength="8000" asp-for="Reconofarmacologicas" min="0" name="Reconofarmacologicas" placeholder="0" type="text" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                     <!-- Signos de Alarma -->
-                    <div class="card">
-                        <div class="card-header">Signos de alarma</div>
-                        <div class="card-body">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="consulta-diagnostico-dias-incapacidad">Signos de alarma</label>
-                                    <textarea id="alergias_consulta" maxlength="8000" asp-for="AlergiasConsulta" min="0" name="AlergiasConsulta" placeholder="0" type="text" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                     <!-- Observaciones Finales -->
                     <div class="card">
                         <div class="card-header">Observaciones Finales</div>
