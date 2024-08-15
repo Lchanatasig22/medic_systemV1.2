@@ -1,0 +1,224 @@
+﻿@model medic_system.Models.Citum
+
+@{
+    ViewData["Title"] = "Editar Cita";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mb-4">Editar Cita</h2>
+
+<form asp-action="EditarCita" class="row g-3" method="post" id="citaForm">
+    <input type="hidden" asp-for="IdCita" />
+    <div class="col-md-6">
+        <label asp-for="FechadelacitaCita" class="form-label">Fecha de la Cita</label>
+        <input asp-for="FechadelacitaCita" id="fechaCita" class="form-control" type="date" required />
+        <span asp-validation-for="FechadelacitaCita" class="text-danger" id="fechaError"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="HoradelacitaCita" class="form-label">Hora de la Cita</label>
+        <input asp-for="HoradelacitaCita" id="horaCita" class="form-control" type="time" required />
+        <span asp-validation-for="HoradelacitaCita" class="text-danger"></span>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label asp-for="Motivo" class="form-label">Motivo Consulta</label>
+            <textarea asp-for="Motivo" maxlength="8000" placeholder="motivo" class="form-control"></textarea>
+            <span asp-validation-for="Motivo" class="text-danger"></span>
+        </div>
+    </div>
+
+    <input type="hidden" asp-for="UsuarioId" value="@Model.UsuarioId" />
+    <input type="hidden" asp-for="PacienteId" value="@Model.PacienteId" />
+    <input type="hidden" asp-for="UsuariocreacionCita" value="@ViewBag.MedicoNombre" />
+
+    <div class="col-12 text-center">
+        <button type="button" onclick="consultarCita()" class="btn btn-secondary me-2">Consultar Cita</button>
+        <button type="submit" id="crearCitaBtn" class="btn btn-primary">Actualizar Cita</button>
+    </div>
+</form>
+
+<!-- Formulario de Horas Disponibles -->
+<div id="formHorasDisponibles" style="display: none;">
+    <h2>Horas Disponibles</h2>
+    <button type="button" class="btn btn-danger" onclick="cerrarFormularioHoras()">Cerrar</button>
+    <div id="hoursContainer" class="hours-grid"></div>
+</div>
+
+<!-- Estilos -->
+<style>
+    #formHorasDisponibles {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        #formHorasDisponibles h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+    .hours-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .hour-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 150px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+        .hour-card:hover {
+            transform: scale(1.05);
+            background-color: #e0e0e0;
+        }
+
+        .hour-card img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+</style>
+
+<!-- Scripts -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fechaCitaInput = document.getElementById('fechaCita');
+        const today = new Date().toISOString().split('T')[0];
+        fechaCitaInput.min = today;
+    });
+
+    function consultarCita() {
+        const fechaCita = document.getElementById('fechaCita').value;
+        const medicoId = document.getElementById('UsuarioId').value;
+
+        if (fechaCita && medicoId) {
+            $.ajax({
+                url: '@Url.Action("ObtenerHorasDisponibles", "Appointment")',
+                type: 'POST',
+                data: {
+                    fechaCita: fechaCita,
+                    medicoId: medicoId
+                },
+                success: function (response) {
+                    displayAvailableHours(response);
+                    document.getElementById('formHorasDisponibles').style.display = 'block';
+                },
+                error: function (error) {
+                    console.error('Error al obtener las horas disponibles:', error);
+                    Swal.fire('Error', 'Error al obtener las horas disponibles.', 'error');
+                }
+            });
+        } else {
+            Swal.fire('Advertencia', 'Por favor, seleccione una fecha.', 'warning');
+        }
+    }
+
+    function displayAvailableHours(hours) {
+        const container = document.getElementById('hoursContainer');
+        container.innerHTML = '';
+
+        if (hours && hours.length > 0) {
+            hours.forEach(hour => {
+                const card = document.createElement('div');
+                card.className = 'hour-card';
+
+                const img = document.createElement('img');
+                img.src = '/images/free-doctor-icon-313-thumb.png';
+
+                const time = document.createElement('div');
+                time.textContent = hour;
+
+                card.appendChild(img);
+                card.appendChild(time);
+                container.appendChild(card);
+
+                card.addEventListener('click', function () {
+                    Swal.fire({
+                        title: 'Confirmar selección',
+                        text: `¿Estás seguro de que deseas seleccionar la hora: ${hour}?`,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí',
+                        cancelButtonText: 'No'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('horaCita').value = hour;
+                            document.getElementById('formHorasDisponibles').style.display = 'none';
+                            validarCampos();
+                        }
+                    });
+                });
+            });
+        } else {
+            container.innerHTML = '<p>No hay horas disponibles</p>';
+        }
+    }
+
+    function validarCampos() {
+        const fecha = document.getElementById('fechaCita').value;
+        const hora = document.getElementById('horaCita').value;
+
+        const crearCitaBtn = document.getElementById('crearCitaBtn');
+        const fechaError = document.getElementById('fechaError').textContent;
+
+        if (fecha && hora && !fechaError) {
+            crearCitaBtn.removeAttribute('disabled');
+        } else {
+            crearCitaBtn.setAttribute('disabled', true);
+        }
+    }
+
+    function cerrarFormularioHoras() {
+        document.getElementById('formHorasDisponibles').style.display = 'none';
+    }
+
+    document.getElementById('citaForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (response) {
+                if (response.success) {
+                    Swal.fire({
+                        title: 'Cita actualizada',
+                        text: 'La cita ha sido actualizada con éxito.',
+                        icon: 'success',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        willClose: () => {
+                            window.location.href = '@Url.Action("ListarCitas", "Appointment")';
+                        }
+                    });
+                } else {
+                    console.error('Errores:', response.errors);
+                    Swal.fire('Error', 'Hubo un problema al actualizar la cita: ' + (response.message || 'Errores de validación.'), 'error');
+                }
+            },
+            error: function (error) {
+                console.error('Error al actualizar la cita:', error);
+                Swal.fire('Error', 'Hubo un problema al actualizar la cita.', 'error');
+            }
+        });
+    });
+</script>

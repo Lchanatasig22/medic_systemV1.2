@@ -1,0 +1,241 @@
+﻿@model medic_system.Models.Citum
+
+@{
+    ViewData["Title"] = "Crear Cita";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Crear Cita</h1>
+<div id="camp">
+  Capo Obligatorio *
+</div>
+
+<form asp-action="GenerarCita" class="row g-3" method="post" id="citaForm">
+    <div class="col-md-6">
+        <label asp-for="FechadelacitaCita" class="form-label">Fecha de la Cita *</label>
+        <input asp-for="FechadelacitaCita" id="fechaCita" class="form-control" type="date" required />
+        <span asp-validation-for="FechadelacitaCita" class="text-danger" id="fechaError"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="HoradelacitaCita" class="form-label">Hora de la Cita</label>
+        <input type="time" class="form-control" asp-for="HoradelacitaCita" id="horaCita" readonly />
+        <span asp-validation-for="HoradelacitaCita" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="UsuarioId" id="medicoId" value="@ViewBag.UsuarioId" />
+    <input type="hidden" asp-for="UsuariocreacionCita" value="@ViewBag.UsuarioNombre" />
+    <input type="hidden" asp-for="PacienteId" value="@Model.PacienteId" />
+
+    <div class="col-md-12">
+        <label asp-for="Motivo" class="form-label">Motivo Consulta *</label>
+        <textarea asp-for="Motivo" class="form-control"></textarea>
+        <span asp-validation-for="Motivo" class="text-danger"></span>
+    </div>
+
+    <div class="col-12 text-center">
+        <button type="button" onclick="consultarCita()" class="btn btn-outline-success me-2" style="border-radius:15px"><i class="fa fa-search"></i> Consultar Disponibilidad Cita</button>
+        <button type="submit" style="border-radius:15px" id="crearCitaBtn" class="btn btn-outline-primary" disabled><i class="fa fa-plus"></i> Crear Cita</button>
+    </div>
+</form>
+
+<!-- Formulario de Horas Disponibles -->
+<div id="formHorasDisponibles" style="display: none;">
+    <h2>Horas Disponibles</h2>
+    <button type="button" class="btn btn-danger" onclick="cerrarFormularioHoras()">Cerrar</button>
+    <div id="hoursContainer" class="hours-grid"></div>
+</div>
+
+<!-- Estilos y Scripts -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+    /* Estilos para el formulario de horas disponibles */
+    #formHorasDisponibles {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        #formHorasDisponibles h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+    .hours-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .hour-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 150px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+        .hour-card:hover {
+            transform: scale(1.05);
+            background-color: #9bff7e;
+        }
+
+        .hour-card img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+</style>
+
+<script>
+    $(document).ready(function () {
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById("fechaCita").setAttribute('min', today);
+
+        document.getElementById('fechaCita').addEventListener('change', validarFecha);
+        document.getElementById('fechaCita').addEventListener('change', validarCampos);
+        document.getElementById('horaCita').addEventListener('change', validarCampos);
+    });
+
+    function validarFecha() {
+        const fechaCita = document.getElementById('fechaCita').value;
+        const today = new Date().toISOString().split('T')[0];
+        const fechaError = document.getElementById('fechaError');
+
+        if (fechaCita < today) {
+            fechaError.textContent = "La fecha de la cita debe ser posterior al día actual.";
+            document.getElementById('crearCitaBtn').setAttribute('disabled', true);
+            Swal.fire('Error', 'La fecha de la cita debe ser posterior al día actual.', 'error');
+        } else {
+            fechaError.textContent = "";
+        }
+    }
+
+    function consultarCita() {
+        var fechaCita = document.getElementById('fechaCita').value;
+        var medicoId = document.getElementById('medicoId').value;
+
+        if (fechaCita && medicoId) {
+            $.ajax({
+  url: '@Url.Action("ObtenerHorasDisponibles", "Appointment")',          
+      type: 'POST',
+                data: {
+                    fechaCita: fechaCita,
+                    medicoId: medicoId
+                },
+                success: function (response) {
+                    displayAvailableHours(response);
+                    document.getElementById('formHorasDisponibles').style.display = 'block';
+                },
+                error: function (error) {
+                    console.error('Error al obtener las horas disponibles:', error);
+                    Swal.fire('Error', 'Error al obtener las horas disponibles.', 'error');
+                }
+            });
+        } else {
+            Swal.fire('Advertencia', 'Por favor, seleccione una fecha.', 'warning');
+        }
+    }
+
+    function displayAvailableHours(hours) {
+        const container = document.getElementById('hoursContainer');
+        container.innerHTML = '';
+
+        if (hours && hours.length > 0) {
+            hours.forEach(hour => {
+                const card = document.createElement('div');
+                card.className = 'hour-card';
+
+                const img = document.createElement('img');
+                img.src = '/images/free-doctor-icon-313-thumb.png';
+
+                const time = document.createElement('div');
+                time.textContent = hour;
+
+                card.appendChild(img);
+                card.appendChild(time);
+                container.appendChild(card);
+
+                card.addEventListener('click', function () {
+                    Swal.fire({
+                        title: 'Confirmar selección',
+                        text: `¿Estás seguro de que deseas seleccionar la hora: ${hour}?`,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí',
+                        cancelButtonText: 'No'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('horaCita').value = hour;
+                            document.getElementById('formHorasDisponibles').style.display = 'none';
+                            validarCampos();
+                        }
+                    });
+                });
+            });
+        } else {
+            container.innerHTML = '<p>No hay horas disponibles</p>';
+        }
+    }
+
+    function validarCampos() {
+        const fecha = document.getElementById('fechaCita').value;
+        const hora = document.getElementById('horaCita').value;
+
+        const crearCitaBtn = document.getElementById('crearCitaBtn');
+        const fechaError = document.getElementById('fechaError').textContent;
+
+        if (fecha && hora && !fechaError) {
+            crearCitaBtn.removeAttribute('disabled');
+        } else {
+            crearCitaBtn.setAttribute('disabled', true);
+        }
+    }
+
+    function cerrarFormularioHoras() {
+        document.getElementById('formHorasDisponibles').style.display = 'none';
+    }
+
+    $('#citaForm').submit(function (event) {
+        event.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (response) {
+                Swal.fire({
+                    title: 'Cita creada',
+                    text: 'La cita ha sido creada con éxito.',
+                    icon: 'success',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    willClose: () => {
+                        window.location.href = '@Url.Action("ListarCitas", "Appointment")';
+                      
+                    }
+                });
+            },
+            error: function (error) {
+                Swal.fire('Error', 'Hubo un problema al crear la cita.', 'error');
+            }
+        });
+    });
+</script>

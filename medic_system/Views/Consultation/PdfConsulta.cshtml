@@ -1,0 +1,1063 @@
+﻿@model Consultum
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PdfConsulta</title>
+    <style>
+        /* styles.css */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 98%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .page {
+            margin-bottom: 20px;
+        }
+
+        .consulta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px; /* Aumentar el espaciado entre las tablas */
+            table-layout: fixed;
+            border: 1px solid gray; /* Borde de 1px color gris */
+        }
+
+            .consulta-table th,
+            .consulta-table td {
+                border: 1px solid gray; /* Borde de 1px color gris */
+                padding: 2px;
+                text-align: left;
+                word-wrap: break-word;
+                font-size: 9px;
+            }
+
+        /* Estilos específicos para cada tabla */
+        #table-establecimiento th {
+            background-color: #ccffcc;
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid gray; /* Borde de 1px color gris */
+            width: 5%;
+            height: 1%;
+            font-size: 9px;
+        }
+
+        #table-motivo th {
+            background-color: #ccccff;
+            color: #333;
+            font-weight: bold;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        td#CIE {
+            font-size: 8px;
+        }
+
+        #table-antecedentes .table-header-multi {
+            background-color: #ccccff;
+            color: #333;
+            border: transparent;
+            font-weight: bold;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        #table-antecedentes .table-header-multi-right {
+            background-color: #ccccff;
+            color: #333;
+            border: transparent;
+            font-weight: bold;
+            text-align: right;
+            font-size: 5px;
+        }
+
+        /* Estilos para la nueva tabla */
+        #table-antecedentes-familiares th {
+            background-color: #d9e1f2;
+            color: #333;
+            font-weight: bold;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        th#organosSistemas {
+            border: transparent;
+            background-color: #99ccff;
+            font-size: 5px;
+        }
+
+        td#organosSentidosv {
+            background-color: #ffff99;
+            border: 1px solid gray; /* Borde de 1px color gris */
+        }
+
+        #table-antecedentes-familiares .highlight {
+            background-color: #ffff99;
+        }
+
+        #table-antecedentes-familiares td {
+            background-color: #fff;
+        }
+
+        #table-antecedentes-familiares tbody tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+
+        #table-antecedentes-familiares tbody tr:nth-child(odd) td {
+            background-color: #fff;
+        }
+
+        th#establecimiento,
+        th#nombre,
+        th#apellido,
+        th#edad,
+        th#sexo,
+        th#numeroH,
+        td#establecimiento-value,
+        td#nombre-value,
+        td#apellido-value,
+        td#edad-value,
+        td#sexo-value,
+        td#numeroH-value {
+            font-size: 8px;
+            text-align: center;
+            width: 3%;
+            height: 2%;
+            border: 1px solid gray; /* Borde de 1px color gris */
+            padding: 2px;
+        }
+
+        /* Ejemplo de estilos individuales */
+        th#cardiopatia,
+        #cardiopatia-value,
+        th#diabetes,
+        #diabetes-value,
+        th#enf-vascular,
+        #enf-vascular-value,
+        th#hipertension,
+        #hipertension-value,
+        th#cancer,
+        #cancer-value,
+        th#tuberculosis,
+        #tuberculosis-value,
+        th#enf-mental,
+        #enf-mental-value,
+        th#enf-infecciosa,
+        #enf-infecciosa-value,
+        th#malformacion,
+        #malformacion-value,
+        th#otro,
+        #otro-value {
+            background-color: #ccffcc;
+            font-size: 6px;
+            text-align: center;
+            width: 6% height: 4%;
+            border: 1px solid gray; /* Borde de 1px color gris */
+            padding: 2px;
+        }
+
+        #table-organos-sentidos .table-header-multi,
+        #table-organos-sentidos .table-header-multi-right {
+            background-color: #ccccff;
+            color: #333;
+            font-weight: bold;
+            font-size: 12px;
+            border: transparent;
+            padding: 2px;
+        }
+
+        td#comentarios {
+            border: 1px solid gray; /* Borde de 1px color gris */
+            padding: 2px;
+        }
+
+        #organoSentidos {
+            background-color: #ccffcc;
+            width: 26%;
+            border: 1px solid gray; /* Borde de 1px color gris */
+        }
+
+        .header {
+            font-size: 10px;
+            background-color: #ccffcc;
+        }
+
+        .header-note {
+            font-size: 7px;
+            text-align: center;
+            background-color: #ccccff;
+            margin: 0;
+            padding-right: 10px;
+        }
+
+        td#signosVitales {
+            background-color: #ccffcc;
+            font-size: 8px;
+            text-align: left;
+            border: 1px solid black; /* Borde de 1px color gris */
+        }
+
+        .consulta-table td {
+            background-color: #fff;
+        }
+
+        .consulta-table tbody tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+
+        .consulta-table tbody tr:nth-child(odd) td {
+            background-color: #fff;
+        }
+
+        #comentarios2 {
+            position: relative;
+            padding: 5px;
+            border: 2px solid gray; /* Borde de 1px color gris */
+            border-left: none;
+        }
+
+        #comentarios3 {
+            border: 2px solid gray; /* Borde de 1px color gris */
+            border-right: none;
+        }
+
+        td#diagnostico {
+            background-color: #ccffcc;
+            border: 1px solid gray; /* Borde de 1px color gris */
+        }
+
+        #comentarios2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 100%;
+            background-color: gray;
+            transform: skewX(-40deg);
+            margin-left: 4px;
+            transform-origin: top right;
+        }
+
+        th#cieDef.table-header-multi {
+            font-size: 7px;
+        }
+
+        .highlight {
+            background-color: #ffff99;
+            border: 1px solid gray; /* Borde de 1px color gris */
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-header {
+            text-align: right;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .small-text {
+            font-size: 10px;
+        }
+
+        .container2 {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .consulta-table2 {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .section2 {
+            width: 50%;
+            vertical-align: top;
+            padding: 10px;
+        }
+
+        .section-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .notes-header {
+            font-style: italic;
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        .inner-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .inner-table .header {
+                border-bottom: 2px solid #000;
+                text-align: left;
+                padding: 5px;
+            }
+
+            .inner-table td {
+                border-bottom: 1px solid #ccc;
+                padding: 5px;
+            }
+        .header {
+            font-size: 14px;
+        }
+
+        .section-header {
+            background-color: #dcd9f7;
+            padding: 5px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+            .section-header span {
+                font-size: 10px;
+            }
+
+        .notes-header {
+            background-color: #fffdba;
+            font-size: 7px;
+        }
+
+        th.header {
+            font-size: 7px;
+        }
+
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="page">
+            <table id="table-establecimiento" class="consulta-table">
+                <thead>
+                    <tr>
+                        <th id="establecimientos">ESTABLECIMIENTO</th>
+                        <th id="nombre">NOMBRE</th>
+                        <th id="apellido">APELLIDO</th>
+                        <th id="sexo">SEXO</th>
+                        <th id="edad">EDAD</th>
+                        <th id="numeroH">Nº HISTORIA CLÍNICA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="establecimiento-value">@Model.MedicoConsultaDNavigation.Establecimiento.DescripcionEstablecimiento</td>
+                        <td id="nombre-value">@Model.PacienteConsultaPNavigation.PrimernombrePacientes</td>
+                        <td id="apellido-value">@Model.PacienteConsultaPNavigation.PrimerapellidoPacientes</td>
+                        <td id="sexo-value">@Model.PacienteConsultaPNavigation.SexoPacientesCaNavigation.DescripcionCatalogo</td>
+                        <td id="edad-value">@Model.PacienteConsultaPNavigation.EdadPacientes</td>
+                        <td id="numeroH-value">@Model.PacienteConsultaPNavigation.CiPacientes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table id="table-motivo" class="consulta-table">
+                <thead>
+                    <tr>
+                        <th id="motivo-consulta">1 MOTIVO DE CONSULTA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="comentarios">@Model.MotivoConsulta</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table id="table-antecedentes" class="consulta-table">
+                <thead>
+                    <tr>
+
+                        <th colspan="4" class="table-header-multi">
+                            2 ANTECEDENTES PERSONALES
+                        </th>
+                        <th colspan="2" class="table-header-multi-right">
+                            DATOS CLÍNICO - QUIRÚRGICOS RELEVANTES Y GINECO OBSTÉTRICOS
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="6" id="comentarios">@Model.AntecedentespersonalesConsulta</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <!-- Nueva tabla: 3 Antecedentes Familiares -->
+            <!-- Nueva tabla: 3 Antecedentes Familiares -->
+            <table id="table-antecedentes-familiares" class="consulta-table">
+                <thead>
+                    <tr>
+                        <th colspan="20" class="table-header-multi">
+                            3 ANTECEDENTES FAMILIARES
+                        </th>
+                    </tr>
+                    <tr>
+                        <th id="cardiopatia">1. CARDIOPATÍA</th>
+                        <td class="highlight" id="cardiopatia-value">
+                            @(Model.ConsultaAntecedentesFamiliares.Cardiopatia ?? false ? "X" : " ")
+                        </td>
+                        <th id="diabetes">2. DIABETES</th>
+                        <td id="diabetes-value" class="highlight">
+                            @(Model.ConsultaAntecedentesFamiliares.Diabetes ?? false ? "X" : " ")
+                        </td>
+                        <th id="enf-vascular">3. ENF. C. VASCULAR</th>
+                        <td id="enf-vascular-value" class="highlight">
+                            @(Model.ConsultaAntecedentesFamiliares.EnfCardiovascular ?? false ? "X" : " ")
+                        </td>
+                        <th id="hipertension">4. HIPERTENSIÓN</th>
+                        <td id="hipertension-value" class="highlight">
+                            @(Model.ConsultaAntecedentesFamiliares.Hipertension ?? false ? "X" : " ")
+                        </td>
+                        <th id="cancer">5. CÁNCER</th>
+                        <td id="cancer-value" class="highlight">
+                            @(Model.ConsultaAntecedentesFamiliares.Cancer ?? false ? "X" : " ")
+                        </td>
+                        <th id="tuberculosis">6. TUBERCULOSIS</th>
+                        <td id="tuberculosis-value" class="highlight">
+                            @(Model.ConsultaAntecedentesFamiliares.Tuberculosis ?? false ? "X" : " ")
+                        </td>
+                        <th id="enf-mental">7. ENF. MENTAL</th>
+                        <td id="enf-mental-value" class="highlight">
+                            @(Model.ConsultaAntecedentesFamiliares.EnfMental ?? false ? "X" : " ")
+                        </td>
+                        <th id="enf-infecciosa">8. ENF. INFECCIOSA</th>
+                        <td id="enf-infecciosa-value" class="highlight">
+                            @(Model.ConsultaAntecedentesFamiliares.EnfInfecciosa ?? false ? "X" : " ")
+                        </td>
+                        <th id="malformacion">9. MALFORMACIÓN</th>
+                        <td id="malformacion-value" class="highlight">
+                            @(Model.ConsultaAntecedentesFamiliares.MalFormacion ?? false ? "X" : " ")
+                        </td>
+                        <th id="otro">10. OTRO</th>
+                        <td id="otro-value" class="highlight">
+                            @(Model.ConsultaAntecedentesFamiliares.Otro ?? false ? "X" : " ")
+                        </td>
+                    </tr>
+
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="20" id="comentarios" style="height:12px">
+                            @{
+                                var comentarios = string.Empty;
+                                if (Model.ConsultaAntecedentesFamiliares.Cardiopatia ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserCardiopatia;
+                                }
+                                if (Model.ConsultaAntecedentesFamiliares.Diabetes ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserDiabetes;
+                                }
+                                if (Model.ConsultaAntecedentesFamiliares.EnfCardiovascular ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserEnfCardiovascular;
+                                }
+                                if (Model.ConsultaAntecedentesFamiliares.Hipertension ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserHipertension;
+                                }
+                                if (Model.ConsultaAntecedentesFamiliares.Cancer ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserCancer;
+                                }
+                                if (Model.ConsultaAntecedentesFamiliares.Tuberculosis ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserTuberculosis;
+                                }
+                                if (Model.ConsultaAntecedentesFamiliares.EnfMental ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserEnfMental;
+                                }
+                                if (Model.ConsultaAntecedentesFamiliares.EnfInfecciosa ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserEnfInfecciosa;
+                                }
+                                if (Model.ConsultaAntecedentesFamiliares.MalFormacion ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserMalFormacion;
+                                }
+                                if (Model.ConsultaAntecedentesFamiliares.Otro ?? false)
+                                {
+                                    comentarios += Model.ConsultaAntecedentesFamiliares.ObserOtro;
+                                }
+                                @comentarios
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Resto del contenido del PDF -->
+            <table id="table-antecedentes" class="consulta-table">
+                <thead>
+                    <tr>
+                        <th colspan="20" class="table-header-multi">
+                            4 ENFERMEDAD O PROBLEMA ACTUAL
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="20" id="comentarios"> @Model.EnfermedadConsulta </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <!--Tabla revision actual de organos y sistemas-->
+
+            <table id="table-organos-sentidos" class="consulta-table">
+                <thead>
+                <th colspan="16" class="table-header-multi">
+                    5 REVISIÓN ACTUAL DE ÓRGANOS Y SISTEMAS
+                </th>
+                <th colspan="12" class="table-header-multi">
+                    <p class="header-note">
+                        CP = CON EVIDENCIA DE PATOLOGÍA: MARCAR "X" Y DESCRIBIR ABAJO ANOTANDO EL
+                        NÚMERO Y LETRA CORRESPONDIENTES
+                    </p>
+                </th>
+                <th colspan="8" class="table-header-multi">
+                    <p class="header-note">
+                        SP = SIN EVIDENCIA DE PATOLOGÍA:
+                        MARCAR "X" Y NO DESCRIBIR
+                    </p>
+                </th>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <th colspan="6" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                        <th colspan="5" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                        <th colspan="5" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                        <th colspan="5" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                        <th colspan="5" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                    </tr>
+                    <tr>
+                        <td id="organoSentidos" colspan="6">1 ÓRGANO DE LOS SENTIDOS</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.OrgSentidos ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.OrgSentidos ?? false ? "X" : " ")
+                        </td>
+                        <td id="organoSentidos" colspan="5">3 CARDIO VASCULAR</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.CardioVascular ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.CardioVascular ?? false ? "X" : " ")
+                        </td>
+                        <td id="organoSentidos" colspan="5">5 GENITAL</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Genital ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Genital ?? false ? "X" : " ")
+                        </td>
+                        <td id="organoSentidos" colspan="5">7 MÚSCULO ESQUELÉTICO</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.MEsqueletico ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.MEsqueletico ?? false ? "X" : " ")
+                        </td>
+                        <td id="organoSentidos" colspan="5">9 HEMO LINFÁTICO</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Linfatico ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Linfatico ?? false ? "X" : " ")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" id="organoSentidos">2 RESPIRATORIO</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Respiratorio ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Respiratorio ?? false ? "X" : " ")
+                        </td>
+                        <td colspan="5" id="organoSentidos">4 DIGESTIVO</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Digestivo  ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Digestivo ?? false ? "X" : " ")
+                        </td>
+                        <td colspan="5" id="organoSentidos">6 URINARIO</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Urinario ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Urinario ?? false ? "X" : " ")
+                        </td>
+                        <td id="organoSentidos" colspan="5">8 ENDOCRINO</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Endocrino ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Endocrino ?? false ? "X" : " ")
+                        </td>
+                        <td id="organoSentidos" colspan="5">10 NERVIOSO</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaOrganosSistemas.Nervioso ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="36" id="comentarios" style="height:12px">
+                            @{
+                                var comentarios2 = string.Empty;
+                                if (Model.ConsultaOrganosSistemas.OrgSentidos ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserOrgSentidos;
+                                }
+
+                                if (Model.ConsultaOrganosSistemas.Respiratorio ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserRespiratorio;
+                                }
+                                if (Model.ConsultaOrganosSistemas.CardioVascular ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserCardioVascular;
+                                }
+                                if (Model.ConsultaOrganosSistemas.Digestivo ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserDigestivo;
+                                }
+                                if (Model.ConsultaOrganosSistemas.Genital ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserGenital;
+                                }
+                                if (Model.ConsultaOrganosSistemas.Urinario ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserUrinario;
+                                }
+                                if (Model.ConsultaOrganosSistemas.MEsqueletico ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserMEsqueletico;
+                                }
+                                if (Model.ConsultaOrganosSistemas.Endocrino ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserEndocrino;
+                                }
+                                if (Model.ConsultaOrganosSistemas.Linfatico ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserLinfatico;
+                                }
+                                if (Model.ConsultaOrganosSistemas.Nervioso ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaOrganosSistemas.ObserNervioso;
+                                }
+                                @comentarios2
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <!--Tabla revision actual de organos y sistemas-->
+
+            <table id="table-organos-sentidos" class="consulta-table">
+                <thead>
+                <th colspan="20" class="table-header-multi">
+                    6 SIGNOS VITALES Y ANTROPOMETRIA
+                </th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="signosVitales" colspan="4">FECHA DE MEDICIÓN</td>
+                        <td colspan="4" id="comentarios">@Model.FechacreacionConsulta</td>
+                        <!-- Celdas vacías adicionales -->
+                        <td colspan="4"></td>
+                        <td colspan="4"></td>
+                        <td colspan="4"></td>
+
+                    </tr>
+
+                    <tr>
+                        <td id="signosVitales" colspan="4">TEMPERATURA °C</td>
+                        <td colspan="4" id="comentarios">@Model.TemperaturaConsulta</td>
+                        <td colspan="4" id="comentarios"></td>
+                        <td colspan="4" id="comentarios"></td>
+                        <td colspan="4" id="comentarios"></td>
+
+                    </tr>
+                    <tr>
+                        <td id="signosVitales" colspan="4">PRESIÓN ARTERIAL
+                        <td class="highlight" id="comentarios" colspan="2">@Model.PresionarterialsistolicaConsulta</td>
+                        <td class="highlight" id="comentarios" colspan="2">@Model.PresionarterialdiastolicaConsulta</td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+
+
+
+
+
+                    </tr>
+                    <tr>
+                        <td id="signosVitales" colspan="4">
+                            <span class="pulso">PULSO/min <span style="font-size: 16px;">/</span></span>
+                            <span class="frecuencia">FRECUENCIA RESPIRATORIA</span>
+                        </td>
+
+
+
+                        <td class="highlight" id="comentarios" colspan="2">@Model.FrecuenciarespiratoriaConsulta</td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+
+                    </tr>
+
+                    <tr>
+                        <td id="signosVitales" colspan="4">
+                            <span class="pulso">PESO /kg <span style="font-size: 16px;">/</span></span>
+                            <span class="frecuencia">TALLA / cm</span>
+                        </td>
+                        <td class="highlight" id="comentarios" colspan="2">@Model.TallaConsulta</td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                        <td class="highlight" id="comentarios" colspan="2"></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <!--Tabla revision actual de organos y sistemas-->
+
+            <table id="table-organos-sentidos" class="consulta-table">
+                <thead>
+                <th colspan="20" class="table-header-multi">
+                    7 EXAMEN FÍSICO REGIONAL
+                </th>
+                <th colspan="15" class="table-header-multi">
+                    <p class="header-note">
+                        CP = CON EVIDENCIA DE PATOLOGÍA: MARCAR "X" Y DESCRIBIR ABAJO ANOTANDO EL
+                        NÚMERO Y LETRA CORRESPONDIENTES
+                    </p>
+                </th>
+                <th colspan="8" class="table-header-multi">
+                    <p class="header-note">
+                        SP = SIN EVIDENCIA DE PATOLOGÍA:
+                        MARCAR "X" Y NO DESCRIBIR
+                    </p>
+                </th>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <th colspan="6" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                        <th colspan="5" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                        <th colspan="5" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                        <th colspan="5" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                        <th colspan="5" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                        <th colspan="5" id="organosSistemas"></th>
+                        <th id="organosSistemas">CP</th>
+                        <th id="organosSistemas">SP</th>
+                    </tr>
+                    <tr>
+
+
+                        <td id="organoSentidos" colspan="6">1 CABEZA</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Cabeza ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Cabeza ?? false ? " " : "X")
+                        </td>
+                        <td id="organoSentidos" colspan="5">2 CUELLO</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Cuello ?? false ? "X" : " ")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Cuello ?? false ? " " : "X")
+                        </td>
+                        <td id="organoSentidos" colspan="5">3 TORAX</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Torax ?? false ? "X " : "")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Torax ?? false ? " " : "X")
+                        </td>
+                        <td id="organoSentidos" colspan="5">4 ABDOMEN</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Abdomen ?? false  ? "X " : "")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Abdomen ?? false  ? " " : "X")
+                        </td>
+                        <td id="organoSentidos" colspan="5">5 PELVIS</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Pelvis ?? false ? "X " : "")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">    @(Model.ConsultaExamenFisico.Pelvis ?? false ? " " : "X")</td>
+                        <td id="organoSentidos" colspan="5">6 EXTREMIDADES</td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Extremidades ?? false ? "X " : "")
+                        </td>
+                        <td class="highlight" id="organosSentidosv">
+                            @(Model.ConsultaExamenFisico.Extremidades ?? false ? " " : "X")
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td colspan="43" id="comentarios" style="height:10px">
+                            @{
+                                var comentarios3 = string.Empty;
+                                if (Model.ConsultaExamenFisico.Cabeza ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaExamenFisico.ObserCabeza;
+                                }
+                                if (Model.ConsultaExamenFisico.Cuello ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaExamenFisico.ObserCuello;
+                                }
+                                if (Model.ConsultaExamenFisico.Torax ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaExamenFisico.ObserTorax;
+                                }
+                                if (Model.ConsultaExamenFisico.Abdomen ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaExamenFisico.ObserAbdomen;
+                                }
+                                if (Model.ConsultaExamenFisico.Pelvis ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaExamenFisico.ObserPelvis;
+                                }
+                                if (Model.ConsultaExamenFisico.Extremidades ?? false)
+                                {
+                                    comentarios2 += Model.ConsultaExamenFisico.ObserExtremidades;
+                                }
+                                
+                                @comentarios2
+                            }
+                        </td>
+
+                    </tr>
+                    
+                </tbody>
+            </table>
+            <table id="table-organos-sentidos" class="consulta-table">
+                <thead>
+                <th colspan="9" class="table-header-multi">
+                    8 DIAGNOSTICO
+                </th>
+                <th colspan="5" class="table-header-multi" style="font-size: 9px;">
+                    PRE = PRESUNTIVO
+                    DEF = DEFINITIVO
+                </th>
+                <th colspan="1" class="table-header-multi" id="cieDef">
+                    CIE
+                </th>
+                <th colspan="1" class="table-header-multi" id="cieDef">
+                    PRE
+                </th>
+                <th colspan="2" class="table-header-multi" id="cieDef">
+                    DEF
+                </th>
+                <th colspan="17" class="table-header-multi"></th>
+                <th colspan="1" class="table-header-multi" id="cieDef">
+                    CIE
+                </th>
+                <th colspan="1" class="table-header-multi" id="cieDef">
+                    PRE
+                </th>
+                <th colspan="1" class="table-header-multi" id="cieDef">
+                    DEF
+                </th>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td id="diagnostico">1</td>
+                        <td id="comentarios" colspan="13px">@Model.ConsultaDiagnostico.Diagnostico.NombreDiagnostico</td>
+                        <td id="comentarios" colspan="1.8"></td>
+                        <td class="highlight" id="organosSentidosv" colspan="1">
+                            @(Model.ConsultaDiagnostico.PresuntivoDiagnosticos ?? false ? "X " : "")
+                        </td>
+                        <td id="organosSentidosv" colspan="1">  @(Model.ConsultaDiagnostico.DefinitivoDiagnosticos ?? false ? "X " : "")</td>
+
+                        <td id="diagnostico">2</td>
+                        <td id="comentarios" colspan="17px"></td>
+                        <td id="comentarios" colspan="1"></td>
+                        <td class="highlight" id="organosSentidosv" colspan="1"></td>
+                        <td id="organosSentidosv" colspan="1"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="table-antecedentes" class="consulta-table">
+                <thead>
+                    <tr>
+
+                        <th colspan="4" class="table-header-multi">
+                            9 PLANES DE TRATAMIENTO
+                        </th>
+                        <th colspan="2" class="table-header-multi-right">
+                            REGISTRAR LOS PLANES: DIAGNOSTICO, TERAPÉUTICO Y
+                            EDUCACIONAL
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="6" id="comentarios">@Model.PlantratamientoConsulta</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+            </table>
+            <table id="table-antecedentes" class="consulta-table">
+                <div style="margin-left: 57%; font-size: 12px;">CODIGO</div>
+                <tr>
+                    <th class="header" colspan="1">FECHA</th>
+                    <td>@Model.FechacreacionConsulta</td>
+                    <th class="header" colspan="1">HORA</th>
+                    <td>15:45</td>
+                    <th class="header" colspan="2">NOMBRE DEL PROFESIONAL</th>
+                    <td colspan="3px">Kim Morales</td>
+
+                    <td>00001</td>
+                    <th class="header">FIRMA</th>
+                    <td colspan="3"></td>
+                    <th class="header">NÚMERO DE HOJA</th>
+                    <td>1</td>
+                </tr>
+            </table>
+
+
+        </div>
+    </div>
+    <div class="header-container">
+        <div class="small-text">SNS-MSP / HCU-form.002 / 2008</div>
+        <div class="main-header">CONSULTA EXTERNA - ANAMNESIS Y EXAMEN FÍSICO</div>
+    </div>
+
+    <div class="container2">
+        <table class="consulta-table2">
+            <tr>
+                <!-- Sección Evolución -->
+                <td class="section2">
+                    <div class="section-header">
+                        <div>10 EVOLUCIÓN</div>
+                        <span>FIRMAR AL PIE DE CADA NOTA</span>
+                    </div>
+                    <table class="inner-table">
+                        <tr>
+                            <th class="header">FECHA (DIA/MES/AÑO)</th>
+                            <th class="header">HORA</th>
+                            <th class="header">NOTAS DE EVOLUCIÓN</th>
+                        </tr>
+                        <!-- Añadir filas de datos según sea necesario -->
+                        <tr>
+                            <td id="comentarios" style="height:10px"></td>
+                            <td id="comentarios"> </td>
+                            <td id="comentarios"></td>
+                        </tr>
+                       
+                    </table>
+                </td>
+                <!-- Sección Prescripciones -->
+                <td class="section2">
+                    <div class="section-header">
+                        <div>11 PRESCRIPCIONES</div>
+                        <span>FIRMAR AL PIE DE CADA PRESCRIPCIÓN</span>
+                    </div>
+                    <div class="notes-header">EN ROJO LA ADMINISTRACIÓN DE FÁRMACOS Y OTROS PRODUCTOS (ENFERMERÍA)</div>
+                    <table class="inner-table">
+                        <tr>
+                            <th class="header">FARMACOTERAPIA E INDICACIONES PARA ENFERMERÍA Y OTRO PERSONAL</th>
+                            <th class="header">ADMINISTR. FÁRMACOS Y OTROS</th>
+                        </tr>
+                        <!-- Añadir filas de datos según sea necesario -->
+                        <tr>
+                            <td id="comentarios" style="height:10px"></td>
+                            <td id="comentarios"></td>
+                        </tr>
+                        <tr>
+                            <td id="comentarios" style="height:10px"></td>
+                            <td id="comentarios"></td>
+                        </tr>
+                        
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+﻿@model Consultum
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado Médico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+            .header img {
+                width: 150px;
+                height: 100px;
+                margin-right: 10px;
+            }
+
+            .header .title {
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+        .content {
+            line-height: 1.6;
+        }
+
+        .signature {
+            margin-top: 50px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="\images\expermedlogoblanco-removebg-preview.png" />
+
+        <div class="title">Certificado Médico</div>
+    </div>
+    <div class="content">
+        <p>Fecha: @Model.FechacreacionConsulta <span id=""></span></p>
+        <p>Nombre del paciente: @Model.PacienteConsultaPNavigation.PrimernombrePacientes @Model.PacienteConsultaPNavigation.PrimerapellidoPacientes <span id="nombre-paciente"></span></p>
+        <p>CI: @Model.PacienteConsultaPNavigation.CiPacientes <span id="dni-paciente"></span></p>
+        <p>Este documento certifica que el/la paciente mencionado/a anteriormente ha sido atendido/a en nuestra consulta médica y se le prescribe reposo de @Model.DiasincapacidadConsulta dias, desde la fecha <span id="fecha-inicio">@Model.FechacreacionConsulta</span>.</p>
+        <p>Motivo de la consulta: @Model.MotivoConsulta <span id="motivo"></span></p>
+        <p>Observaciones adicionales: @Model.ObservacionConsulta<span id="observaciones"></span></p>
+    </div>
+    <div class="signature">
+        <p>______________________________</p>
+        <p>Firma del médico</p>
+        <p>@Model.MedicoConsultaDNavigation.NombresUsuario @Model.MedicoConsultaDNavigation.ApellidosUsuario</p>
+      
+    </div>
+</body>
+</html>
