@@ -20,7 +20,6 @@
         var tiposLaboratoriosOptions = @Html.Raw(tiposLaboratoriosJson);
         var tiposImagenOptions = @Html.Raw(tiposImagenJson);
     </script>
-    <script src="~/scriptconsult.js" defer></script>
     <style>
         .stepwizard-step p {
             margin-top: 10px;
@@ -129,19 +128,19 @@
     <div class="stepwizard">
         <div class="stepwizard-row">
             <div class="stepwizard-step">
-                <button type="button" class="btn btn-danger btn-circle" data-step="1"> <i class="fa-solid fa-heart-pulse"></i> 1</button>
+                <button type="button" class="btn btn-primary btn-circle" data-step="1">1</button>
                 <p>Datos del paciente</p>
             </div>
             <div class="stepwizard-step">
-                <button type="button" class="btn btn-secondary btn-circle" data-step="2" disabled="disabled"> <i class="fa-solid fa-heart-pulse"></i> 2</button>
+                <button type="button" class="btn btn-secondary btn-circle" data-step="2" disabled="disabled">2</button>
                 <p>Datos consulta</p>
             </div>
             <div class="stepwizard-step">
-                <button type="button" class="btn btn-secondary btn-circle" data-step="3" disabled="disabled"><i class="fa-solid fa-heart-pulse"></i> 3</button>
+                <button type="button" class="btn btn-secondary btn-circle" data-step="3" disabled="disabled">3</button>
                 <p>Signos vitales</p>
             </div>
             <div class="stepwizard-step">
-                <button type="button" class="btn btn-secondary btn-circle" data-step="4" disabled="disabled"> <i class="fa-solid fa-heart-pulse"></i> 4</button>
+                <button type="button" class="btn btn-secondary btn-circle" data-step="4" disabled="disabled">4</button>
                 <p>Diagnóstico</p>
             </div>
         </div>
@@ -253,7 +252,7 @@
                     <label for="esdonante">Es donante</label>
                     <select class="form-select" id="esdonante" disabled>
                         <option value="">Seleccione</option>
-                        <option value="Si">Si+</option>
+                        <option value="Si">Si</option>
                         <option value="No">No</option>
                     </select>
                 </div>
@@ -374,7 +373,7 @@
 
             <div class="text-end mt-3">
                 <a asp-action="ListarConsultas" asp-controller="Consultation" class="btn btn-outline-danger"><i class="fa fa-close"></i> Salir</a>
-                <button class="btn btn-outline-primary nextBtn btn-lg ms-3" type="button" onclick="goToNextStep(2)">Siguiente <i class="fa fa-arrow-right"></i></button>
+                <button class="btn btn-outline-primary nextBtn btn-lg ms-3" type="button" onclick="goToNextStep(2, event)">Siguiente <i class="fa fa-arrow-right"></i></button>
             </div>
         </div>
         <!--Final primer formulario-->
@@ -570,7 +569,7 @@
                 </div>
 
                 <div class="col-sm-12">
-                    <textarea type="text" maxlength="8000" rows="2" class="form-control" asp-for="AntecedentespersonalesConsulta" id="segundoNombre" placeholder="Max 150 caracteres"></textarea>
+                    <textarea type="text" maxlength="8000" rows="2" class="form-control" asp-for="AntecedentespersonalesConsulta" id="antecedentespersonalesConsulta" placeholder="Max 150 caracteres"></textarea>
                 </div>
 
 
@@ -625,7 +624,7 @@
                             <div class="col-sm-12 consulta-antecedente-observacion" style="display: none;">
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoCardiopatia" id="tipoDocumentoSelect" required>
+                                        <select class="form-select select2" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoCardiopatia" id="tipoDocumentoSelect">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -658,7 +657,7 @@
                                 <div class="row">
 
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoDiabetes" required>
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoDiabetes">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -691,7 +690,7 @@
 
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoEnfCardiovascular" required>
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoEnfCardiovascular" >
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -724,7 +723,7 @@
 
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoHipertension" required>
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoHipertension" >
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -757,7 +756,7 @@
                                 <div class="row">
 
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoCancer" required>
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoCancer">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -787,7 +786,7 @@
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoTuberculosis" required>
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoTuberculosis">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -949,7 +948,7 @@
                 <a asp-action="ListarConsultas" asp-controller="Consultation" class="btn btn-outline-danger"><i class="fa fa-close"></i> Salir</a>
 
                 <button class="btn btn-outline-primary previousBtn btn-lg" type="button" onclick="goToPreviousStep(1)"><i class="fa fa-arrow-left"></i> Regresar</button>
-                <button class="btn btn-outline-primary nextBtn btn-lg ms-3" type="button" onclick="goToNextStep(3)">Siguiente <i class="fa fa-arrow-right"></i></button>
+                <button class="btn btn-outline-primary nextBtn btn-lg ms-3" type="button" onclick="goToNextStep(3,event)">Siguiente <i class="fa fa-arrow-right"></i></button>
             </div>
         </div>
         <!--Fin segundo formulario-->
@@ -1740,7 +1739,9 @@
             <div class="form-group">
                 <a asp-action="ListarConsultas" asp-controller="Consultation" class="btn btn-outline-danger"><i class="fa fa-close"></i> Salir</a>
 
-                <button type="submit" class="btn btn-primary-outline"><i class="fas fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-primary-outline" onclick="submitFormAsJson()">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
             </div>
         </div>
         <!--Final cuarto formulario-->
@@ -1760,9 +1761,12 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- Incluye SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/scriptconsult.js"></script>
+
 <script>
 
     $(document).ready(function () {
+
         function buscarPaciente() {
             var ci = $('#ciPaciente').val();
             $.ajax({
@@ -1852,12 +1856,6 @@
         });
 
 
-
-
-
-
-
-
         // Activar el primer paso al cargar la página
         $('div.stepwizard-step button[data-step="1"]').trigger('click');
 
@@ -1910,16 +1908,23 @@
 
 
 
-    var presionArterialInput = document.getElementById('presionArterial');
 
-    presionArterialInput.addEventListener('input', function () {
-        var value = presionArterialInput.value.replace(/\D/g, ''); // Remove non-digit characters
-        if (value.length > 3) {
-            presionArterialInput.value = value.slice(0, 3) + '/' + value.slice(3);
-        } else {
-            presionArterialInput.value = value;
-        }
-    });
+    // Verificar si el elemento de presión arterial existe antes de manipularlo
+    var presionArterialInput = document.getElementById('presionArterial');
+    if (presionArterialInput) {
+        presionArterialInput.addEventListener('input', function () {
+            var value = presionArterialInput.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+            if (value.length > 3) {
+                presionArterialInput.value = value.slice(0, 3) + '/' + value.slice(3);
+            } else {
+                presionArterialInput.value = value;
+            }
+        });
+    } else {
+        console.error('Elemento con ID "presionArterial" no encontrado en el DOM.');
+    }
+
+
 
     function showModal() {
         $('#pdfModal').modal('show');
@@ -1984,10 +1989,6 @@
                 });
             });
     }
-
-
-
-
 
     $('.select2').select2({
         width: '100%'

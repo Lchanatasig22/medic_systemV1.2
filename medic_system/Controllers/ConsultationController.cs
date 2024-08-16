@@ -12,7 +12,9 @@ using System.Text.Json.Serialization;
 using Microsoft.Data.SqlClient;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Microsoft.EntityFrameworkCore;
-using Rotativa.AspNetCore; // Alias para System.Text.Json.JsonSerializer
+using Rotativa.AspNetCore;
+using System.Data;
+using System.ComponentModel; // Alias para System.Text.Json.JsonSerializer
 
 namespace medic_system.Controllers
 {
@@ -249,212 +251,72 @@ namespace medic_system.Controllers
 
 
 
-        //[HttpPost]
-        //public async Task<IActionResult> CrearConsulta(Consultum consulta)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            var loginUsuario = HttpContext.Session.GetString("UsuarioNombre");
-        //            consulta.EspecialidadId = HttpContext.Session.GetInt32("UsuarioIdEspecialidad");
-        //            consulta.MedicoConsultaD = HttpContext.Session.GetInt32("UsuarioId");
-        //            consulta.UsuariocreacionConsulta = HttpContext.Session.GetString("UsuarioNombre");
-        //            consulta.FechacreacionConsulta = DateTime.Now;
-        //            consulta.EstadoConsultaC = 1;
-        //            consulta.ConsultaMedicamento.EstadoMedicamento = 1;
-        //            consulta.ConsultaLaboratorio.EstadoLaboratorio = 1;
-        //            consulta.ConsultaImagen.EstadoImagen = 1;
-        //            consulta.ConsultaDiagnostico.EstadoDiagnostico = 1;
-
-        //            if (string.IsNullOrEmpty(loginUsuario))
-        //            {
-        //                throw new Exception("El nombre de usuario no está disponible en la sesión.");
-        //            }
-
-        //            consulta.UsuariocreacionConsulta = loginUsuario;
-
-        //            int idConsulta = await _consultationService.CreateConsultationAsync(
-        //                consulta.FechacreacionConsulta ?? DateTime.Now,
-        //                consulta.UsuariocreacionConsulta,
-        //                consulta.HistorialConsulta ?? string.Empty,
-        //                consulta.SecuencialConsulta ?? string.Empty,
-        //                consulta.PacienteConsultaP ?? 0,
-        //                consulta.MotivoConsulta ?? string.Empty,
-        //                consulta.EnfermedadConsulta ?? string.Empty,
-        //                consulta.NombreparienteConsulta ?? string.Empty,
-        //                //consulta.AlergiasConsulta ?? string.Empty,
-        //                consulta.Reconofarmacologicas ?? string.Empty,
-        //                consulta.TipoparienteConsulta ?? 0,
-        //                consulta.TelefonoConsulta ?? string.Empty,
-        //                consulta.TemperaturaConsulta ?? string.Empty,
-        //                consulta.FrecuenciarespiratoriaConsulta ?? string.Empty,
-        //                consulta.PresionarterialsistolicaConsulta ?? string.Empty,
-        //                consulta.PresionarterialdiastolicaConsulta ?? string.Empty,
-        //                consulta.PulsoConsulta ?? string.Empty,
-        //                consulta.PesoConsulta ?? string.Empty,
-        //                consulta.TallaConsulta ?? string.Empty,
-        //                consulta.PlantratamientoConsulta ?? string.Empty,
-        //                consulta.ObservacionConsulta ?? string.Empty,
-        //                consulta.AntecedentespersonalesConsulta ?? string.Empty,
-        //                consulta.DiasincapacidadConsulta ?? 0,
-        //                consulta.MedicoConsultaD ?? 0,
-        //                consulta.EspecialidadId ?? 0,
-        //                consulta.EstadoConsultaC ?? 0,
-        //                consulta.TipoConsultaC ?? 0,
-        //                consulta.NotasevolucionConsulta ?? string.Empty,
-        //                consulta.ConsultaprincipalConsulta ?? string.Empty,
-        //                consulta.ActivoConsulta ?? 0,
-        //                consulta.ConsultaMedicamento?.FechacreacionMedicamento ?? DateTime.Now,
-        //                consulta.ConsultaMedicamento?.MedicamentoId ?? 0,
-        //                consulta.ConsultaMedicamento?.DosisMedicamento ?? 0,
-        //                consulta.ConsultaMedicamento?.ObservacionMedicamento ?? string.Empty,
-        //                consulta.ConsultaMedicamento?.EstadoMedicamento ?? 0,
-        //                consulta.ConsultaLaboratorio?.CantidadLaboratorio ?? 0,
-        //                consulta.ConsultaLaboratorio?.Observacion ?? string.Empty,
-        //                consulta.ConsultaLaboratorio?.CatalogoLaboratorioId ?? 0,
-        //                consulta.ConsultaLaboratorio?.EstadoLaboratorio ?? 0,
-        //                consulta.ConsultaImagen?.ImagenId ?? 0,
-        //                consulta.ConsultaImagen?.ObservacionImagen ?? string.Empty,
-        //                consulta.ConsultaImagen?.CantidadImagen ?? 0,
-        //                consulta.ConsultaImagen?.EstadoImagen ?? 0,
-        //                consulta.ConsultaDiagnostico?.DiagnosticoId ?? 0,
-        //                consulta.ConsultaDiagnostico?.ObservacionDiagnostico ?? string.Empty,
-        //                consulta.ConsultaDiagnostico?.PresuntivoDiagnosticos ?? false,
-        //                consulta.ConsultaDiagnostico?.DefinitivoDiagnosticos ?? false,
-        //                consulta.ConsultaDiagnostico?.EstadoDiagnostico ?? 0,
-        //                consulta.ConsultaAntecedentesFamiliares?.Cardiopatia ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserCardiopatia ?? string.Empty,
-        //                consulta.ConsultaAntecedentesFamiliares?.Diabetes ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserDiabetes ?? string.Empty,
-        //                consulta.ConsultaAntecedentesFamiliares?.EnfCardiovascular ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserEnfCardiovascular ?? string.Empty,
-        //                consulta.ConsultaAntecedentesFamiliares?.Hipertension ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserHipertension ?? string.Empty,
-        //                consulta.ConsultaAntecedentesFamiliares?.Cancer ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserCancer ?? string.Empty,
-        //                consulta.ConsultaAntecedentesFamiliares?.Tuberculosis ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserTuberculosis ?? string.Empty,
-        //                consulta.ConsultaAntecedentesFamiliares?.EnfMental ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserEnfMental ?? string.Empty,
-        //                consulta.ConsultaAntecedentesFamiliares?.EnfInfecciosa ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserEnfInfecciosa ?? string.Empty,
-        //                consulta.ConsultaAntecedentesFamiliares?.MalFormacion ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserMalFormacion ?? string.Empty,
-        //                consulta.ConsultaAntecedentesFamiliares?.Otro ?? false,
-        //                consulta.ConsultaAntecedentesFamiliares?.ObserOtro ?? string.Empty,
-        //                //consulta.ConsultaAntecedentesFamiliares?.Alergias ?? false,
-        //                //consulta.ConsultaAntecedentesFamiliares?.ObserAlergias ?? string.Empty,
-        //                //consulta.ConsultaAntecedentesFamiliares?.Cirugias ?? false,
-        //                //consulta.ConsultaAntecedentesFamiliares?.ObserCirugias ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.OrgSentidos ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserOrgSentidos ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.Respiratorio ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserRespiratorio ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.CardioVascular ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserCardioVascular ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.Digestivo ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserDigestivo ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.Genital ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserGenital ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.Urinario ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserUrinario ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.MEsqueletico ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserMEsqueletico ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.Endocrino ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserEndocrino ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.Linfatico ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserLinfatico ?? string.Empty,
-        //                consulta.ConsultaOrganosSistemas?.Nervioso ?? false,
-        //                consulta.ConsultaOrganosSistemas?.ObserNervioso ?? string.Empty,
-        //                consulta.ConsultaExamenFisico?.Cabeza ?? false,
-        //                consulta.ConsultaExamenFisico?.ObserCabeza ?? string.Empty,
-        //                consulta.ConsultaExamenFisico?.Cuello ?? false,
-        //                consulta.ConsultaExamenFisico?.ObserCuello ?? string.Empty,
-        //                consulta.ConsultaExamenFisico?.Torax ?? false,
-        //                consulta.ConsultaExamenFisico?.ObserTorax ?? string.Empty,
-        //                consulta.ConsultaExamenFisico?.Abdomen ?? false,
-        //                consulta.ConsultaExamenFisico?.ObserAbdomen ?? string.Empty,
-        //                consulta.ConsultaExamenFisico?.Pelvis ?? false,
-        //                consulta.ConsultaExamenFisico?.ObserPelvis ?? string.Empty,
-        //                consulta.ConsultaExamenFisico?.Extremidades ?? false,
-        //                consulta.ConsultaExamenFisico?.ObserExtremidades ?? string.Empty
-        //            );
-
-        //            consulta.IdConsulta = idConsulta;
-        //            TempData["ConsultaReciente"] = JsonConvert.SerializeObject(consulta);
-
-        //            return RedirectToAction("EditarConsulta", new { id = idConsulta });
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            _logger.LogError(ex, "Error al crear consulta");
-        //            ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
-        //            if (ex.InnerException != null)
-        //            {
-        //                ModelState.AddModelError(string.Empty, $"Detalles: {ex.InnerException.Message}");
-        //            }
-        //        }
-        //    }
-
-        //    return View(consulta);
-        //}
 
 
 
         [HttpPost]
         public IActionResult CreateConsultation([FromBody] CrearConsultaMedicaRequest request)
         {
+            if (request == null)
+            {
+                return BadRequest("El cuerpo de la solicitud no puede ser nulo.");
+            }
+
             try
             {
-                int newConsultaId = _consultationService.CreateConsultation(
-                    request.fechacreacion_consulta,
-                    request.usuariocreacion_consulta,
-                    request.historial_consulta,
-                    request.secuencial_consulta,
-                    request.paciente_consulta_p,
-                    request.motivo_consulta,
-                    request.enfermedad_consulta,
-                    request.nombrepariente_consulta,
-                    request.signosalarma_consulta,
-                    request.reconofarmacologicas,
-                    request.tipopariente_consulta,
-                    request.telefono_consulta,
-                    request.temperatura_consulta,
-                    request.frecuenciarespiratoria_consulta,
-                    request.presionarterialsistolica_consulta,
-                    request.presionarterialdiastolica_consulta,
-                    request.pulso_consulta,
-                    request.peso_consulta,
-                    request.talla_consulta,
-                    request.plantratamiento_consulta,
-                    request.observacion_consulta,
-                    request.antecedentespersonales_consulta,
-                    request.diasincapacidad_consulta,
-                    request.medico_consulta_d,
-                    request.especialidad_id,
-                    request.estado_consulta_c,
-                    request.tipo_consulta_c,
-                    request.notasevolucion_consulta,
-                    request.consultaprincipal_consulta,
-                    request.activo_consulta,
-                    request.fechaactual_consulta,
-                    request.medicamentos,
-                    request.laboratorios,
-                    request.imagenes,
-                    request.diagnosticos,
-                    request.antecedentesfamiliares,
-                    request.organossistemas,
-                    request.examenesfisicos
-                );
+                int newConsultaID = _consultationService.CreateConsultation(
+     request.FechacreacionConsulta ?? DateTime.MinValue, // Fecha por defecto si es null
+     HttpContext.Session.GetString("UsuarioNombre") ?? "DefaultUser", // Usuario de sesión o valor por defecto
+     request.HistorialConsulta ?? string.Empty, // Cadena vacía si es null
+     request.SecuencialConsulta ?? string.Empty, // Cadena vacía si es null
+     request.PacienteConsultaP ?? 0, // Valor por defecto si es null
+     request.MotivoConsulta ?? string.Empty, // Cadena vacía si es null
+     request.EnfermedadConsulta ?? string.Empty, // Cadena vacía si es null
+     request.NombreparienteConsulta ?? string.Empty, // Cadena vacía si es null
+     request.SignosalarmaConsulta ?? string.Empty, // Cadena vacía si es null
+     request.Reconofarmacologicas ?? string.Empty, // Cadena vacía si es null
+     request.TipoparienteConsulta ?? 0, // Valor por defecto si es null
+     request.TelefonoConsulta ?? string.Empty, // Cadena vacía si es null
+     request.TemperaturaConsulta ?? string.Empty, // Cadena vacía si es null
+     request.FrecuenciarespiratoriaConsulta ?? string.Empty, // Cadena vacía si es null
+     request.PresionarterialsistolicaConsulta ?? string.Empty, // Cadena vacía si es null
+     request.PresionarterialdiastolicaConsulta ?? string.Empty, // Cadena vacía si es null
+     request.PulsoConsulta ?? string.Empty, // Cadena vacía si es null
+     request.PesoConsulta ?? string.Empty, // Cadena vacía si es null
+     request.TallaConsulta ?? string.Empty, // Cadena vacía si es null
+     request.PlantratamientoConsulta ?? string.Empty, // Cadena vacía si es null
+     request.ObservacionConsulta ?? string.Empty, // Cadena vacía si es null
+     request.AntecedentespersonalesConsulta ?? string.Empty, // Cadena vacía si es null
+     request.DiasincapacidadConsulta ?? 0, // Valor por defecto si es null
+     request.MedicoConsultaD ?? 0, // Valor por defecto si es null
+     request.EspecialidadId ?? 0, // Valor por defecto si es null
+     request.EstadoConsultaC ?? 0, // Valor por defecto si es null
+     request.TipoConsultaC ?? 0, // Valor por defecto si es null
+     request.NotasevolucionConsulta ?? string.Empty, // Cadena vacía si es null
+     request.ConsultaprincipalConsulta ?? string.Empty, // Cadena vacía si es null
+     request.ActivoConsulta ?? 0, // Valor por defecto si es null
+     request.FechaactualConsulta ?? DateTime.Now, // Fecha actual si es null
+     request.Medicamentos?.ToDataTable(), // Si es null, pasa null
+     request.Laboratorios?.ToDataTable(), // Si es null, pasa null
+     request.Imagenes?.ToDataTable(), // Si es null, pasa null
+     request.Diagnosticos?.ToDataTable(), // Si es null, pasa null
+     request.AntecedentesFamiliares?.ToDataTable(), // Si es null, pasa null
+     request.OrganosSistemas?.ToDataTable(), // Si es null, pasa null
+     request.ExamenesFisicos?.ToDataTable() // Si es null, pasa null
+ );
 
-                return Ok(new { ConsultaId = newConsultaId });
+
+                return CreatedAtAction(nameof(CreateConsultation), new { id = newConsultaID }, new { ConsultaId = newConsultaID });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Error = ex.Message });
+                // Registro de error detallado para diagnóstico
+                _logger.LogError(ex, "Error al crear la consulta médica");
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> BuscarPacientePorNombre(int ci)
@@ -577,5 +439,30 @@ namespace medic_system.Controllers
     }
 
 
+    // Clase de extensión dentro del controlador
+    public static class DataTableExtensions
+    {
+        public static DataTable ToDataTable<T>(this IList<T> data)
+        {
+            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
+            DataTable table = new DataTable();
+
+            foreach (PropertyDescriptor prop in properties)
+            {
+                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+            }
+
+            foreach (T item in data)
+            {
+                DataRow row = table.NewRow();
+                foreach (PropertyDescriptor prop in properties)
+                {
+                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+                }
+                table.Rows.Add(row);
+            }
+            return table;
+        }
+    }
 
 }

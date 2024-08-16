@@ -62,216 +62,130 @@ public class ConsultationService
     }
 
 
-    public int CreateConsultation(DateTime fechacreacion_consulta, string usuariocreacion_consulta, string historial_consulta,
-                                  string secuencial_consulta, int paciente_consulta_p, string motivo_consulta, string enfermedad_consulta,
-                                  string nombrepariente_consulta, string signosalarma_consulta, string reconofarmacologicas,
-                                  int tipopariente_consulta, string telefono_consulta, string temperatura_consulta, string frecuenciarespiratoria_consulta,
-                                  string presionarterialsistolica_consulta, string presionarterialdiastolica_consulta, string pulso_consulta,
-                                  string peso_consulta, string talla_consulta, string plantratamiento_consulta, string observacion_consulta,
-                                  string antecedentespersonales_consulta, int diasincapacidad_consulta, int medico_consulta_d, int especialidad_id,
-                                  int estado_consulta_c, int tipo_consulta_c, string notasevolucion_consulta, string consultaprincipal_consulta,
-                                  int activo_consulta, DateTime fechaactual_consulta,
-                                  List<ConsultaMedicamento> medicamentos, List<ConsultaLaboratorio> laboratorios,
-                                  List<ConsultaImagen> imagenes, List<ConsultaDiagnostico> diagnosticos,
-                                  List<AntecedentesFamiliare> antecedentesfamiliares, List<OrganosSistema> organossistemas,
-                                  List<ExamenFisico> examenesfisicos)
+    public int CreateConsultation(
+           DateTime fechacreacionConsulta,
+           string usuariocreacionConsulta,
+           string historialConsulta,
+           string secuencialConsulta,
+           int pacienteConsultaP,
+           string motivoConsulta,
+           string enfermedadConsulta,
+           string nombreparienteConsulta,
+           string signosalarmaConsulta,
+           string reconofarmacologicas,
+           int tipoparienteConsulta,
+           string telefonoConsulta,
+           string temperaturaConsulta,
+           string frecuenciarespiratoriaConsulta,
+           string presionarterialsistolicaConsulta,
+           string presionarterialdiastolicaConsulta,
+           string pulsoConsulta,
+           string pesoConsulta,
+           string tallaConsulta,
+           string plantratamientoConsulta,
+           string observacionConsulta,
+           string antecedentespersonalesConsulta,
+           int diasincapacidadConsulta,
+           int medicoConsultaD,
+           int especialidadId,
+           int estadoConsultaC,
+           int tipoConsultaC,
+           string notasevolucionConsulta,
+           string consultaprincipalConsulta,
+           int activoConsulta,
+           DateTime fechaactualConsulta,
+           DataTable medicamentos,
+           DataTable laboratorios,
+           DataTable imagenes,
+           DataTable diagnosticos,
+           DataTable antecedentesfamiliares,
+           DataTable organossistemas,
+           DataTable examenesfisicos)
     {
-        using (SqlConnection conn = new SqlConnection(_context.Database.GetConnectionString()))
+        int newConsultaID = 0;
+
+        using (var connection = new SqlConnection(_context.Database.GetConnectionString()))
         {
-            using (SqlCommand cmd = new SqlCommand("sp_Create_Consultation", conn))
+            using (var command = new SqlCommand("sp_Create_Consultations", connection))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                command.CommandType = CommandType.StoredProcedure;
 
-                // Add parameters
-                cmd.Parameters.AddWithValue("@fechacreacion_consulta", fechacreacion_consulta);
-                cmd.Parameters.AddWithValue("@usuariocreacion_consulta", usuariocreacion_consulta);
-                cmd.Parameters.AddWithValue("@historial_consulta", historial_consulta);
-                cmd.Parameters.AddWithValue("@secuencial_consulta", secuencial_consulta);
-                cmd.Parameters.AddWithValue("@paciente_consulta_p", paciente_consulta_p);
-                cmd.Parameters.AddWithValue("@motivo_consulta", motivo_consulta);
-                cmd.Parameters.AddWithValue("@enfermedad_consulta", enfermedad_consulta);
-                cmd.Parameters.AddWithValue("@nombrepariente_consulta", nombrepariente_consulta);
-                cmd.Parameters.AddWithValue("@signosalarma_consulta", signosalarma_consulta);
-                cmd.Parameters.AddWithValue("@reconofarmacologicas", reconofarmacologicas);
-                cmd.Parameters.AddWithValue("@tipopariente_consulta", tipopariente_consulta);
-                cmd.Parameters.AddWithValue("@telefono_consulta", telefono_consulta);
-                cmd.Parameters.AddWithValue("@temperatura_consulta", temperatura_consulta);
-                cmd.Parameters.AddWithValue("@frecuenciarespiratoria_consulta", frecuenciarespiratoria_consulta);
-                cmd.Parameters.AddWithValue("@presionarterialsistolica_consulta", presionarterialsistolica_consulta);
-                cmd.Parameters.AddWithValue("@presionarterialdiastolica_consulta", presionarterialdiastolica_consulta);
-                cmd.Parameters.AddWithValue("@pulso_consulta", pulso_consulta);
-                cmd.Parameters.AddWithValue("@peso_consulta", peso_consulta);
-                cmd.Parameters.AddWithValue("@talla_consulta", talla_consulta);
-                cmd.Parameters.AddWithValue("@plantratamiento_consulta", plantratamiento_consulta);
-                cmd.Parameters.AddWithValue("@observacion_consulta", observacion_consulta);
-                cmd.Parameters.AddWithValue("@antecedentespersonales_consulta", antecedentespersonales_consulta);
-                cmd.Parameters.AddWithValue("@diasincapacidad_consulta", diasincapacidad_consulta);
-                cmd.Parameters.AddWithValue("@medico_consulta_d", medico_consulta_d);
-                cmd.Parameters.AddWithValue("@especialidad_id", especialidad_id);
-                cmd.Parameters.AddWithValue("@estado_consulta_c", estado_consulta_c);
-                cmd.Parameters.AddWithValue("@tipo_consulta_c", tipo_consulta_c);
-                cmd.Parameters.AddWithValue("@notasevolucion_consulta", notasevolucion_consulta);
-                cmd.Parameters.AddWithValue("@consultaprincipal_consulta", consultaprincipal_consulta);
-                cmd.Parameters.AddWithValue("@activo_consulta", activo_consulta);
-                cmd.Parameters.AddWithValue("@fechaactual_consulta", fechaactual_consulta);
+                // Add input parameters
+                command.Parameters.AddWithValue("@fechacreacion_consulta", fechacreacionConsulta);
+                command.Parameters.AddWithValue("@usuariocreacion_consulta", usuariocreacionConsulta);
+                command.Parameters.AddWithValue("@historial_consulta", historialConsulta);
+                command.Parameters.AddWithValue("@secuencial_consulta", secuencialConsulta);
+                command.Parameters.AddWithValue("@paciente_consulta_p", pacienteConsultaP);
+                command.Parameters.AddWithValue("@motivo_consulta", motivoConsulta);
+                command.Parameters.AddWithValue("@enfermedad_consulta", enfermedadConsulta);
+                command.Parameters.AddWithValue("@nombrepariente_consulta", nombreparienteConsulta);
+                command.Parameters.AddWithValue("@signosalarma_consulta", signosalarmaConsulta);
+                command.Parameters.AddWithValue("@reconofarmacologicas", reconofarmacologicas);
+                command.Parameters.AddWithValue("@tipopariente_consulta", tipoparienteConsulta);
+                command.Parameters.AddWithValue("@telefono_consulta", telefonoConsulta);
+                command.Parameters.AddWithValue("@temperatura_consulta", temperaturaConsulta);
+                command.Parameters.AddWithValue("@frecuenciarespiratoria_consulta", frecuenciarespiratoriaConsulta);
+                command.Parameters.AddWithValue("@presionarterialsistolica_consulta", presionarterialsistolicaConsulta);
+                command.Parameters.AddWithValue("@presionarterialdiastolica_consulta", presionarterialdiastolicaConsulta);
+                command.Parameters.AddWithValue("@pulso_consulta", pulsoConsulta);
+                command.Parameters.AddWithValue("@peso_consulta", pesoConsulta);
+                command.Parameters.AddWithValue("@talla_consulta", tallaConsulta);
+                command.Parameters.AddWithValue("@plantratamiento_consulta", plantratamientoConsulta);
+                command.Parameters.AddWithValue("@observacion_consulta", observacionConsulta);
+                command.Parameters.AddWithValue("@antecedentespersonales_consulta", antecedentespersonalesConsulta);
+                command.Parameters.AddWithValue("@diasincapacidad_consulta", diasincapacidadConsulta);
+                command.Parameters.AddWithValue("@medico_consulta_d", medicoConsultaD);
+                command.Parameters.AddWithValue("@especialidad_id", especialidadId);
+                command.Parameters.AddWithValue("@estado_consulta_c", estadoConsultaC);
+                command.Parameters.AddWithValue("@tipo_consulta_c", tipoConsultaC);
+                command.Parameters.AddWithValue("@notasevolucion_consulta", notasevolucionConsulta);
+                command.Parameters.AddWithValue("@consultaprincipal_consulta", consultaprincipalConsulta);
+                command.Parameters.AddWithValue("@activo_consulta", activoConsulta);
+                command.Parameters.AddWithValue("@fechaactual_consulta", fechaactualConsulta);
 
-                // Add structured parameters, handling null or empty lists
-                cmd.Parameters.Add(CreateStructuredParameter("@medicamentos", medicamentos));
-                cmd.Parameters.Add(CreateStructuredParameter("@laboratorios", laboratorios));
-                cmd.Parameters.Add(CreateStructuredParameter("@imagenes", imagenes));
-                cmd.Parameters.Add(CreateStructuredParameter("@diagnosticos", diagnosticos));
-                cmd.Parameters.Add(CreateStructuredParameter("@antecedentesfamiliares", antecedentesfamiliares));
-                cmd.Parameters.Add(CreateStructuredParameter("@organossistemas", organossistemas));
-                cmd.Parameters.Add(CreateStructuredParameter("@examenesfisicos", examenesfisicos));
+                // Add table-valued parameters
+                var medicamentosParam = command.Parameters.AddWithValue("@medicamentos", medicamentos);
+                medicamentosParam.SqlDbType = SqlDbType.Structured;
+                medicamentosParam.TypeName = "dbo.ConsultaMedicamentosType";
 
-                SqlParameter outputIdParam = new SqlParameter("@NewConsultaID", SqlDbType.Int)
-                {
-                    Direction = ParameterDirection.Output
-                };
-                cmd.Parameters.Add(outputIdParam);
+                var laboratoriosParam = command.Parameters.AddWithValue("@laboratorios", laboratorios);
+                laboratoriosParam.SqlDbType = SqlDbType.Structured;
+                laboratoriosParam.TypeName = "dbo.ConsultaLaboratorioType";
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
+                var imagenesParam = command.Parameters.AddWithValue("@imagenes", imagenes);
+                imagenesParam.SqlDbType = SqlDbType.Structured;
+                imagenesParam.TypeName = "dbo.ConsultaImagenType";
 
-                return (int)outputIdParam.Value;
+                var diagnosticosParam = command.Parameters.AddWithValue("@diagnosticos", diagnosticos);
+                diagnosticosParam.SqlDbType = SqlDbType.Structured;
+                diagnosticosParam.TypeName = "dbo.ConsultaDiagnosticoType";
+
+                var antecedentesfamiliaresParam = command.Parameters.AddWithValue("@antecedentesfamiliares", antecedentesfamiliares);
+                antecedentesfamiliaresParam.SqlDbType = SqlDbType.Structured;
+                antecedentesfamiliaresParam.TypeName = "dbo.AntecedentesFamiliaresType";
+
+                var organossistemasParam = command.Parameters.AddWithValue("@organossistemas", organossistemas);
+                organossistemasParam.SqlDbType = SqlDbType.Structured;
+                organossistemasParam.TypeName = "dbo.OrganosSistemasType";
+
+                var examenesfisicosParam = command.Parameters.AddWithValue("@examenesfisicos", examenesfisicos);
+                examenesfisicosParam.SqlDbType = SqlDbType.Structured;
+                examenesfisicosParam.TypeName = "dbo.ExamenFisicoType";
+
+                // Add output parameter
+                var newConsultaIDParam = command.Parameters.Add("@NewConsultaID", SqlDbType.Int);
+                newConsultaIDParam.Direction = ParameterDirection.Output;
+
+                connection.Open();
+                command.ExecuteNonQuery();
+
+                // Retrieve the new consultation ID
+                newConsultaID = Convert.ToInt32(newConsultaIDParam.Value);
             }
         }
+
+        return newConsultaID;
     }
-
-    private SqlParameter CreateStructuredParameter<T>(string paramName, List<T> values)
-    {
-        // Si la lista es null o está vacía, devolver un parámetro con valor DBNull
-        if (values == null || values.Count == 0)
-        {
-            return new SqlParameter(paramName, SqlDbType.Structured)
-            {
-                TypeName = "dbo." + typeof(T).Name + "Type",
-                Value = DBNull.Value
-            };
-        }
-
-        DataTable table = new DataTable();
-
-        // Populate the DataTable with columns depending on the type T
-        if (typeof(T) == typeof(ConsultaMedicamento))
-        {
-            table.Columns.Add("fechacreacion_medicamento", typeof(DateTime));
-            table.Columns.Add("medicamento_id", typeof(int));
-            table.Columns.Add("dosis_medicamento", typeof(string));
-            table.Columns.Add("observacion_medicamento", typeof(string));
-            table.Columns.Add("estado_medicamento", typeof(int));
-        }
-        else if (typeof(T) == typeof(ConsultaLaboratorio))
-        {
-            table.Columns.Add("cantidad_laboratorio", typeof(int));
-            table.Columns.Add("observacion", typeof(string));
-            table.Columns.Add("catalogo_laboratorio_id", typeof(int));
-            table.Columns.Add("estado_laboratorio", typeof(int));
-        }
-        else if (typeof(T) == typeof(ConsultaImagen))
-        {
-            table.Columns.Add("imagen_id", typeof(int));
-            table.Columns.Add("observacion_imagen", typeof(string));
-            table.Columns.Add("cantidad_imagen", typeof(int));
-            table.Columns.Add("estado_imagen", typeof(int));
-        }
-        else if (typeof(T) == typeof(ConsultaDiagnostico))
-        {
-            table.Columns.Add("diagnostico_id", typeof(int));
-            table.Columns.Add("observacion_diagnostico", typeof(string));
-            table.Columns.Add("presuntivo_diagnosticos", typeof(int));
-            table.Columns.Add("definitivo_diagnosticos", typeof(int));
-            table.Columns.Add("estado_diagnostico", typeof(int));
-        }
-        else if (typeof(T) == typeof(AntecedentesFamiliare))
-        {
-            table.Columns.Add("cardiopatia", typeof(int));
-            table.Columns.Add("obser_cardiopatia", typeof(string));
-            table.Columns.Add("diabetes", typeof(int));
-            table.Columns.Add("obser_diabetes", typeof(string));
-            table.Columns.Add("enf_cardiovascular", typeof(int));
-            table.Columns.Add("obser_enf_cardiovascular", typeof(string));
-            table.Columns.Add("hipertension", typeof(int));
-            table.Columns.Add("obser_hipertension", typeof(string));
-            table.Columns.Add("cancer", typeof(int));
-            table.Columns.Add("obser_cancer", typeof(string));
-            table.Columns.Add("tuberculosis", typeof(int));
-            table.Columns.Add("obser_tuberculosis", typeof(string));
-            table.Columns.Add("enf_mental", typeof(int));
-            table.Columns.Add("obser_enf_mental", typeof(string));
-            table.Columns.Add("enf_infecciosa", typeof(int));
-            table.Columns.Add("obser_enf_infecciosa", typeof(string));
-            table.Columns.Add("mal_formacion", typeof(int));
-            table.Columns.Add("obser_mal_formacion", typeof(string));
-            table.Columns.Add("otro", typeof(string));
-            table.Columns.Add("obser_otro", typeof(string));
-            table.Columns.Add("parentesco_catalogo_cardiopatia", typeof(int));
-            table.Columns.Add("parentesco_catalogo_diabetes", typeof(int));
-            table.Columns.Add("parentesco_catalogo_enf_cardiovascular", typeof(int));
-            table.Columns.Add("parentesco_catalogo_hipertension", typeof(int));
-            table.Columns.Add("parentesco_catalogo_cancer", typeof(int));
-            table.Columns.Add("parentesco_catalogo_tuberculosis", typeof(int));
-            table.Columns.Add("parentesco_catalogo_enf_mental", typeof(int));
-            table.Columns.Add("parentesco_catalogo_enf_infecciosa", typeof(int));
-            table.Columns.Add("parentesco_catalogo_mal_formacion", typeof(int));
-            table.Columns.Add("parentesco_catalogo_otro", typeof(int));
-        }
-        else if (typeof(T) == typeof(OrganosSistema))
-        {
-            table.Columns.Add("org_sentidos", typeof(int));
-            table.Columns.Add("obser_org_sentidos", typeof(string));
-            table.Columns.Add("respiratorio", typeof(int));
-            table.Columns.Add("obser_respiratorio", typeof(string));
-            table.Columns.Add("cardio_vascular", typeof(int));
-            table.Columns.Add("obser_cardio_vascular", typeof(string));
-            table.Columns.Add("digestivo", typeof(int));
-            table.Columns.Add("obser_digestivo", typeof(string));
-            table.Columns.Add("genital", typeof(int));
-            table.Columns.Add("obser_genital", typeof(string));
-            table.Columns.Add("urinario", typeof(int));
-            table.Columns.Add("obser_urinario", typeof(string));
-            table.Columns.Add("m_esqueletico", typeof(int));
-            table.Columns.Add("obser_m_esqueletico", typeof(string));
-            table.Columns.Add("endocrino", typeof(int));
-            table.Columns.Add("obser_endocrino", typeof(string));
-            table.Columns.Add("linfatico", typeof(int));
-            table.Columns.Add("obser_linfatico", typeof(string));
-            table.Columns.Add("nervioso", typeof(int));
-            table.Columns.Add("obser_nervioso", typeof(string));
-        }
-        else if (typeof(T) == typeof(ExamenFisico))
-        {
-            table.Columns.Add("cabeza", typeof(int));
-            table.Columns.Add("obser_cabeza", typeof(string));
-            table.Columns.Add("cuello", typeof(int));
-            table.Columns.Add("obser_cuello", typeof(string));
-            table.Columns.Add("torax", typeof(int));
-            table.Columns.Add("obser_torax", typeof(string));
-            table.Columns.Add("abdomen", typeof(int));
-            table.Columns.Add("obser_abdomen", typeof(string));
-            table.Columns.Add("pelvis", typeof(int));
-            table.Columns.Add("obser_pelvis", typeof(string));
-            table.Columns.Add("extremidades", typeof(int));
-            table.Columns.Add("obser_extremidades", typeof(string));
-        }
-
-        foreach (var value in values)
-        {
-            var row = table.NewRow();
-            foreach (var prop in typeof(T).GetProperties())
-            {
-                row[prop.Name] = prop.GetValue(value) ?? DBNull.Value;
-            }
-            table.Rows.Add(row);
-        }
-
-        return new SqlParameter(paramName, table)
-        {
-            SqlDbType = SqlDbType.Structured,
-            TypeName = "dbo." + typeof(T).Name + "Type"
-        };
-    }
-
     public async Task UpdateConsultationAsync(Consultum consultation)
     {
         using (var connection = new SqlConnection(_context.Database.GetConnectionString()))
@@ -440,67 +354,7 @@ public class ConsultationService
             throw new Exception("Error al buscar el paciente por número de identificación.", ex);
         }
     }
-    public async Task<Paciente> BuscarPacienteAsync(int ci, string usuarioCreador)
-    {
-        using (SqlConnection connection = new SqlConnection(_context.Database.GetConnectionString()))
-        {
-            await connection.OpenAsync();
 
-          
-
-            using (SqlCommand command = new SqlCommand("[dbo].[BuscarPaciente]", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-
-                command.Parameters.AddWithValue("@ci", ci);
-                command.Parameters.AddWithValue("@usuarioCreador", usuarioCreador);
-
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                {
-                    if (await reader.ReadAsync())
-                    {
-                        var paciente = new Paciente
-                        {
-                            IdPacientes = reader.GetInt32(reader.GetOrdinal("id_pacientes")),
-                            FechacreacionPacientes = reader.GetDateTime(reader.GetOrdinal("fechacreacion_pacientes")),
-                            UsuariocreacionPacientes = reader.GetString(reader.GetOrdinal("usuariocreacion_pacientes")),
-                            FechamodificacionPacientes = reader.IsDBNull(reader.GetOrdinal("fechamodificacion_pacientes")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("fechamodificacion_pacientes")),
-                            UsuariomodificacionPacientes = reader.IsDBNull(reader.GetOrdinal("usuariomodificacion_pacientes")) ? null : reader.GetString(reader.GetOrdinal("usuariomodificacion_pacientes")),
-                            TipodocumentoPacientesCa = reader.GetInt32(reader.GetOrdinal("tipodocumento_pacientes_ca")),
-                            CiPacientes = reader.GetInt32(reader.GetOrdinal("ci_pacientes")),
-                            PrimernombrePacientes = reader.GetString(reader.GetOrdinal("primernombre_pacientes")),
-                            SegundonombrePacientes = reader.GetString(reader.GetOrdinal("segundonombre_pacientes")),
-                            PrimerapellidoPacientes = reader.GetString(reader.GetOrdinal("primerapellido_pacientes")),
-                            SegundoapellidoPacientes = reader.GetString(reader.GetOrdinal("segundoapellido_pacientes")),
-                            SexoPacientesCa = reader.GetInt32(reader.GetOrdinal("sexo_pacientes_ca")),
-                            FechanacimientoPacientes = reader.GetDateTime(reader.GetOrdinal("fechanacimiento_pacientes")),
-                            EdadPacientes = reader.GetInt32(reader.GetOrdinal("edad_pacientes")),
-                            TiposangrePacientesCa = reader.GetInt32(reader.GetOrdinal("tiposangre_pacientes_ca")),
-                            DonantePacientes = reader.GetString(reader.GetOrdinal("donante_pacientes")),
-                            EstadocivilPacientesCa = reader.GetInt32(reader.GetOrdinal("estadocivil_pacientes_ca")),
-                            FormacionprofesionalPacientesCa = reader.GetInt32(reader.GetOrdinal("formacionprofesional_pacientes_ca")),
-                            TelefonofijoPacientes = reader.GetString(reader.GetOrdinal("telefonofijo_pacientes")),
-                            TelefonocelularPacientes = reader.GetString(reader.GetOrdinal("telefonocelular_pacientes")),
-                            EmailPacientes = reader.GetString(reader.GetOrdinal("email_pacientes")),
-                            NacionalidadPacientesPa = reader.GetInt32(reader.GetOrdinal("nacionalidad_pacientes_pa")),
-                            ProvinciaPacientesL = reader.GetInt32(reader.GetOrdinal("provincia_pacientes_l")),
-                            DireccionPacientes = reader.GetString(reader.GetOrdinal("direccion_pacientes")),
-                            OcupacionPacientes = reader.GetString(reader.GetOrdinal("ocupacion_pacientes")),
-                            EmpresaPacientes = reader.GetString(reader.GetOrdinal("empresa_pacientes")),
-                            SegurosaludPacientesCa = reader.GetInt32(reader.GetOrdinal("segurosalud_pacientes_ca")),
-                            EstadoPacientes = reader.GetInt32(reader.GetOrdinal("estado_pacientes"))
-                        };
-
-                        return paciente;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
-        }
-    }
 
 
 
