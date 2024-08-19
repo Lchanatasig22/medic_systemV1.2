@@ -1,5 +1,5 @@
 ﻿@using System.Text.Json
-@model Consultum
+@model ConsultaRequest
 @{
     ViewData["Title"] = "CrearConsulta";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -163,7 +163,7 @@
         </div>
     }
 
-    <form role="form" id="consultaForm" asp-action="CreateConsulta" method="post">
+    <form role="form" id="consultationForm" method="post">
         <div class="form-group col-sm-3" hidden>
             <label for="UsuarioCreacion" class="form-label">Usuario de Creación</label>
             <input type="text" class="form-control" asp-for="UsuariocreacionConsulta" id="usuarioNombre" value="@ViewBag.UsuarioNombre" readonly />
@@ -220,7 +220,7 @@
                 </div>
                 <div class="form-group col-sm-3">
                     <label for="tipoDocumentoSelect" class="form-label">Tipo documento *</label>
-                    <select class="form-select" asp-for="PacienteConsultaPNavigation.TipodocumentoPacientesCa" id="tipoDocumentoSelect" required disabled>
+                    <select class="form-select"  id="tipoDocumentoSelect" required disabled>
                         <option value="">Seleccione...</option>
                         @if (ViewBag.TiposDocumentos != null)
                         {
@@ -237,7 +237,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="tipoSangreSelect">Tipo de sangre</label>
-                    <select class="form-select" asp-for="PacienteConsultaPNavigation.TiposangrePacientesCa" id="tipoSangre" required disabled>
+                    <select class="form-select"  id="tipoSangre" required disabled>
                         <option value="">Seleccione...</option>
                         @if (ViewBag.TiposSangre != null)
                         {
@@ -266,7 +266,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="sexo">Sexo</label>
-                    <select class="form-select" asp-for="PacienteConsultaPNavigation.SexoPacientesCa" id="sexoSelect" disabled>
+                    <select class="form-select"  id="sexoSelect" disabled>
                         <option value="">Seleccione...</option>
                         @if (ViewBag.TiposGenero != null)
                         {
@@ -279,7 +279,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="estadoCivil">Estado civil</label>
-                    <select class="form-select" asp-for="PacienteConsultaPNavigation.EstadocivilPacientesCa" id="estadoCivilSelect" disabled>
+                    <select class="form-select"  id="estadoCivilSelect" disabled>
                         <option value="">Seleccione...</option>
                         @if (ViewBag.TiposEstadoCivil != null)
                         {
@@ -292,7 +292,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="formacionProfesional">Formación profesional</label>
-                    <select class="form-select" asp-for="PacienteConsultaPNavigation.FormacionprofesionalPacientesCa" id="formacionProfesionalSelect" required disabled>
+                    <select class="form-select"  id="formacionProfesionalSelect" required disabled>
                         <option value="">Seleccione...</option>
                         @if (ViewBag.TiposFormacion != null)
                         {
@@ -314,7 +314,7 @@
             <div class="row g-3">
                 <div class="form-group col-sm-3">
                     <label for="nacionalidadSelect" class="form-label">Nacionalidad</label>
-                    <select asp-for="PacienteConsultaPNavigation.NacionalidadPacientesPa" class="form-control" id="nacionalidadSelect" disabled>
+                    <select  class="form-control" id="nacionalidadSelect" disabled>
                         <option value="">Seleccione...</option>
 
                         @if (ViewBag.TiposNacionalidad != null)
@@ -352,7 +352,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="seguroSalud">Seguro de salud</label>
-                    <select class="form-select" asp-for="PacienteConsultaPNavigation.SegurosaludPacientesCa" id="seguroSelect" required disabled>
+                    <select class="form-select"  id="seguroSelect" required disabled>
                         <option value="">Seleccione...</option>
 
                         @if (ViewBag.TiposSeguro != null)
@@ -615,7 +615,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" name="ConsultaAntecedentesFamiliares.Cardiopatia" type="checkbox" id="consulta-antecedente-checked_3393" @(Model.ConsultaAntecedentesFamiliares.Cardiopatia == true ? "checked" : "") />
+                                    <input class="form-check-input consulta-antecedente-checked" name="ConsultaAntecedentesFamiliares.Cardiopatia" type="checkbox" id="consulta-antecedente-checked_3393" @(Model.Cardiopatia == true ? "1" : "") />
 
                                     <span class="text-danger"></span>
                                     <label class="form-check-label" for="consulta-antecedente-checked_3393">Cardiopatía</label>
@@ -624,7 +624,7 @@
                             <div class="col-sm-12 consulta-antecedente-observacion" style="display: none;">
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoCardiopatia" id="tipoDocumentoSelect">
+                                        <select class="form-select select2" asp-for="ParentescoCatalogoCardiopatia" id="tipoDocumentoSelect">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -637,7 +637,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ConsultaAntecedentesFamiliares.ObserCardiopatia" type="text" id="consulta-antecedente-observacion_3393" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ObserCardiopatia" type="text" id="consulta-antecedente-observacion_3393" class="form-control" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -648,7 +648,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" @(Model.ConsultaAntecedentesFamiliares.Diabetes == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked_3394">
+                                    <input class="form-check-input consulta-antecedente-checked" @(Model.Diabetes == true ? "1" : "") type="checkbox" id="consulta-antecedente-checked_3394">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3394">Diabetes</label>
                                 </div>
                             </div>
@@ -657,7 +657,7 @@
                                 <div class="row">
 
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoDiabetes">
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ParentescoCatalogoDiabetes">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -670,7 +670,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ConsultaAntecedentesFamiliares.ObserDiabetes" type="text" id="consulta-antecedente-observacion_3394" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ObserDiabetes" type="text" id="consulta-antecedente-observacion_3394" class="form-control" disabled>
 
                                     </div>
 
@@ -682,7 +682,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" @(Model.ConsultaAntecedentesFamiliares.EnfCardiovascular == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked_3395">
+                                    <input class="form-check-input consulta-antecedente-checked" @(Model.EnfCardiovascular == true ? "1" : "") type="checkbox" id="consulta-antecedente-checked_3395">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3395">Enfermedad Cardiovascular</label>
                                 </div>
                             </div>
@@ -690,7 +690,7 @@
 
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoEnfCardiovascular" >
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ParentescoCatalogoEnfCardiovascular" >
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -703,7 +703,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ConsultaAntecedentesFamiliares.ObserEnfCardiovascular" type="text" id="consulta-antecedente-observacion_3395" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ObserEnfCardiovascular" type="text" id="consulta-antecedente-observacion_3395" class="form-control" disabled>
 
                                     </div>
 
@@ -715,7 +715,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" @(Model.ConsultaAntecedentesFamiliares.Hipertension == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked_3396">
+                                    <input class="form-check-input consulta-antecedente-checked" @(Model.Hipertension == true ? "1" : "") type="checkbox" id="consulta-antecedente-checked_3396">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3396">Hipertensión</label>
                                 </div>
                             </div>
@@ -723,7 +723,7 @@
 
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoHipertension" >
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ParentescoCatalogoHipertension" >
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -736,7 +736,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ConsultaAntecedentesFamiliares.ObserHipertension" id="consulta-antecedente-observacion_3396" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ObserHipertension" id="consulta-antecedente-observacion_3396" class="form-control" disabled>
 
                                     </div>
                                 </div>
@@ -747,7 +747,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaAntecedentesFamiliares.Cancer == true ? "checked" : "") id="consulta-antecedente-checked_3397">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Cancer == true ? "1" : "") id="consulta-antecedente-checked_3397">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3397">Cáncer</label>
                                 </div>
                             </div>
@@ -756,7 +756,7 @@
                                 <div class="row">
 
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoCancer">
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ParentescoCatalogoCancer">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -769,7 +769,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ConsultaAntecedentesFamiliares.ObserCancer" id="consulta-antecedente-observacion_3397" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ObserCancer" id="consulta-antecedente-observacion_3397" class="form-control" disabled>
 
                                     </div>
                                 </div>
@@ -779,14 +779,14 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaAntecedentesFamiliares.Tuberculosis == true ? "checked" : "") id="consulta-antecedente-checked_3398">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Tuberculosis == true ? "1" : "") id="consulta-antecedente-checked_3398">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3398">Tuberculosis</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoTuberculosis">
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ParentescoCatalogoTuberculosis">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -799,7 +799,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ConsultaAntecedentesFamiliares.ObserTuberculosis" id="consulta-antecedente-observacion_3398" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ObserTuberculosis" id="consulta-antecedente-observacion_3398" class="form-control" disabled>
 
                                     </div>
                                 </div>
@@ -809,14 +809,14 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" @(Model.ConsultaAntecedentesFamiliares.EnfMental == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked_3399">
+                                    <input class="form-check-input consulta-antecedente-checked" @(Model.EnfMental == true ? "1" : "") type="checkbox" id="consulta-antecedente-checked_3399">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3399">Enfermedad Mental</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoEnfMental">
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ParentescoCatalogoEnfMental">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -829,7 +829,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ConsultaAntecedentesFamiliares.ObserEnfMental" type="text" id="consulta-antecedente-observacion_3399" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ObserEnfMental" type="text" id="consulta-antecedente-observacion_3399" class="form-control" disabled>
 
                                     </div>
                                 </div>
@@ -839,14 +839,14 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" @(Model.ConsultaAntecedentesFamiliares.EnfInfecciosa == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked_3400">
+                                    <input class="form-check-input consulta-antecedente-checked" @(Model.EnfInfecciosa == true ? "1" : "") type="checkbox" id="consulta-antecedente-checked_3400">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3400">Enfermedad Infecciosa</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoEnfInfecciosa">
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ParentescoCatalogoEnfInfecciosa">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -859,7 +859,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ConsultaAntecedentesFamiliares.ObserEnfInfecciosa" id="consulta-antecedente-observacion_3400" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ObserEnfInfecciosa" id="consulta-antecedente-observacion_3400" class="form-control" disabled>
 
                                     </div>
                                 </div>
@@ -869,7 +869,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaAntecedentesFamiliares.MalFormacion == true ? "checked" : "") id="consulta-antecedente-checked_3401">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.MalFormacion == true ? "1" : "") id="consulta-antecedente-checked_3401">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3401">Mal Formación</label>
                                 </div>
                             </div>
@@ -877,7 +877,7 @@
 
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.MalFormacion">
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="MalFormacion">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -890,7 +890,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3401" asp-for="ConsultaAntecedentesFamiliares.ObserMalFormacion" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3401" asp-for="ObserMalFormacion" class="form-control" disabled>
 
                                     </div>
                                 </div>
@@ -901,7 +901,7 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaAntecedentesFamiliares.Otro == true ? "checked" : "") id="consulta-antecedente-checked_3402">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Otro == true ? "1" : "") id="consulta-antecedente-checked_3402">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3402">Otro</label>
                                 </div>
                             </div>
@@ -910,7 +910,7 @@
 
                                 <div class="row">
                                     <div class="col-6">
-                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ConsultaAntecedentesFamiliares.ParentescoCatalogoOtro">
+                                        <select class="form-select select2" id="tipoDocumentoSelect" asp-for="ParentescoCatalogoOtro">
                                             <option value="">Seleccione el familiar</option>
                                             @if (ViewBag.TiposParienteAntece != null)
                                             {
@@ -923,7 +923,7 @@
                                         </select>
                                     </div>
                                     <div class="col-6">
-                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ConsultaAntecedentesFamiliares.ObserOtro" id="consulta-antecedente-observacion_3402" class="form-control" disabled>
+                                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ObserOtro" id="consulta-antecedente-observacion_3402" class="form-control" disabled>
 
                                     </div>
                                 </div>
@@ -1112,120 +1112,120 @@
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" @(Model.ConsultaOrganosSistemas.OrgSentidos == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked_3393">
+                                    <input class="form-check-input consulta-antecedente-checked" @(Model.OrgSentidos == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked_3393">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3393">Órganos de los sentidos</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ConsultaOrganosSistemas.ObserOrgSentidos" type="text" id="consulta-antecedente-observacion_3393" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ObserOrgSentidos" type="text" id="consulta-antecedente-observacion_3393" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" @(Model.ConsultaOrganosSistemas.Respiratorio == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked_3394">
+                                    <input class="form-check-input consulta-antecedente-checked" @(Model.Respiratorio == true ? "checked" : "") type="checkbox" id="consulta-antecedente-checked_3394">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3394">Respiratorio</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ConsultaOrganosSistemas.ObserRespiratorio" type="text" id="consulta-antecedente-observacion_3394" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" asp-for="ObserRespiratorio" type="text" id="consulta-antecedente-observacion_3394" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaOrganosSistemas.CardioVascular == true ? "checked" : "") id="consulta-antecedente-checked_3395">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.CardioVascular == true ? "checked" : "") id="consulta-antecedente-checked_3395">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3395">Cardio Vascular</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ConsultaOrganosSistemas.ObserCardioVascular" id="consulta-antecedente-observacion_3395" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ObserCardioVascular" id="consulta-antecedente-observacion_3395" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaOrganosSistemas.Digestivo == true ? "checked" : "") id="consulta-antecedente-checked_3396">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Digestivo == true ? "checked" : "") id="consulta-antecedente-checked_3396">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3396">Digestivo</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3396" asp-for="ConsultaOrganosSistemas.ObserDigestivo" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3396" asp-for="ObserDigestivo" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaOrganosSistemas.Genital == true ? "checked" : "") id="consulta-antecedente-checked_3397">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Genital == true ? "checked" : "") id="consulta-antecedente-checked_3397">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3397">Genital</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ConsultaOrganosSistemas.ObserGenital" id="consulta-antecedente-observacion_3397" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ObserGenital" id="consulta-antecedente-observacion_3397" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaOrganosSistemas.Urinario == true ? "checked" : "") id="consulta-antecedente-checked_3398">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Urinario == true ? "checked" : "") id="consulta-antecedente-checked_3398">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3398">Urinario</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3398" asp-for="ConsultaOrganosSistemas.ObserUrinario" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3398" asp-for="ObserUrinario" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaOrganosSistemas.MEsqueletico == true ? "checked" : "") id="consulta-antecedente-checked_3399">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.MEsqueletico == true ? "checked" : "") id="consulta-antecedente-checked_3399">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3399">Músculo Esquelético</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ConsultaOrganosSistemas.ObserMEsqueletico" id="consulta-antecedente-observacion_3399" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ObserMEsqueletico" id="consulta-antecedente-observacion_3399" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaOrganosSistemas.Endocrino == true ? "checked" : "") id="consulta-antecedente-checked_3400">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Endocrino == true ? "checked" : "") id="consulta-antecedente-checked_3400">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3400">Endocrino</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ConsultaOrganosSistemas.ObserEndocrino" id="consulta-antecedente-observacion_3400" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" asp-for="ObserEndocrino" id="consulta-antecedente-observacion_3400" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaOrganosSistemas.Linfatico == true ? "checked" : "") id="consulta-antecedente-checked_3401">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Linfatico == true ? "checked" : "") id="consulta-antecedente-checked_3401">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3401">Hemo Linfático</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3401" asp-for="ConsultaOrganosSistemas.ObserLinfatico" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3401" asp-for="ObserLinfatico" class="form-control" disabled>
                             </div>
                         </div>
 
                         <div class="fields">
                             <div class="col-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaOrganosSistemas.Nervioso == true ? "checked" : "") id="consulta-antecedente-checked_3402">
+                                    <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Nervioso == true ? "checked" : "") id="consulta-antecedente-checked_3402">
                                     <label class="form-check-label" for="consulta-antecedente-checked_3402">Nervioso</label>
                                 </div>
                             </div>
                             <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ConsultaOrganosSistemas.ObserNervioso" class="form-control" disabled>
+                                <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ObserNervioso" class="form-control" disabled>
                             </div>
                         </div>
                     </div>
@@ -1288,72 +1288,72 @@
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaExamenFisico.Cabeza == true ? "checked" : "") id="consulta-antecedente-checked_3402">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Cabeza == true ? "checked" : "") id="consulta-antecedente-checked_3402">
                             <label class="form-check-label" for="consulta-antecedente-checked_3402">Cabeza</label>
                         </div>
                     </div>
                     <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ConsultaExamenFisico.ObserCabeza" class="form-control" disabled>
+                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ObserCabeza" class="form-control" disabled>
                     </div>
                 </div>
 
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaExamenFisico.Cuello == true ? "checked" : "") id="consulta-antecedente-checked_3402">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Cuello == true ? "checked" : "") id="consulta-antecedente-checked_3402">
                             <label class="form-check-label" for="consulta-antecedente-checked_3402">Cuello</label>
                         </div>
                     </div>
                     <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ConsultaExamenFisico.ObserCuello" class="form-control" disabled>
+                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ObserCuello" class="form-control" disabled>
                     </div>
                 </div>
 
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaExamenFisico.Torax == true ? "checked" : "") id="consulta-antecedente-checked_3402">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Torax == true ? "checked" : "") id="consulta-antecedente-checked_3402">
                             <label class="form-check-label" for="consulta-antecedente-checked_3402">Torax</label>
                         </div>
                     </div>
                     <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ConsultaExamenFisico.ObserTorax" class="form-control" disabled>
+                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ObserTorax" class="form-control" disabled>
                     </div>
                 </div>
 
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaExamenFisico.Abdomen == true ? "checked" : "") id="consulta-antecedente-checked_3402">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Abdomen == true ? "checked" : "") id="consulta-antecedente-checked_3402">
                             <label class="form-check-label" for="consulta-antecedente-checked_3402">Abdomen</label>
                         </div>
                     </div>
                     <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ConsultaExamenFisico.ObserAbdomen" class="form-control" disabled>
+                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ObserAbdomen" class="form-control" disabled>
                     </div>
                 </div>
 
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaExamenFisico.Pelvis == true ? "checked" : "") id="consulta-antecedente-checked_3402">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Pelvis == true ? "checked" : "") id="consulta-antecedente-checked_3402">
                             <label class="form-check-label" for="consulta-antecedente-checked_3402">Pelvis</label>
                         </div>
                     </div>
                     <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ConsultaExamenFisico.ObserPelvis" class="form-control" disabled>
+                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ObserPelvis" class="form-control" disabled>
                     </div>
                 </div>
 
                 <div class="fields">
                     <div class="col-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.ConsultaExamenFisico.Extremidades == true ? "checked" : "") id="consulta-antecedente-checked_3402">
+                            <input class="form-check-input consulta-antecedente-checked" type="checkbox" @(Model.Extremidades == true ? "checked" : "") id="consulta-antecedente-checked_3402">
                             <label class="form-check-label" for="consulta-antecedente-checked_3402">Extremidades</label>
                         </div>
                     </div>
                     <div class="col-12 consulta-antecedente-observacion" style="display: none;">
-                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ConsultaExamenFisico.ObserExtremidades" class="form-control" disabled>
+                        <input placeholder="Observación (Máximo 300 caracteres)" type="text" id="consulta-antecedente-observacion_3402" asp-for="ObserExtremidades" class="form-control" disabled>
                     </div>
                 </div>
             </div>
@@ -1362,7 +1362,7 @@
                 <a asp-action="ListarConsultas" asp-controller="Consultation" class="btn btn-outline-danger"><i class="fa fa-close"></i> Salir</a>
 
                 <button class="btn btn-outline-primary previousBtn btn-lg" type="button" onclick="goToPreviousStep(2)"><i class="fa fa-arrow-left"></i> Regresar</button>
-                <button class="btn btn-outline-primary nextBtn btn-lg ms-3" type="button" onclick="goToNextStep(4)">Siguiente <i class="fa fa-arrow-right"></i></button>
+                <button class="btn btn-outline-primary nextBtn btn-lg ms-3" type="button" onclick="goToNextStep(4,event)">Siguiente <i class="fa fa-arrow-right"></i></button>
             </div>
         </div>
         <!--Final tercer formulario-->
@@ -1516,29 +1516,23 @@
                 </div>
 
                 <div class="container">
+                    <!-- Diagnóstico -->
                     <div class="card">
                         <div class="card-header">Diagnóstico</div>
                         <div class="card-body">
-                            <td>
-                                <div class="input-group">
-                                    <select asp-for="ConsultaDiagnostico.DiagnosticoId" class="form-control" id="DiagnosticoId">
-                                        <option value="">Seleccione...</option>
-
-                                        @if (ViewBag.TiposDiagnostico != null)
+                            <div class="input-group">
+                                <select class="form-control" id="DiagnosticoId">
+                                    <option value="">Seleccione...</option>
+                                    @if (ViewBag.TiposDiagnostico != null)
+                                    {
+                                        @foreach (var tiposDiagnostico in ViewBag.TiposDiagnostico)
                                         {
-                                            @foreach (var tiposDiagnostico in ViewBag.TiposDiagnostico)
-                                            {
-                                                <option value="@tiposDiagnostico.IdDiagnostico">@tiposDiagnostico.NombreDiagnostico</option>
-                                            }
+                                            <option value="@tiposDiagnostico.IdDiagnostico">@tiposDiagnostico.NombreDiagnostico</option>
                                         }
-                                    </select>
-
-                                </div>
-                            </td>
-                            <td>
+                                    }
+                                </select>
                                 <button type="button" class="btn btn-outline-success" id="anadirFila"><i class="fas fa-plus-circle"></i> Añadir</button>
-                            </td>
-
+                            </div>
 
                             <table class="table" id="diagnosticoTable">
                                 <thead>
@@ -1549,10 +1543,12 @@
                                     </tr>
                                 </thead>
                                 <tbody id="diagnosticoTableBody">
+                                    <!-- Aquí se añadirán dinámicamente las filas -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
 
 
                     <!-- Planes de tratamiento -->
@@ -1570,25 +1566,19 @@
                     <div class="card">
                         <div class="card-header">Medicamentos</div>
                         <div class="card-body">
-
-                            <td>
-                                <div class="input-group">
-                                    <select asp-for="ConsultaMedicamento.MedicamentoId" class="form-control" id="MedicamentoId">
-                                        <option value="">Seleccione...</option>
-                                        @if (ViewBag.TiposMedicamentos != null)
+                            <div class="input-group">
+                                <select class="form-control" id="MedicamentoId">
+                                    <option value="">Seleccione...</option>
+                                    @if (ViewBag.TiposMedicamentos != null)
+                                    {
+                                        @foreach (var tiposMedicamento in ViewBag.TiposMedicamentos)
                                         {
-                                            @foreach (var tiposMedicamento in ViewBag.TiposMedicamentos)
-                                            {
-                                                <option value="@tiposMedicamento.IdMedicamento">@tiposMedicamento.NombreMedicamento</option>
-                                            }
+                                            <option value="@tiposMedicamento.IdMedicamento">@tiposMedicamento.NombreMedicamento</option>
                                         }
-                                    </select>
-
-                                    <button type="button" class="btn btn-outline-success" id="anadirFilaMedicamento"><i class="fas fa-plus-circle"></i> Añadir</button>
-
-
-                                </div>
-                            </td>
+                                    }
+                                </select>
+                                <button type="button" class="btn btn-outline-success" id="anadirFilaMedicamento"><i class="fas fa-plus-circle"></i> Añadir</button>
+                            </div>
 
                             <table class="table" id="medicamentosTable">
                                 <thead>
@@ -1600,61 +1590,32 @@
                                     </tr>
                                 </thead>
                                 <tbody id="medicamentosTableBody">
+                                    <!-- Aquí se añadirán dinámicamente las filas -->
                                 </tbody>
                             </table>
                         </div>
-
-                        <div class="card"></div>
-
-                        @*   <div class="card-header">Recomendaciones no farmacologicas</div> *@
-                        <div class="card-body">
-                            <div class="form-row">
-                                <div class="form-group ">
-                                    <label for="consulta-diagnostico-dias-incapacidad">Recomendaciones no farmacologicas</label>
-                                    <textarea id="reconofarmacologicas" maxlength="8000" asp-for="Reconofarmacologicas" min="0" name="Reconofarmacologicas" type="text" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card"></div>
-
-                        @*                         <div class="card-header">Signos de alarma</div>
-                        *@                        <div class="card-body">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="consulta-diagnostico-dias-incapacidad">Signos de alarma</label>
-                                    <textarea id="alergias_consulta" maxlength="8000" asp-for="AlergiasConsulta" min="0" name="AlergiasConsulta" type="text" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-
-
                     </div>
 
 
-
-                    <!-- Imágenes (Exámenes) -->
+                    <!-- Imágenes -->
                     <div class="card">
-                        <div class="card-header">Imagen (Exámen)</div>
+                        <div class="card-header">Imágenes (Exámenes)</div>
                         <div class="card-body">
                             <div class="input-group">
-                                <select asp-for="ConsultaImagen.ImagenId" class="form-control" id="ImagenId">
+                                <select class="form-control" id="ImagenId">
                                     <option value="">Seleccione...</option>
                                     @if (ViewBag.TiposImagen != null)
                                     {
-                                        @foreach (var tiposLaboratorio in ViewBag.TiposImagen)
+                                        @foreach (var tiposImagen in ViewBag.TiposImagen)
                                         {
-                                            <option value="@tiposLaboratorio.IdImagen">@tiposLaboratorio.NombreImagen</option>
+                                            <option value="@tiposImagen.IdImagen">@tiposImagen.NombreImagen</option>
                                         }
                                     }
                                 </select>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-success" id="anadirFilaImagen"><i class="fas fa-plus-circle"></i> Añadir</button>
-                                </div>
+                                <button type="button" class="btn btn-outline-success" id="anadirFilaImagen"><i class="fas fa-plus-circle"></i> Añadir</button>
                             </div>
 
-                            <!-- Aquí es donde se agregará la nueva fila -->
-                            <table class="table">
+                            <table class="table" id="imagenesTable">
                                 <thead>
                                     <tr>
                                         <th>Imagen (Exámen)</th>
@@ -1664,19 +1625,20 @@
                                     </tr>
                                 </thead>
                                 <tbody id="imagenesTableBody">
-                                    <!-- Las nuevas filas se agregarán aquí -->
+                                    <!-- Aquí se añadirán dinámicamente las filas -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
 
-                    <!-- Laboratorio -->
+
+                    <!-- Laboratorios -->
                     <div class="card">
-                        <div class="card-header">Laboratorio</div>
+                        <div class="card-header">Laboratorios</div>
                         <div class="card-body">
                             <div class="input-group">
-                                <select asp-for="ConsultaLaboratorio.CatalogoLaboratorioId" class="form-control" id="LaboratorioId">
+                                <select class="form-control" id="LaboratorioId">
                                     <option value="">Seleccione...</option>
                                     @if (ViewBag.TiposLaboratorios != null)
                                     {
@@ -1686,9 +1648,7 @@
                                         }
                                     }
                                 </select>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-success" id="anadirFilaLaboratorio"><i class="fas fa-plus-circle"></i> Añadir</button>
-                                </div>
+                                <button type="button" class="btn btn-outline-success" id="anadirFilaLaboratorio"><i class="fas fa-plus-circle"></i> Añadir</button>
                             </div>
 
                             <table class="table" id="laboratorioTable">
@@ -1701,10 +1661,9 @@
                                     </tr>
                                 </thead>
                                 <tbody id="laboratorioTableBody">
+                                    <!-- Aquí se añadirán dinámicamente las filas -->
                                 </tbody>
                             </table>
-
-
                         </div>
                     </div>
 

@@ -2,43 +2,45 @@
 
 namespace medic_system.Models
 {
-    public class ConsultationRequest
+    public class ConsultaRequest
     {
-        public DateTime FechaCreacionConsulta { get; set; }
-        public string UsuarioCreacionConsulta { get; set; }
+
+        // Asegúrate de que las propiedades coincidan con los parámetros del servicio
+        public DateTime FechacreacionConsulta { get; set; }
+        public string UsuariocreacionConsulta { get; set; }
         public string HistorialConsulta { get; set; }
         public string SecuencialConsulta { get; set; }
         public int PacienteConsultaP { get; set; }
         public string MotivoConsulta { get; set; }
         public string EnfermedadConsulta { get; set; }
-        public string NombreParienteConsulta { get; set; }
-        public string SignosAlarmaConsulta { get; set; }
-        public string ReconoFarmacologicas { get; set; }
-        public int TipoParienteConsulta { get; set; }
+        public string NombreparienteConsulta { get; set; }
+        public string SignosalarmaConsulta { get; set; }
+        public string Reconofarmacologicas { get; set; }
+        public int TipoparienteConsulta { get; set; }
         public string TelefonoConsulta { get; set; }
         public string TemperaturaConsulta { get; set; }
-        public string FrecuenciaRespiratoriaConsulta { get; set; }
-        public string PresionArterialSistolicaConsulta { get; set; }
-        public string PresionArterialDiastolicaConsulta { get; set; }
+        public string FrecuenciarespiratoriaConsulta { get; set; }
+        public string PresionarterialsistolicaConsulta { get; set; }
+        public string PresionarterialdiastolicaConsulta { get; set; }
         public string PulsoConsulta { get; set; }
         public string PesoConsulta { get; set; }
         public string TallaConsulta { get; set; }
-        public string PlanTratamientoConsulta { get; set; }
+        public string PlantratamientoConsulta { get; set; }
         public string ObservacionConsulta { get; set; }
-        public string AntecedentesPersonalesConsulta { get; set; }
+        public string AntecedentespersonalesConsulta { get; set; }
         public int AlergiasConsultaId { get; set; }
-        public string ObserAlergias { get; set; }
+        public string Obseralergias { get; set; }
         public int CirugiasConsultaId { get; set; }
-        public string ObserCirugiasId { get; set; }
-        public int DiasIncapacidadConsulta { get; set; }
+        public string ObsercirugiasId { get; set; }
+        public int DiasincapacidadConsulta { get; set; }
         public int MedicoConsultaD { get; set; }
         public int EspecialidadId { get; set; }
         public int EstadoConsultaC { get; set; }
         public int TipoConsultaC { get; set; }
-        public string NotasEvolucionConsulta { get; set; }
-        public string ConsultaPrincipalConsulta { get; set; }
+        public string NotasevolucionConsulta { get; set; }
+        public string ConsultaprincipalConsulta { get; set; }
         public int ActivoConsulta { get; set; }
-        public DateTime FechaActualConsulta { get; set; }
+        public DateTime FechaactualConsulta { get; set; }
         public string Medicamentos { get; set; }
         public string Laboratorios { get; set; }
         public string Imagenes { get; set; }
@@ -95,6 +97,21 @@ namespace medic_system.Models
         public string ObserPelvis { get; set; }
         public bool Extremidades { get; set; }
         public string ObserExtremidades { get; set; }
+        public int ParentescoCatalogoCardiopatia { get; set; }
+        public int ParentescoCatalogoDiabetes { get; set; }
+        public int ParentescoCatalogoEnfCardiovascular { get; set; }
+        public int ParentescoCatalogoHipertension { get; set; }
+        public int ParentescoCatalogoCancer { get; set; }
+        public int ParentescoCatalogoTuberculosis { get; set; }
+        public int ParentescoCatalogoEnfMental { get; set; }
+        public int ParentescoCatalogoEnfInfecciosa { get; set; }
+        public int ParentescoCatalogoMalFormacion { get; set; }
+        public int ParentescoCatalogoOtro { get; set; }
+
+
+        public bool? PresuntivoDiagnosticos { get; set; }
+        public bool? DefinitivoDiagnosticos { get; set; }
+
     }
 
 

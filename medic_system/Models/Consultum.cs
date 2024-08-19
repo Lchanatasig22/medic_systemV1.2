@@ -54,6 +54,8 @@ namespace medic_system.Models
         public int? ConsultaAntecedentesFamiliaresId { get; set; }
         public DateTime? FechaactualConsulta { get; set; }
 
+
+
         public virtual Catalogo? AlergiasConsulta { get; set; }
         public virtual Catalogo? CirugiasConsulta { get; set; }
         public virtual AntecedentesFamiliare? ConsultaAntecedentesFamiliares { get; set; }

@@ -67,57 +67,40 @@ namespace medic_system.Controllers
         [HttpGet]
         public async Task<IActionResult> CrearConsulta()
         {
-            var model = new Consultum
+            var model = new ConsultaRequest
             {
                 FechacreacionConsulta = DateTime.Now,
-                ConsultaAntecedentesFamiliares = new AntecedentesFamiliare
-                {
-                    Cardiopatia = false,
-                    Diabetes = false,
-                    EnfCardiovascular = false,
-                    Hipertension = false,
-                    Cancer = false,
-                    Tuberculosis = false,
-                    EnfMental = false,
-                    EnfInfecciosa = false,
-                    MalFormacion = false,
-                    Otro = false
+                Cardiopatia = false,
+                Diabetes = false,
+                EnfCardiovascular = false,
+                Hipertension = false,
+                Cancer = false,
+                Tuberculosis = false,
+                EnfMental = false,
+                EnfInfecciosa = false,
+                MalFormacion = false,
+                Otro = false,
 
-                },
-                ConsultaDiagnostico = new ConsultaDiagnostico
-                {
-                    PresuntivoDiagnosticos = false,
-                    DefinitivoDiagnosticos = false
+                PresuntivoDiagnosticos = false,
+                DefinitivoDiagnosticos = false,
 
-                },
-                ConsultaExamenFisico = new ExamenFisico
-                {
-                    Abdomen = false,
-                    Cabeza = false,
-                    Cuello = false,
-                    Torax = false,
-                    Pelvis = false,
-                    Extremidades = false
+                Abdomen = false,
+                Cabeza = false,
+                Cuello = false,
+                Torax = false,
+                Pelvis = false,
+                Extremidades = false,
 
-                },
-                ConsultaImagen = new ConsultaImagen(),
-                ConsultaLaboratorio = new ConsultaLaboratorio(),
-                ConsultaMedicamento = new ConsultaMedicamento(),
-                ConsultaOrganosSistemas = new OrganosSistema
-                {
-
-                    OrgSentidos = false,
-                    Respiratorio = false,
-                    CardioVascular = false,
-                    Digestivo = false,
-                    Genital = false,
-                    Urinario = false,
-                    MEsqueletico = false,
-                    Endocrino = false,
-                    Linfatico = false,
-                    Nervioso = false
-
-                },
+                OrgSentidos = false,
+                Respiratorio = false,
+                CardioVascular = false,
+                Digestivo = false,
+                Genital = false,
+                Urinario = false,
+                MEsqueletico = false,
+                Endocrino = false,
+                Linfatico = false,
+                Nervioso = false,
             };
 
             ViewBag.UsuarioNombre = HttpContext.Session.GetString("UsuarioNombre");
@@ -141,6 +124,7 @@ namespace medic_system.Controllers
 
             return View(model);
         }
+
 
 
         [HttpGet]
@@ -252,65 +236,149 @@ namespace medic_system.Controllers
 
 
 
-
-
         [HttpPost]
-        public async Task<IActionResult> CreateConsulta([FromBody] ConsultationRequest request)
+        public async Task<IActionResult> CrearConsulta([FromBody] ConsultaRequest request)
         {
-            if (request == null)
-            {
-                _logger.LogWarning("Request body is null. Verify that the JSON structure matches the model.");
-                return BadRequest("El cuerpo de la solicitud no puede estar vacío.");
-            }
-
-            _logger.LogInformation("Request received: {@Request}", request);
-
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Model state is invalid.");
                 return BadRequest(ModelState);
             }
 
             try
             {
-                _logger.LogInformation("Starting consultation creation process for patient ID {PacienteId}.", request.PacienteConsultaP);
+                int newConsultaId = await _consultationService.CreateConsultationAsync(
+                    request.FechacreacionConsulta,
+                    request.UsuariocreacionConsulta,
+                    request.HistorialConsulta,
+                    request.SecuencialConsulta,
+                    request.PacienteConsultaP,
+                    request.MotivoConsulta,
+                    request.EnfermedadConsulta,
+                    request.NombreparienteConsulta,
+                    request.SignosalarmaConsulta,
+                    request.Reconofarmacologicas,
+                    request.TipoparienteConsulta,
+                    request.TelefonoConsulta,
+                    request.TemperaturaConsulta,
+                    request.FrecuenciarespiratoriaConsulta,
+                    request.PresionarterialsistolicaConsulta,
+                    request.PresionarterialdiastolicaConsulta,
+                    request.PulsoConsulta,
+                    request.PesoConsulta,
+                    request.TallaConsulta,
+                    request.PlantratamientoConsulta,
+                    request.ObservacionConsulta,
+                    request.AntecedentespersonalesConsulta,
+                    request.AlergiasConsultaId,
+                    request.Obseralergias,
+                    request.CirugiasConsultaId,
+                    request.ObsercirugiasId,
+                    request.DiasincapacidadConsulta,
+                    request.MedicoConsultaD,
+                    request.EspecialidadId,
+                    request.EstadoConsultaC,
+                    request.TipoConsultaC,
+                    request.NotasevolucionConsulta,
+                    request.ConsultaprincipalConsulta,
+                    request.ActivoConsulta,
+                    request.FechaactualConsulta,
+                    request.Medicamentos,
+                    request.Laboratorios,
+                    request.Imagenes,
+                    request.Diagnosticos,
+                    request.Cardiopatia,
+                    request.ObserCardiopatia,
+                    request.Diabetes,
+                    request.ObserDiabetes,
+                    request.EnfCardiovascular,
+                    request.ObserEnfCardiovascular,
+                    request.Hipertension,
+                    request.ObserHipertension,
+                    request.Cancer,
+                    request.ObserCancer,
+                    request.Tuberculosis,
+                    request.ObserTuberculosis,
+                    request.EnfMental,
+                    request.ObserEnfMental,
+                    request.EnfInfecciosa,
+                    request.ObserEnfInfecciosa,
+                    request.MalFormacion,
+                    request.ObserMalFormacion,
+                    request.Otro,
+                    request.ObserOtro,
+                    request.OrgSentidos,
+                    request.ObserOrgSentidos,
+                    request.Respiratorio,
+                    request.ObserRespiratorio,
+                    request.CardioVascular,
+                    request.ObserCardioVascular,
+                    request.Digestivo,
+                    request.ObserDigestivo,
+                    request.Genital,
+                    request.ObserGenital,
+                    request.Urinario,
+                    request.ObserUrinario,
+                    request.MEsqueletico,
+                    request.ObserMEsqueletico,
+                    request.Endocrino,
+                    request.ObserEndocrino,
+                    request.Linfatico,
+                    request.ObserLinfatico,
+                    request.Nervioso,
+                    request.ObserNervioso,
+                    request.Cabeza,
+                    request.ObserCabeza,
+                    request.Cuello,
+                    request.ObserCuello,
+                    request.Torax,
+                    request.ObserTorax,
+                    request.Abdomen,
+                    request.ObserAbdomen,
+                    request.Pelvis,
+                    request.ObserPelvis,
+                    request.Extremidades,
+                    request.ObserExtremidades,
+                    request.ParentescoCatalogoCardiopatia,
+                    request.ParentescoCatalogoDiabetes,
+                    request.ParentescoCatalogoEnfCardiovascular,
+                    request.ParentescoCatalogoHipertension,
+                    request.ParentescoCatalogoCancer,
+                    request.ParentescoCatalogoTuberculosis,
+                    request.ParentescoCatalogoEnfMental,
+                    request.ParentescoCatalogoEnfInfecciosa,
+                    request.ParentescoCatalogoMalFormacion,
+                    request.ParentescoCatalogoOtro
+                );
 
-                // Validate essential fields
-                if (string.IsNullOrEmpty(request.UsuarioCreacionConsulta) || request.PacienteConsultaP <= 0)
-                {
-                    _logger.LogWarning("Invalid input data: User creation or patient ID is missing.");
-                    return BadRequest("Datos de entrada no válidos: falta el usuario de creación o el ID del paciente.");
-                }
-
-                // Additional custom validation logic (if needed)
-                if (request.FechaCreacionConsulta > DateTime.UtcNow)
-                {
-                    _logger.LogWarning("Creation date {FechaCreacionConsulta} cannot be in the future.", request.FechaCreacionConsulta);
-                    return BadRequest("La fecha de creación no puede ser una fecha futura.");
-                }
-
-                int newConsultaId = await _consultationService.CreateConsultationAsync(request);
-
-                if (newConsultaId > 0)
-                {
-                    _logger.LogInformation("Consultation created successfully with ID {ConsultaId}.", newConsultaId);
-                    return Ok(new { ConsultaId = newConsultaId, Message = "Consulta creada exitosamente." });
-                }
-                else
-                {
-                    _logger.LogError("Failed to create consultation for patient ID {PacienteId}.", request.PacienteConsultaP);
-                    return StatusCode(500, "Error interno al crear la consulta. Por favor, intente nuevamente.");
-                }
-            }
-            catch (SqlException sqlEx)
-            {
-                _logger.LogError(sqlEx, "SQL error occurred while creating consultation for patient ID {PacienteId}.", request.PacienteConsultaP);
-                return StatusCode(500, "Error en la base de datos al crear la consulta. Por favor, intente nuevamente.");
+                return Ok(new { Id = newConsultaId });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected error occurred while creating consultation for patient ID {PacienteId}.", request.PacienteConsultaP);
-                return StatusCode(500, "Ocurrió un error inesperado al crear la consulta. Por favor, intente nuevamente.");
+                // Puedes loguear el error aquí o manejarlo de acuerdo a tus necesidades
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetConsultaById(int id)
+        {
+            try
+            {
+                var consulta = await _consultationService.GetConsultaByIdAsync(id);
+
+                if (consulta == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(consulta);
+            }
+            catch (Exception ex)
+            {
+                // Registro del error para diagnóstico
+                // _logger.LogError(ex, "Error al obtener la consulta.");
+
+                return StatusCode(500, "Se produjo un error al procesar la solicitud.");
             }
         }
 

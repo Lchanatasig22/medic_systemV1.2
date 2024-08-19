@@ -10,7 +10,7 @@
             <tr>
                 <td>
                     <div class="input-group">
-                        <select name="ConsultaDiagnostico.DiagnosticoId" class="form-control">
+                        <select name="Diagnosticos.DiagnosticoId" class="form-control">
                             <option value="${selectedDiagnostico}" selected>${selectedDiagnosticoText}</option>
                         </select>
                     </div>
@@ -18,10 +18,10 @@
                 <td>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-outline-secondary">
-                            <input type="checkbox" name="ConsultaDiagnostico.PresuntivoDiagnosticos[]" autocomplete="off"> Presuntivo
+                            <input type="checkbox" name="Diagnosticos.PresuntivoDiagnosticos" autocomplete="off"> Presuntivo
                         </label>
                         <label class="btn btn-outline-secondary">
-                            <input type="checkbox" name="ConsultaDiagnostico.DefinitivoDiagnosticos[]" autocomplete="off"> Definitivo
+                            <input type="checkbox" name="Diagnosticos.DefinitivoDiagnosticos" autocomplete="off"> Definitivo
                         </label>
                     </div>
                 </td>
@@ -40,7 +40,7 @@
         $(this).closest('tr').remove();
     });
 
-    // Añadir fila a la tabla Medicamentos 
+    // Añadir fila a la tabla Medicamentos
     $('#anadirFilaMedicamento').on('click', function () {
         const $medicamentoSelect = $('#MedicamentoId');
         const selectedMedicamento = $medicamentoSelect.val();
@@ -51,13 +51,13 @@
             <tr>
                 <td>
                     <div class="input-group">
-                        <select name="ConsultaMedicamento.MedicamentoId" class="form-control">
+                        <select name="Medicamentos.MedicamentoId" class="form-control">
                             <option value="${selectedMedicamento}" selected>${selectedMedicamentoText}</option>
                         </select>
                     </div>
                 </td>
-                <td><input type="number" name="cantidadMedicamentos[]" max="999" placeholder="0" class="form-control" /></td>
-                <td><input type="text" name="observacionMedicamentos[]" maxlength="300" placeholder="Máximo 300 caracteres" class="form-control" /></td>
+                <td><input type="number" name="Medicamentos.Cantidad" max="999" placeholder="0" class="form-control" /></td>
+                <td><input type="text" name="Medicamentos.Observacion" maxlength="300" placeholder="Máximo 300 caracteres" class="form-control" /></td>
                 <td><button type="button" class="btn btn-outline-secondary eliminar-fila-medicamento"><i class="fas fa-times-circle"></i> Eliminar</button></td>
             </tr>`;
 
@@ -73,7 +73,7 @@
         $(this).closest('tr').remove();
     });
 
-    // Añadir fila a la tabla Imagen 
+    // Añadir fila a la tabla Imagenes
     $('#anadirFilaImagen').on('click', function () {
         const $imagenSelect = $('#ImagenId');
         const selectedImagen = $imagenSelect.val();
@@ -82,9 +82,9 @@
         if (selectedImagen) {
             const newRow = `
             <tr>
-                <td>${selectedImagenText}<input type="hidden" name="imagenes[]" value="${selectedImagen}" /></td>
-                <td><input type="number" name="cantidadImagenes[]" max="999" placeholder="0" class="form-control" /></td>
-                <td><input type="text" name="observacionImagenes[]" maxlength="300" placeholder="Máximo 300 caracteres" class="form-control" /></td>
+                <td>${selectedImagenText}<input type="hidden" name="Imagenes.ImagenId" value="${selectedImagen}" /></td>
+                <td><input type="number" name="Imagenes.Cantidad" max="999" placeholder="0" class="form-control" /></td>
+                <td><input type="text" name="Imagenes.Observacion" maxlength="300" placeholder="Máximo 300 caracteres" class="form-control" /></td>
                 <td><button type="button" class="btn btn-outline-secondary eliminar-fila-imagen"><i class="fas fa-times-circle"></i> Eliminar</button></td>
             </tr>`;
 
@@ -95,12 +95,12 @@
         }
     });
 
-    // Eliminar fila de imágenes (exámenes)
+    // Eliminar fila de imágenes
     $('#imagenesTableBody').on('click', '.eliminar-fila-imagen', function () {
         $(this).closest('tr').remove();
     });
 
-    // Añadir fila a la tabla laboratorio
+    // Añadir fila a la tabla Laboratorios
     $('#anadirFilaLaboratorio').on('click', function () {
         const $laboratorioSelect = $('#LaboratorioId');
         const selectedLaboratorio = $laboratorioSelect.val();
@@ -111,13 +111,13 @@
             <tr>
                 <td>
                     <div class="input-group">
-                        <select name="ConsultaLaboratorio.CatalogoLaboratorioId" class="form-control">
+                        <select name="Laboratorios.LaboratorioId" class="form-control">
                             <option value="${selectedLaboratorio}" selected>${selectedLaboratorioText}</option>
                         </select>
                     </div>
                 </td>
-                <td><input type="number" name="cantidadLaboratorios[]" max="999" placeholder="0" class="form-control" /></td>
-                <td><input type="text" name="observacionLaboratorios[]" maxlength="300" placeholder="Máximo 300 caracteres" class="form-control" /></td>
+                <td><input type="number" name="Laboratorios.Cantidad" max="999" placeholder="0" class="form-control" /></td>
+                <td><input type="text" name="Laboratorios.Observacion" maxlength="300" placeholder="Máximo 300 caracteres" class="form-control" /></td>
                 <td><button type="button" class="btn btn-outline-secondary eliminar-fila-laboratorio"><i class="fas fa-times-circle"></i> Eliminar</button></td>
             </tr>`;
 
@@ -128,15 +128,15 @@
         }
     });
 
-    // Eliminar fila de laboratorio
+    // Eliminar fila de laboratorios
     $('#laboratorioTableBody').on('click', '.eliminar-fila-laboratorio', function () {
         $(this).closest('tr').remove();
     });
 
     // Función para enviar el formulario como JSON
-  
-
-    
+    $('#submitFormButton').on('click', function () {
+        submitFormAsJson();
+    });
 
     // Configuración inicial del wizard
     const $navListItems = $('div.stepwizard-step button');
@@ -164,8 +164,6 @@
         }
     });
 
-
-
     // Mostrar u ocultar campos de observación al cambiar los switches
     $('.consulta-antecedente-checked').on('change', function () {
         const $observacionField = $(this).closest('.fields').find('.consulta-antecedente-observacion');
@@ -175,6 +173,7 @@
         $observacionField.find('input').prop('disabled', !isChecked);
     });
 });
+
 function goToNextStep(stepNumber, event) {
     event = event || window.event;
     var curStep = $(event.target).closest(".setup-content"),
@@ -205,96 +204,114 @@ function goToPreviousStep(stepNumber) {
     curStep.hide();
     $('#step-' + (stepNumber - 1)).show();
 }
-function sanitizeData(value) {
-    return value === undefined || value === '' ? null : value;
-}
 
-function getTableData(tableBodySelector) {
-    const data = [];
-    $(tableBodySelector).find('tr').each(function () {
-        const row = {};
-        $(this).find('input, select').each(function () {
-            const name = $(this).attr('name');
-            const value = $(this).val();
-            row[name] = sanitizeData(value);
-        });
-        data.push(row);
-    });
-    return data;
-}
 
 function submitFormAsJson() {
+    const form = document.getElementById('consultationForm');
+    const formData = new FormData(form);
+    const object = {};
+    formData.forEach((value, key) => {
+        object[key] = value;
+    });
 
-    var data = {
-        FechacreacionConsulta: $('#fechacreacion_consulta').val(),
-        UsuariocreacionConsulta: $('#usuarioNombre').val(),
-        HistorialConsulta: $('#historiaClinica').val(),
-        SecuencialConsulta: $('#secuencialConsulta').val(),
-        PacienteConsultaP: $('#idPaciente').val(),
-        MotivoConsulta: $('#motivoConsulta').val(),
-        EnfermedadConsulta: $('#enfermedadProblema').val(),
-        NombreparienteConsulta: $('#acompañante').val(),
-        SignosalarmaConsulta: $('#alergias_consulta').val(),
-        Reconofarmacologicas: $('#reconofarmacologicas').val(),
-        TipoparienteConsulta: $('#tipoParienteSelect').val(),
-        TelefonoConsulta: $('#telefonoPariente').val(),
-        TemperaturaConsulta: $('#temperatura_consulta').val(),
-        FrecuenciarespiratoriaConsulta: $('#frecuenciarespiratoria_consulta').val(),
-        PresionarterialsistolicaConsulta: $('#presionArterialSistolica').val(),
-        PresionarterialdiastolicaConsulta: $('#presionArterialDiastolica').val(),
-        PulsoConsulta: $('#pulso_consulta').val(),
-        PesoConsulta: $('#peso_consulta').val(),
-        TallaConsulta: $('#talla_consulta').val(),
-        PlantratamientoConsulta: $('#plantratamiento_consulta').val(),
-        ObservacionConsulta: $('#observacion_consulta').val(),
-        AntecedentespersonalesConsulta: $('#antecedentespersonalesConsulta').val(),
-        DiasincapacidadConsulta: $('#diasincapacidad_consulta').val(),
-        MedicoConsultaD: $('#usuarioId').val(),
-        EspecialidadId: $('#usuarioIdEspecialidad').val(),
-        EstadoConsultaC: $('#estadoConsultaC').val(),
-        TipoConsultaC: $('#tipoConsultaC').val(),
-        NotasevolucionConsulta: $('#notasevolucionConsulta').val(),
-        ConsultaprincipalConsulta: $('#consultaprincipalConsulta').val(),
-        ActivoConsulta: $('#activoConsulta').val(),
-        FechaactualConsulta: $('#fechaactualConsulta').val(),
-        Medicamentos: getTableData('#medicamentosTableBody'),
-        Laboratorios: getTableData('#laboratorioTableBody'),
-        Imagenes: getTableData('#imagenesTableBody'),
-        Diagnosticos: getTableData('#diagnosticoTableBody'),
-        Antecedentesfamiliares: getTableData('#antecedentesFamiliaresTableBody'),
-        Organossistemas: getTableData('#organosSistemasTableBody'),
-        Examenesfisicos: getTableData('#examenesFisicosTableBody')
-    };
-
-    console.log(JSON.stringify(data)); // Verificación de envío de datos justo antes de la llamada AJAX
-
-    $.ajax({
-        url: '/Consultation/CreateConsulta',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        success: function (response) {
-            console.log('Consulta creada con éxito: ', response);
-            alert('Consulta creada con éxito.');
-        },
-        error: function (xhr) {
-            if (xhr.status === 400) {
-                alert('Error en la solicitud: ' + xhr.responseText);
-            } else {
-                alert('Error al crear la consulta. Verifica los datos e inténtalo de nuevo.');
-            }
+    // Capturar los diagnósticos
+    const diagnosticos = [];
+    document.querySelectorAll('#diagnosticoTableBody tr').forEach(row => {
+        const diagnosticoIdElement = row.querySelector('select[name="Diagnosticos.DiagnosticoId"]');
+        if (diagnosticoIdElement) {
+            const diagnosticoId = diagnosticoIdElement.value;
+            const presuntivoElement = row.querySelector('input[name="Diagnosticos.PresuntivoDiagnosticos"]');
+            const definitivoElement = row.querySelector('input[name="Diagnosticos.DefinitivoDiagnosticos"]');
+            const presuntivo = presuntivoElement ? presuntivoElement.checked : false;
+            const definitivo = definitivoElement ? definitivoElement.checked : false;
+            diagnosticos.push({
+                diagnostico_id: diagnosticoId,
+                presuntivo_diagnostico: presuntivo,
+                definitivo_diagnostico: definitivo
+            });
         }
     });
+    object["Diagnosticos"] = diagnosticos;
+
+    // Capturar los medicamentos
+    const medicamentos = [];
+    document.querySelectorAll('#medicamentosTableBody tr').forEach(row => {
+        const medicamentoIdElement = row.querySelector('select[name="Medicamentos.MedicamentoId"]');
+        if (medicamentoIdElement) {
+            const medicamentoId = medicamentoIdElement.value;
+            const cantidadElement = row.querySelector('input[name="Medicamentos.Cantidad"]');
+            const observacionElement = row.querySelector('input[name="Medicamentos.Observacion"]');
+            const cantidad = cantidadElement ? cantidadElement.value : "";
+            const observacion = observacionElement ? observacionElement.value : "";
+            medicamentos.push({
+                medicamento_id: medicamentoId,
+                cantidad_medicamento: cantidad,
+                observacion_medicamento: observacion
+            });
+        }
+    });
+    object["Medicamentos"] = medicamentos;
+
+    // Capturar las imágenes
+    const imagenes = [];
+    document.querySelectorAll('#imagenesTableBody tr').forEach(row => {
+        const imagenIdElement = row.querySelector('input[name="Imagenes.ImagenId"]');
+        if (imagenIdElement) {
+            const imagenId = imagenIdElement.value;
+            const cantidadElement = row.querySelector('input[name="Imagenes.Cantidad"]');
+            const observacionElement = row.querySelector('input[name="Imagenes.Observacion"]');
+            const cantidad = cantidadElement ? cantidadElement.value : "";
+            const observacion = observacionElement ? observacionElement.value : "";
+            imagenes.push({
+                imagen_id: imagenId,
+                cantidad_imagen: cantidad,
+                observacion_imagen: observacion
+            });
+        }
+    });
+    object["Imagenes"] = imagenes;
+
+    // Capturar los laboratorios
+    const laboratorios = [];
+    document.querySelectorAll('#laboratorioTableBody tr').forEach(row => {
+        const laboratorioIdElement = row.querySelector('select[name="Laboratorios.LaboratorioId"]');
+        if (laboratorioIdElement) {
+            const laboratorioId = laboratorioIdElement.value;
+            const cantidadElement = row.querySelector('input[name="Laboratorios.Cantidad"]');
+            const observacionElement = row.querySelector('input[name="Laboratorios.Observacion"]');
+            const cantidad = cantidadElement ? cantidadElement.value : "";
+            const observacion = observacionElement ? observacionElement.value : "";
+            laboratorios.push({
+                laboratorio_id: laboratorioId,
+                cantidad_laboratorio: cantidad,
+                observacion_laboratorio: observacion
+            });
+        }
+    });
+    object["Laboratorios"] = laboratorios;
+
+    // Convertir el objeto a JSON y enviarlo
+    const json = JSON.stringify(object);
+
+    fetch('@Url.Action("CrearConsulta", "Consultation")', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: json
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Something went wrong');
+        })
+        .then(data => {
+            alert('Consulta creada con ID: ' + data.Id);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
-function getTableData(tableSelector) {
-    var tableData = [];
-    $(tableSelector).find('tr').each(function () {
-        var row = {};
-        $(this).find('input, select').each(function () {
-            row[$(this).attr('name')] = $(this).val();
-        });
-        tableData.push(row);
-    });
-    return tableData;
-}
+
