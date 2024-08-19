@@ -293,7 +293,7 @@ function submitFormAsJson() {
     // Convertir el objeto a JSON y enviarlo
     const json = JSON.stringify(object);
 
-    fetch('@Url.Action("CrearConsulta", "Consultation")', {
+    fetch('/Consultation/CrearConsulta', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
