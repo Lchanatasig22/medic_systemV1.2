@@ -259,9 +259,11 @@ namespace medic_system.Controllers
         {
             if (request == null)
             {
-                _logger.LogWarning("Request body is null.");
+                _logger.LogWarning("Request body is null. Verify that the JSON structure matches the model.");
                 return BadRequest("El cuerpo de la solicitud no puede estar vacío.");
             }
+
+            _logger.LogInformation("Request received: {@Request}", request);
 
             if (!ModelState.IsValid)
             {

@@ -266,11 +266,10 @@ function submitFormAsJson() {
         Examenesfisicos: getTableData('#examenesFisicosTableBody')
     };
 
-    console.log(JSON.stringify(data)); //Verificacion de envio de datos se agrega justo antes de la llamada AJAX
-
+    console.log(JSON.stringify(data)); // Verificación de envío de datos justo antes de la llamada AJAX
 
     $.ajax({
-        url: '/Consultation/CreateConsultation',
+        url: '/Consultation/CreateConsulta',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(data),
@@ -299,4 +298,3 @@ function getTableData(tableSelector) {
     });
     return tableData;
 }
-
