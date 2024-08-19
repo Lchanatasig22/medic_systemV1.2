@@ -255,64 +255,60 @@ namespace medic_system.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateConsultation([FromBody] CrearConsultaMedicaRequest request)
+        public async Task<IActionResult> CreateConsulta([FromBody] ConsultationRequest request)
         {
             if (request == null)
             {
-                return BadRequest("El cuerpo de la solicitud no puede ser nulo.");
+                _logger.LogWarning("Request body is null.");
+                return BadRequest("El cuerpo de la solicitud no puede estar vacío.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Model state is invalid.");
+                return BadRequest(ModelState);
             }
 
             try
             {
-                int newConsultaID = _consultationService.CreateConsultation(
-     request.FechacreacionConsulta ?? DateTime.MinValue, // Fecha por defecto si es null
-     HttpContext.Session.GetString("UsuarioNombre") ?? "DefaultUser", // Usuario de sesión o valor por defecto
-     request.HistorialConsulta ?? string.Empty, // Cadena vacía si es null
-     request.SecuencialConsulta ?? string.Empty, // Cadena vacía si es null
-     request.PacienteConsultaP ?? 0, // Valor por defecto si es null
-     request.MotivoConsulta ?? string.Empty, // Cadena vacía si es null
-     request.EnfermedadConsulta ?? string.Empty, // Cadena vacía si es null
-     request.NombreparienteConsulta ?? string.Empty, // Cadena vacía si es null
-     request.SignosalarmaConsulta ?? string.Empty, // Cadena vacía si es null
-     request.Reconofarmacologicas ?? string.Empty, // Cadena vacía si es null
-     request.TipoparienteConsulta ?? 0, // Valor por defecto si es null
-     request.TelefonoConsulta ?? string.Empty, // Cadena vacía si es null
-     request.TemperaturaConsulta ?? string.Empty, // Cadena vacía si es null
-     request.FrecuenciarespiratoriaConsulta ?? string.Empty, // Cadena vacía si es null
-     request.PresionarterialsistolicaConsulta ?? string.Empty, // Cadena vacía si es null
-     request.PresionarterialdiastolicaConsulta ?? string.Empty, // Cadena vacía si es null
-     request.PulsoConsulta ?? string.Empty, // Cadena vacía si es null
-     request.PesoConsulta ?? string.Empty, // Cadena vacía si es null
-     request.TallaConsulta ?? string.Empty, // Cadena vacía si es null
-     request.PlantratamientoConsulta ?? string.Empty, // Cadena vacía si es null
-     request.ObservacionConsulta ?? string.Empty, // Cadena vacía si es null
-     request.AntecedentespersonalesConsulta ?? string.Empty, // Cadena vacía si es null
-     request.DiasincapacidadConsulta ?? 0, // Valor por defecto si es null
-     request.MedicoConsultaD ?? 0, // Valor por defecto si es null
-     request.EspecialidadId ?? 0, // Valor por defecto si es null
-     request.EstadoConsultaC ?? 0, // Valor por defecto si es null
-     request.TipoConsultaC ?? 0, // Valor por defecto si es null
-     request.NotasevolucionConsulta ?? string.Empty, // Cadena vacía si es null
-     request.ConsultaprincipalConsulta ?? string.Empty, // Cadena vacía si es null
-     request.ActivoConsulta ?? 0, // Valor por defecto si es null
-     request.FechaactualConsulta ?? DateTime.Now, // Fecha actual si es null
-     request.Medicamentos?.ToDataTable(), // Si es null, pasa null
-     request.Laboratorios?.ToDataTable(), // Si es null, pasa null
-     request.Imagenes?.ToDataTable(), // Si es null, pasa null
-     request.Diagnosticos?.ToDataTable(), // Si es null, pasa null
-     request.AntecedentesFamiliares?.ToDataTable(), // Si es null, pasa null
-     request.OrganosSistemas?.ToDataTable(), // Si es null, pasa null
-     request.ExamenesFisicos?.ToDataTable() // Si es null, pasa null
- );
+                _logger.LogInformation("Starting consultation creation process for patient ID {PacienteId}.", request.PacienteConsultaP);
 
+                // Validate essential fields
+                if (string.IsNullOrEmpty(request.UsuarioCreacionConsulta) || request.PacienteConsultaP <= 0)
+                {
+                    _logger.LogWarning("Invalid input data: User creation or patient ID is missing.");
+                    return BadRequest("Datos de entrada no válidos: falta el usuario de creación o el ID del paciente.");
+                }
 
-                return CreatedAtAction(nameof(CreateConsultation), new { id = newConsultaID }, new { ConsultaId = newConsultaID });
+                // Additional custom validation logic (if needed)
+                if (request.FechaCreacionConsulta > DateTime.UtcNow)
+                {
+                    _logger.LogWarning("Creation date {FechaCreacionConsulta} cannot be in the future.", request.FechaCreacionConsulta);
+                    return BadRequest("La fecha de creación no puede ser una fecha futura.");
+                }
+
+                int newConsultaId = await _consultationService.CreateConsultationAsync(request);
+
+                if (newConsultaId > 0)
+                {
+                    _logger.LogInformation("Consultation created successfully with ID {ConsultaId}.", newConsultaId);
+                    return Ok(new { ConsultaId = newConsultaId, Message = "Consulta creada exitosamente." });
+                }
+                else
+                {
+                    _logger.LogError("Failed to create consultation for patient ID {PacienteId}.", request.PacienteConsultaP);
+                    return StatusCode(500, "Error interno al crear la consulta. Por favor, intente nuevamente.");
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                _logger.LogError(sqlEx, "SQL error occurred while creating consultation for patient ID {PacienteId}.", request.PacienteConsultaP);
+                return StatusCode(500, "Error en la base de datos al crear la consulta. Por favor, intente nuevamente.");
             }
             catch (Exception ex)
             {
-                // Registro de error detallado para diagnóstico
-                _logger.LogError(ex, "Error al crear la consulta médica");
-                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+                _logger.LogError(ex, "Unexpected error occurred while creating consultation for patient ID {PacienteId}.", request.PacienteConsultaP);
+                return StatusCode(500, "Ocurrió un error inesperado al crear la consulta. Por favor, intente nuevamente.");
             }
         }
 

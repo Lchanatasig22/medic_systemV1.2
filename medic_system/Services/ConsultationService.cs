@@ -62,129 +62,120 @@ public class ConsultationService
     }
 
 
-    public int CreateConsultation(
-           DateTime fechacreacionConsulta,
-           string usuariocreacionConsulta,
-           string historialConsulta,
-           string secuencialConsulta,
-           int pacienteConsultaP,
-           string motivoConsulta,
-           string enfermedadConsulta,
-           string nombreparienteConsulta,
-           string signosalarmaConsulta,
-           string reconofarmacologicas,
-           int tipoparienteConsulta,
-           string telefonoConsulta,
-           string temperaturaConsulta,
-           string frecuenciarespiratoriaConsulta,
-           string presionarterialsistolicaConsulta,
-           string presionarterialdiastolicaConsulta,
-           string pulsoConsulta,
-           string pesoConsulta,
-           string tallaConsulta,
-           string plantratamientoConsulta,
-           string observacionConsulta,
-           string antecedentespersonalesConsulta,
-           int diasincapacidadConsulta,
-           int medicoConsultaD,
-           int especialidadId,
-           int estadoConsultaC,
-           int tipoConsultaC,
-           string notasevolucionConsulta,
-           string consultaprincipalConsulta,
-           int activoConsulta,
-           DateTime fechaactualConsulta,
-           DataTable medicamentos,
-           DataTable laboratorios,
-           DataTable imagenes,
-           DataTable diagnosticos,
-           DataTable antecedentesfamiliares,
-           DataTable organossistemas,
-           DataTable examenesfisicos)
+    public async Task<int> CreateConsultationAsync(ConsultationRequest request)
     {
-        int newConsultaID = 0;
-
         using (var connection = new SqlConnection(_context.Database.GetConnectionString()))
+        using (var command = new SqlCommand("sp_Create_Consultations3", connection))
         {
-            using (var command = new SqlCommand("sp_Create_Consultations", connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
+            command.CommandType = CommandType.StoredProcedure;
 
-                // Add input parameters
-                command.Parameters.AddWithValue("@fechacreacion_consulta", fechacreacionConsulta);
-                command.Parameters.AddWithValue("@usuariocreacion_consulta", usuariocreacionConsulta);
-                command.Parameters.AddWithValue("@historial_consulta", historialConsulta);
-                command.Parameters.AddWithValue("@secuencial_consulta", secuencialConsulta);
-                command.Parameters.AddWithValue("@paciente_consulta_p", pacienteConsultaP);
-                command.Parameters.AddWithValue("@motivo_consulta", motivoConsulta);
-                command.Parameters.AddWithValue("@enfermedad_consulta", enfermedadConsulta);
-                command.Parameters.AddWithValue("@nombrepariente_consulta", nombreparienteConsulta);
-                command.Parameters.AddWithValue("@signosalarma_consulta", signosalarmaConsulta);
-                command.Parameters.AddWithValue("@reconofarmacologicas", reconofarmacologicas);
-                command.Parameters.AddWithValue("@tipopariente_consulta", tipoparienteConsulta);
-                command.Parameters.AddWithValue("@telefono_consulta", telefonoConsulta);
-                command.Parameters.AddWithValue("@temperatura_consulta", temperaturaConsulta);
-                command.Parameters.AddWithValue("@frecuenciarespiratoria_consulta", frecuenciarespiratoriaConsulta);
-                command.Parameters.AddWithValue("@presionarterialsistolica_consulta", presionarterialsistolicaConsulta);
-                command.Parameters.AddWithValue("@presionarterialdiastolica_consulta", presionarterialdiastolicaConsulta);
-                command.Parameters.AddWithValue("@pulso_consulta", pulsoConsulta);
-                command.Parameters.AddWithValue("@peso_consulta", pesoConsulta);
-                command.Parameters.AddWithValue("@talla_consulta", tallaConsulta);
-                command.Parameters.AddWithValue("@plantratamiento_consulta", plantratamientoConsulta);
-                command.Parameters.AddWithValue("@observacion_consulta", observacionConsulta);
-                command.Parameters.AddWithValue("@antecedentespersonales_consulta", antecedentespersonalesConsulta);
-                command.Parameters.AddWithValue("@diasincapacidad_consulta", diasincapacidadConsulta);
-                command.Parameters.AddWithValue("@medico_consulta_d", medicoConsultaD);
-                command.Parameters.AddWithValue("@especialidad_id", especialidadId);
-                command.Parameters.AddWithValue("@estado_consulta_c", estadoConsultaC);
-                command.Parameters.AddWithValue("@tipo_consulta_c", tipoConsultaC);
-                command.Parameters.AddWithValue("@notasevolucion_consulta", notasevolucionConsulta);
-                command.Parameters.AddWithValue("@consultaprincipal_consulta", consultaprincipalConsulta);
-                command.Parameters.AddWithValue("@activo_consulta", activoConsulta);
-                command.Parameters.AddWithValue("@fechaactual_consulta", fechaactualConsulta);
+            command.Parameters.AddWithValue("@fechacreacion_consulta", request.FechaCreacionConsulta);
+            command.Parameters.AddWithValue("@usuariocreacion_consulta", request.UsuarioCreacionConsulta);
+            command.Parameters.AddWithValue("@historial_consulta", request.HistorialConsulta);
+            command.Parameters.AddWithValue("@secuencial_consulta", request.SecuencialConsulta);
+            command.Parameters.AddWithValue("@paciente_consulta_p", request.PacienteConsultaP);
+            command.Parameters.AddWithValue("@motivo_consulta", request.MotivoConsulta);
+            command.Parameters.AddWithValue("@enfermedad_consulta", request.EnfermedadConsulta);
+            command.Parameters.AddWithValue("@nombrepariente_consulta", request.NombreParienteConsulta);
+            command.Parameters.AddWithValue("@signosalarma_consulta", request.SignosAlarmaConsulta);
+            command.Parameters.AddWithValue("@reconofarmacologicas", request.ReconoFarmacologicas);
+            command.Parameters.AddWithValue("@tipopariente_consulta", request.TipoParienteConsulta);
+            command.Parameters.AddWithValue("@telefono_consulta", request.TelefonoConsulta);
+            command.Parameters.AddWithValue("@temperatura_consulta", request.TemperaturaConsulta);
+            command.Parameters.AddWithValue("@frecuenciarespiratoria_consulta", request.FrecuenciaRespiratoriaConsulta);
+            command.Parameters.AddWithValue("@presionarterialsistolica_consulta", request.PresionArterialSistolicaConsulta);
+            command.Parameters.AddWithValue("@presionarterialdiastolica_consulta", request.PresionArterialDiastolicaConsulta);
+            command.Parameters.AddWithValue("@pulso_consulta", request.PulsoConsulta);
+            command.Parameters.AddWithValue("@peso_consulta", request.PesoConsulta);
+            command.Parameters.AddWithValue("@talla_consulta", request.TallaConsulta);
+            command.Parameters.AddWithValue("@plantratamiento_consulta", request.PlanTratamientoConsulta);
+            command.Parameters.AddWithValue("@observacion_consulta", request.ObservacionConsulta);
+            command.Parameters.AddWithValue("@antecedentespersonales_consulta", request.AntecedentesPersonalesConsulta);
+            command.Parameters.AddWithValue("@alergias_consulta_id", request.AlergiasConsultaId);
+            command.Parameters.AddWithValue("@obseralergias", request.ObserAlergias);
+            command.Parameters.AddWithValue("@cirugias_consulta_id", request.CirugiasConsultaId);
+            command.Parameters.AddWithValue("@obsercirugias_id", request.ObserCirugiasId);
+            command.Parameters.AddWithValue("@diasincapacidad_consulta", request.DiasIncapacidadConsulta);
+            command.Parameters.AddWithValue("@medico_consulta_d", request.MedicoConsultaD);
+            command.Parameters.AddWithValue("@especialidad_id", request.EspecialidadId);
+            command.Parameters.AddWithValue("@estado_consulta_c", request.EstadoConsultaC);
+            command.Parameters.AddWithValue("@tipo_consulta_c", request.TipoConsultaC);
+            command.Parameters.AddWithValue("@notasevolucion_consulta", request.NotasEvolucionConsulta);
+            command.Parameters.AddWithValue("@consultaprincipal_consulta", request.ConsultaPrincipalConsulta);
+            command.Parameters.AddWithValue("@activo_consulta", request.ActivoConsulta);
+            command.Parameters.AddWithValue("@fechaactual_consulta", request.FechaActualConsulta);
+            command.Parameters.AddWithValue("@medicamentos", request.Medicamentos);
+            command.Parameters.AddWithValue("@laboratorios", request.Laboratorios);
+            command.Parameters.AddWithValue("@imagenes", request.Imagenes);
+            command.Parameters.AddWithValue("@diagnosticos", request.Diagnosticos);
 
-                // Add table-valued parameters
-                var medicamentosParam = command.Parameters.AddWithValue("@medicamentos", medicamentos);
-                medicamentosParam.SqlDbType = SqlDbType.Structured;
-                medicamentosParam.TypeName = "dbo.ConsultaMedicamentosType";
+            // Antecedentes Familiares
+            command.Parameters.AddWithValue("@cardiopatia", request.Cardiopatia);
+            command.Parameters.AddWithValue("@obser_cardiopatia", request.ObserCardiopatia);
+            command.Parameters.AddWithValue("@diabetes", request.Diabetes);
+            command.Parameters.AddWithValue("@obser_diabetes", request.ObserDiabetes);
+            command.Parameters.AddWithValue("@enf_cardiovascular", request.EnfCardiovascular);
+            command.Parameters.AddWithValue("@obser_enf_cardiovascular", request.ObserEnfCardiovascular);
+            command.Parameters.AddWithValue("@hipertension", request.Hipertension);
+            command.Parameters.AddWithValue("@obser_hipertension", request.ObserHipertension);
+            command.Parameters.AddWithValue("@cancer", request.Cancer);
+            command.Parameters.AddWithValue("@obser_cancer", request.ObserCancer);
+            command.Parameters.AddWithValue("@tuberculosis", request.Tuberculosis);
+            command.Parameters.AddWithValue("@obser_tuberculosis", request.ObserTuberculosis);
+            command.Parameters.AddWithValue("@enf_mental", request.EnfMental);
+            command.Parameters.AddWithValue("@obser_enf_mental", request.ObserEnfMental);
+            command.Parameters.AddWithValue("@enf_infecciosa", request.EnfInfecciosa);
+            command.Parameters.AddWithValue("@obser_enf_infecciosa", request.ObserEnfInfecciosa);
+            command.Parameters.AddWithValue("@mal_formacion", request.MalFormacion);
+            command.Parameters.AddWithValue("@obser_mal_formacion", request.ObserMalFormacion);
+            command.Parameters.AddWithValue("@otro", request.Otro);
+            command.Parameters.AddWithValue("@obser_otro", request.ObserOtro);
 
-                var laboratoriosParam = command.Parameters.AddWithValue("@laboratorios", laboratorios);
-                laboratoriosParam.SqlDbType = SqlDbType.Structured;
-                laboratoriosParam.TypeName = "dbo.ConsultaLaboratorioType";
+            // Órganos y Sistemas
+            command.Parameters.AddWithValue("@org_sentidos", request.OrgSentidos);
+            command.Parameters.AddWithValue("@obser_org_sentidos", request.ObserOrgSentidos);
+            command.Parameters.AddWithValue("@respiratorio", request.Respiratorio);
+            command.Parameters.AddWithValue("@obser_respiratorio", request.ObserRespiratorio);
+            command.Parameters.AddWithValue("@cardio_vascular", request.CardioVascular);
+            command.Parameters.AddWithValue("@obser_cardio_vascular", request.ObserCardioVascular);
+            command.Parameters.AddWithValue("@digestivo", request.Digestivo);
+            command.Parameters.AddWithValue("@obser_digestivo", request.ObserDigestivo);
+            command.Parameters.AddWithValue("@genital", request.Genital);
+            command.Parameters.AddWithValue("@obser_genital", request.ObserGenital);
+            command.Parameters.AddWithValue("@urinario", request.Urinario);
+            command.Parameters.AddWithValue("@obser_urinario", request.ObserUrinario);
+            command.Parameters.AddWithValue("@m_esqueletico", request.MEsqueletico);
+            command.Parameters.AddWithValue("@obser_m_esqueletico", request.ObserMEsqueletico);
+            command.Parameters.AddWithValue("@endocrino", request.Endocrino);
+            command.Parameters.AddWithValue("@obser_endocrino", request.ObserEndocrino);
+            command.Parameters.AddWithValue("@linfatico", request.Linfatico);
+            command.Parameters.AddWithValue("@obser_linfatico", request.ObserLinfatico);
+            command.Parameters.AddWithValue("@nervioso", request.Nervioso);
+            command.Parameters.AddWithValue("@obser_nervioso", request.ObserNervioso);
 
-                var imagenesParam = command.Parameters.AddWithValue("@imagenes", imagenes);
-                imagenesParam.SqlDbType = SqlDbType.Structured;
-                imagenesParam.TypeName = "dbo.ConsultaImagenType";
+            // Examen Físico
+            command.Parameters.AddWithValue("@cabeza", request.Cabeza);
+            command.Parameters.AddWithValue("@obser_cabeza", request.ObserCabeza);
+            command.Parameters.AddWithValue("@cuello", request.Cuello);
+            command.Parameters.AddWithValue("@obser_cuello", request.ObserCuello);
+            command.Parameters.AddWithValue("@torax", request.Torax);
+            command.Parameters.AddWithValue("@obser_torax", request.ObserTorax);
+            command.Parameters.AddWithValue("@abdomen", request.Abdomen);
+            command.Parameters.AddWithValue("@obser_abdomen", request.ObserAbdomen);
+            command.Parameters.AddWithValue("@pelvis", request.Pelvis);
+            command.Parameters.AddWithValue("@obser_pelvis", request.ObserPelvis);
+            command.Parameters.AddWithValue("@extremidades", request.Extremidades);
+            command.Parameters.AddWithValue("@obser_extremidades", request.ObserExtremidades);
 
-                var diagnosticosParam = command.Parameters.AddWithValue("@diagnosticos", diagnosticos);
-                diagnosticosParam.SqlDbType = SqlDbType.Structured;
-                diagnosticosParam.TypeName = "dbo.ConsultaDiagnosticoType";
+            // Output parameter
+            var newConsultaIdParam = new SqlParameter("@NewConsultaID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+            command.Parameters.Add(newConsultaIdParam);
 
-                var antecedentesfamiliaresParam = command.Parameters.AddWithValue("@antecedentesfamiliares", antecedentesfamiliares);
-                antecedentesfamiliaresParam.SqlDbType = SqlDbType.Structured;
-                antecedentesfamiliaresParam.TypeName = "dbo.AntecedentesFamiliaresType";
+            await connection.OpenAsync();
+            await command.ExecuteNonQueryAsync();
 
-                var organossistemasParam = command.Parameters.AddWithValue("@organossistemas", organossistemas);
-                organossistemasParam.SqlDbType = SqlDbType.Structured;
-                organossistemasParam.TypeName = "dbo.OrganosSistemasType";
-
-                var examenesfisicosParam = command.Parameters.AddWithValue("@examenesfisicos", examenesfisicos);
-                examenesfisicosParam.SqlDbType = SqlDbType.Structured;
-                examenesfisicosParam.TypeName = "dbo.ExamenFisicoType";
-
-                // Add output parameter
-                var newConsultaIDParam = command.Parameters.Add("@NewConsultaID", SqlDbType.Int);
-                newConsultaIDParam.Direction = ParameterDirection.Output;
-
-                connection.Open();
-                command.ExecuteNonQuery();
-
-                // Retrieve the new consultation ID
-                newConsultaID = Convert.ToInt32(newConsultaIDParam.Value);
-            }
+            return (int)newConsultaIdParam.Value;
         }
-
-        return newConsultaID;
     }
     public async Task UpdateConsultationAsync(Consultum consultation)
     {
