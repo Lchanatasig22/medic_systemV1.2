@@ -171,7 +171,7 @@ public class ConsultationService
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@fechacreacion_consulta", fechacreacion_consulta);
+                cmd.Parameters.AddWithValue("@fechacreacion_consulta",  DateTime.Now);
                 cmd.Parameters.AddWithValue("@usuariocreacion_consulta", usuariocreacion_consulta);
                 cmd.Parameters.AddWithValue("@historial_consulta", historial_consulta ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@secuencial_consulta", secuencial_consulta ?? (object)DBNull.Value);
@@ -205,7 +205,7 @@ public class ConsultationService
                 cmd.Parameters.AddWithValue("@notasevolucion_consulta", notasevolucion_consulta ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@consultaprincipal_consulta", consultaprincipal_consulta ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@activo_consulta", activo_consulta);
-                cmd.Parameters.AddWithValue("@fechaactual_consulta", fechaactual_consulta);
+                cmd.Parameters.AddWithValue("@fechaactual_consulta", DateTime.Now);
 
                 // JSON Parameters
                 cmd.Parameters.AddWithValue("@medicamentos", medicamentos ?? (object)DBNull.Value);

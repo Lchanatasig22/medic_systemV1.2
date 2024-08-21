@@ -69,7 +69,7 @@ namespace medic_system.Controllers
         {
             var model = new ConsultaRequest
             {
-                FechacreacionConsulta = DateTime.Now,
+                
                 Cardiopatia = false,
                 Diabetes = false,
                 EnfCardiovascular = false,
@@ -101,8 +101,15 @@ namespace medic_system.Controllers
                 Endocrino = false,
                 Linfatico = false,
                 Nervioso = false,
-            };
 
+                NotasevolucionConsulta = "",
+                ConsultaprincipalConsulta = "",
+                SecuencialConsulta = "",
+                Obseralergias = "",
+                ObsercirugiasId = "",
+            };
+            ViewBag.UsuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            ViewBag.UsuarioIdEspecialidad = HttpContext.Session.GetInt32("UsuarioIdEspecialidad");
             ViewBag.UsuarioNombre = HttpContext.Session.GetString("UsuarioNombre");
 
             ViewBag.TiposDocumentos = await _catalogService.ObtenerTiposDocumentosAsync();
@@ -235,13 +242,38 @@ namespace medic_system.Controllers
 
 
 
-
         [HttpPost]
         public async Task<IActionResult> CrearConsulta([FromBody] ConsultaRequest request)
         {
+            if (request == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Invalid request. The request body is null."
+                });
+            }
+
+            // Asignar valores predeterminados o valores de la sesión
+            request.FechacreacionConsulta = DateTime.Now;
+            request.MedicoConsultaD = HttpContext.Session.GetInt32("UsuarioId") ?? 0;
+            request.EspecialidadId = HttpContext.Session.GetInt32("UsuarioIdEspecialidad") ?? 0;
+            request.UsuariocreacionConsulta = HttpContext.Session.GetString("UsuarioNombre") ?? "Unknown";
+            request.SecuencialConsulta = "1";
+            request.EstadoConsultaC = 1;
+            request.TipoConsultaC = 1;
+            request.ActivoConsulta = 1;
+
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage)
+                                              .ToList();
+
+                return BadRequest(new
+                {
+                    Message = "Validation errors occurred.",
+                    Errors = errors
+                });
             }
 
             try
@@ -286,76 +318,81 @@ namespace medic_system.Controllers
                     request.Laboratorios,
                     request.Imagenes,
                     request.Diagnosticos,
-                    request.Cardiopatia,
+                    request.Cardiopatia ?? false,
                     request.ObserCardiopatia,
-                    request.Diabetes,
+                    request.Diabetes ?? false,
                     request.ObserDiabetes,
-                    request.EnfCardiovascular,
+                    request.EnfCardiovascular ?? false,
                     request.ObserEnfCardiovascular,
-                    request.Hipertension,
+                    request.Hipertension ?? false,
                     request.ObserHipertension,
-                    request.Cancer,
+                    request.Cancer ?? false,
                     request.ObserCancer,
-                    request.Tuberculosis,
+                    request.Tuberculosis ?? false,
                     request.ObserTuberculosis,
-                    request.EnfMental,
+                    request.EnfMental ?? false,
                     request.ObserEnfMental,
-                    request.EnfInfecciosa,
+                    request.EnfInfecciosa ?? false,
                     request.ObserEnfInfecciosa,
-                    request.MalFormacion,
+                    request.MalFormacion ?? false,
                     request.ObserMalFormacion,
-                    request.Otro,
+                    request.Otro ?? false,
                     request.ObserOtro,
-                    request.OrgSentidos,
+                    request.OrgSentidos ?? false,
                     request.ObserOrgSentidos,
-                    request.Respiratorio,
+                    request.Respiratorio ?? false,
                     request.ObserRespiratorio,
-                    request.CardioVascular,
+                    request.CardioVascular ?? false,
                     request.ObserCardioVascular,
-                    request.Digestivo,
+                    request.Digestivo ?? false,
                     request.ObserDigestivo,
-                    request.Genital,
+                    request.Genital ?? false,
                     request.ObserGenital,
-                    request.Urinario,
+                    request.Urinario ?? false,
                     request.ObserUrinario,
-                    request.MEsqueletico,
+                    request.MEsqueletico ?? false,
                     request.ObserMEsqueletico,
-                    request.Endocrino,
+                    request.Endocrino ?? false,
                     request.ObserEndocrino,
-                    request.Linfatico,
+                    request.Linfatico ?? false,
                     request.ObserLinfatico,
-                    request.Nervioso,
+                    request.Nervioso ?? false,
                     request.ObserNervioso,
-                    request.Cabeza,
+                    request.Cabeza ?? false,
                     request.ObserCabeza,
-                    request.Cuello,
+                    request.Cuello ?? false,
                     request.ObserCuello,
-                    request.Torax,
+                    request.Torax ?? false,
                     request.ObserTorax,
-                    request.Abdomen,
+                    request.Abdomen ?? false,
                     request.ObserAbdomen,
-                    request.Pelvis,
+                    request.Pelvis ?? false,
                     request.ObserPelvis,
-                    request.Extremidades,
+                    request.Extremidades ?? false,
                     request.ObserExtremidades,
-                    request.ParentescoCatalogoCardiopatia,
-                    request.ParentescoCatalogoDiabetes,
-                    request.ParentescoCatalogoEnfCardiovascular,
-                    request.ParentescoCatalogoHipertension,
-                    request.ParentescoCatalogoCancer,
-                    request.ParentescoCatalogoTuberculosis,
-                    request.ParentescoCatalogoEnfMental,
-                    request.ParentescoCatalogoEnfInfecciosa,
-                    request.ParentescoCatalogoMalFormacion,
-                    request.ParentescoCatalogoOtro
+                    request.ParentescoCatalogoCardiopatia ?? 0,
+                    request.ParentescoCatalogoDiabetes ?? 0,
+                    request.ParentescoCatalogoEnfCardiovascular ?? 0,
+                    request.ParentescoCatalogoHipertension ?? 0,
+                    request.ParentescoCatalogoCancer ?? 0,
+                    request.ParentescoCatalogoTuberculosis ?? 0,
+                    request.ParentescoCatalogoEnfMental ?? 0,
+                    request.ParentescoCatalogoEnfInfecciosa ?? 0,
+                    request.ParentescoCatalogoMalFormacion ?? 0,
+                    request.ParentescoCatalogoOtro ?? 0
                 );
 
                 return Ok(new { Id = newConsultaId });
             }
             catch (Exception ex)
             {
-                // Puedes loguear el error aquí o manejarlo de acuerdo a tus necesidades
-                return StatusCode(500, "Internal server error: " + ex.Message);
+                _logger.LogError(ex, "Error creating consultation");
+
+                return StatusCode(500, new
+                {
+                    Message = "Internal server error",
+                    Error = ex.Message
+                });
             }
         }
 
