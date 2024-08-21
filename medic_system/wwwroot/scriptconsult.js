@@ -8,13 +8,7 @@
         if (selectedDiagnostico) {
             const newRow = `
             <tr>
-                <td>
-                    <div class="input-group">
-                        <select name="Diagnosticos.DiagnosticoId" class="form-control">
-                            <option value="${selectedDiagnostico}" selected>${selectedDiagnosticoText}</option>
-                        </select>
-                    </div>
-                </td>
+                <td>${selectedDiagnosticoText}<input type="hidden" name="Diagnosticos.DiagnosticoId" value="${selectedDiagnostico}" /></td>
                 <td>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-outline-secondary">
@@ -49,13 +43,7 @@
         if (selectedMedicamento) {
             const newRow = `
             <tr>
-                <td>
-                    <div class="input-group">
-                        <select name="Medicamentos.MedicamentoId" class="form-control">
-                            <option value="${selectedMedicamento}" selected>${selectedMedicamentoText}</option>
-                        </select>
-                    </div>
-                </td>
+                <td>${selectedMedicamentoText}<input type="hidden" name="Medicamentos.MedicamentoId" value="${selectedMedicamento}" /></td>
                 <td><input type="number" name="Medicamentos.Cantidad" max="999" placeholder="0" class="form-control" /></td>
                 <td><input type="text" name="Medicamentos.Observacion" maxlength="300" placeholder="Máximo 300 caracteres" class="form-control" /></td>
                 <td><button type="button" class="btn btn-outline-secondary eliminar-fila-medicamento"><i class="fas fa-times-circle"></i> Eliminar</button></td>
@@ -73,7 +61,7 @@
         $(this).closest('tr').remove();
     });
 
-    // Añadir fila a la tabla Imagenes
+    // Añadir fila a la tabla Imágenes
     $('#anadirFilaImagen').on('click', function () {
         const $imagenSelect = $('#ImagenId');
         const selectedImagen = $imagenSelect.val();
@@ -109,13 +97,7 @@
         if (selectedLaboratorio) {
             const newRow = `
             <tr>
-                <td>
-                    <div class="input-group">
-                        <select name="Laboratorios.LaboratorioId" class="form-control">
-                            <option value="${selectedLaboratorio}" selected>${selectedLaboratorioText}</option>
-                        </select>
-                    </div>
-                </td>
+                <td>${selectedLaboratorioText}<input type="hidden" name="Laboratorios.LaboratorioId" value="${selectedLaboratorio}" /></td>
                 <td><input type="number" name="Laboratorios.Cantidad" max="999" placeholder="0" class="form-control" /></td>
                 <td><input type="text" name="Laboratorios.Observacion" maxlength="300" placeholder="Máximo 300 caracteres" class="form-control" /></td>
                 <td><button type="button" class="btn btn-outline-secondary eliminar-fila-laboratorio"><i class="fas fa-times-circle"></i> Eliminar</button></td>
@@ -205,21 +187,53 @@ function goToPreviousStep(stepNumber) {
     $('#step-' + (stepNumber - 1)).show();
 }
 
-
 function submitFormAsJson() {
     const form = document.getElementById('consultationForm');
     const formData = new FormData(form);
     const object = {};
+
+    // Mapeo de los campos que deben ser números
+    const intFields = [
+        "PacienteConsultaP", "TipoparienteConsulta", "AlergiasConsultaId",
+        "CirugiasConsultaId", "DiasincapacidadConsulta", "MedicoConsultaD",
+        "EspecialidadId", "EstadoConsultaC", "TipoConsultaC", "ActivoConsulta",
+        "ParentescoCatalogoCardiopatia", "ParentescoCatalogoDiabetes",
+        "ParentescoCatalogoEnfCardiovascular", "ParentescoCatalogoHipertension",
+        "ParentescoCatalogoCancer", "ParentescoCatalogoTuberculosis",
+        "ParentescoCatalogoEnfMental", "ParentescoCatalogoEnfInfecciosa",
+        "ParentescoCatalogoMalFormacion", "ParentescoCatalogoOtro",
+        "Diagnosticos.DiagnosticoId", "Laboratorios.LaboratorioId", "Imagenes.ImagenId",
+        "Medicamentos.MedicamentoId", "Imagenes.Cantidad", "Laboratorios.Cantidad"
+    ];
+
+    // Mapeo de los campos que deben ser booleanos
+    const boolFields = [
+        "Cardiopatia", "Diabetes", "EnfCardiovascular", "Hipertension",
+        "Cancer", "Tuberculosis", "EnfMental", "EnfInfecciosa",
+        "MalFormacion", "Otro", "OrgSentidos", "Respiratorio",
+        "CardioVascular", "Digestivo", "Genital", "Urinario",
+        "MEsqueletico", "Endocrino", "Linfatico", "Nervioso",
+        "Cabeza", "Cuello", "Torax", "Abdomen", "Pelvis",
+        "Extremidades", "PresuntivoDiagnosticos", "DefinitivoDiagnosticos",
+        "ConsultaAntecedentesFamiliares.Cardiopatia"
+    ];
+
     formData.forEach((value, key) => {
-        object[key] = value;
+        if (intFields.includes(key)) {
+            object[key] = value ? parseInt(value, 10) : null;
+        } else if (boolFields.includes(key)) {
+            object[key] = value === "true" || value === "on";
+        } else {
+            object[key] = value;
+        }
     });
 
     // Capturar los diagnósticos
     const diagnosticos = [];
     document.querySelectorAll('#diagnosticoTableBody tr').forEach(row => {
-        const diagnosticoIdElement = row.querySelector('select[name="Diagnosticos.DiagnosticoId"]');
+        const diagnosticoIdElement = row.querySelector('input[name="Diagnosticos.DiagnosticoId"]');
         if (diagnosticoIdElement) {
-            const diagnosticoId = diagnosticoIdElement.value;
+            const diagnosticoId = parseInt(diagnosticoIdElement.value, 10);
             const presuntivoElement = row.querySelector('input[name="Diagnosticos.PresuntivoDiagnosticos"]');
             const definitivoElement = row.querySelector('input[name="Diagnosticos.DefinitivoDiagnosticos"]');
             const presuntivo = presuntivoElement ? presuntivoElement.checked : false;
@@ -231,18 +245,18 @@ function submitFormAsJson() {
             });
         }
     });
-    object["Diagnosticos"] = diagnosticos;
+    object["Diagnosticos"] = JSON.stringify(diagnosticos.length > 0 ? diagnosticos : []);
 
     // Capturar los medicamentos
     const medicamentos = [];
     document.querySelectorAll('#medicamentosTableBody tr').forEach(row => {
-        const medicamentoIdElement = row.querySelector('select[name="Medicamentos.MedicamentoId"]');
+        const medicamentoIdElement = row.querySelector('input[name="Medicamentos.MedicamentoId"]');
         if (medicamentoIdElement) {
-            const medicamentoId = medicamentoIdElement.value;
+            const medicamentoId = parseInt(medicamentoIdElement.value, 10);
             const cantidadElement = row.querySelector('input[name="Medicamentos.Cantidad"]');
             const observacionElement = row.querySelector('input[name="Medicamentos.Observacion"]');
-            const cantidad = cantidadElement ? cantidadElement.value : "";
-            const observacion = observacionElement ? observacionElement.value : "";
+            const cantidad = cantidadElement ? parseInt(cantidadElement.value, 10) : null;
+            const observacion = observacionElement ? observacionElement.value : null;
             medicamentos.push({
                 medicamento_id: medicamentoId,
                 cantidad_medicamento: cantidad,
@@ -250,18 +264,18 @@ function submitFormAsJson() {
             });
         }
     });
-    object["Medicamentos"] = medicamentos;
+    object["Medicamentos"] = JSON.stringify(medicamentos.length > 0 ? medicamentos : []);
 
     // Capturar las imágenes
     const imagenes = [];
     document.querySelectorAll('#imagenesTableBody tr').forEach(row => {
         const imagenIdElement = row.querySelector('input[name="Imagenes.ImagenId"]');
         if (imagenIdElement) {
-            const imagenId = imagenIdElement.value;
+            const imagenId = parseInt(imagenIdElement.value, 10);
             const cantidadElement = row.querySelector('input[name="Imagenes.Cantidad"]');
             const observacionElement = row.querySelector('input[name="Imagenes.Observacion"]');
-            const cantidad = cantidadElement ? cantidadElement.value : "";
-            const observacion = observacionElement ? observacionElement.value : "";
+            const cantidad = cantidadElement ? parseInt(cantidadElement.value, 10) : null;
+            const observacion = observacionElement ? observacionElement.value : null;
             imagenes.push({
                 imagen_id: imagenId,
                 cantidad_imagen: cantidad,
@@ -269,18 +283,18 @@ function submitFormAsJson() {
             });
         }
     });
-    object["Imagenes"] = imagenes;
+    object["Imagenes"] = JSON.stringify(imagenes.length > 0 ? imagenes : []);
 
     // Capturar los laboratorios
     const laboratorios = [];
     document.querySelectorAll('#laboratorioTableBody tr').forEach(row => {
-        const laboratorioIdElement = row.querySelector('select[name="Laboratorios.LaboratorioId"]');
+        const laboratorioIdElement = row.querySelector('input[name="Laboratorios.LaboratorioId"]');
         if (laboratorioIdElement) {
-            const laboratorioId = laboratorioIdElement.value;
+            const laboratorioId = parseInt(laboratorioIdElement.value, 10);
             const cantidadElement = row.querySelector('input[name="Laboratorios.Cantidad"]');
             const observacionElement = row.querySelector('input[name="Laboratorios.Observacion"]');
-            const cantidad = cantidadElement ? cantidadElement.value : "";
-            const observacion = observacionElement ? observacionElement.value : "";
+            const cantidad = cantidadElement ? parseInt(cantidadElement.value, 10) : null;
+            const observacion = observacionElement ? observacionElement.value : null;
             laboratorios.push({
                 laboratorio_id: laboratorioId,
                 cantidad_laboratorio: cantidad,
@@ -288,7 +302,10 @@ function submitFormAsJson() {
             });
         }
     });
-    object["Laboratorios"] = laboratorios;
+    object["Laboratorios"] = JSON.stringify(laboratorios.length > 0 ? laboratorios : []);
+
+    // Debugging: Verificar el contenido del objeto antes de enviarlo
+    console.log("Formulario capturado:", object);
 
     // Convertir el objeto a JSON y enviarlo
     const json = JSON.stringify(object);
@@ -304,7 +321,7 @@ function submitFormAsJson() {
             if (response.ok) {
                 return response.json();
             }
-            throw new Error('Something went wrong');
+            return response.json().then(err => { throw err; });
         })
         .then(data => {
             alert('Consulta creada con ID: ' + data.Id);
@@ -313,5 +330,6 @@ function submitFormAsJson() {
             console.error('Error:', error);
         });
 }
+
 
 
